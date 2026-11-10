@@ -134,7 +134,8 @@ button.streak{border:0;font:inherit;cursor:pointer}.streak{display:flex;align-it
 #set,#fb,#cal,#sem,#pt,#hs{position:fixed;inset:0;z-index:30;background:rgba(27,35,51,.4);display:flex;align-items:flex-end;justify-content:center}
 .sheet{background:#fff;width:100%;max-width:560px;max-height:88%;overflow:auto;border-radius:26px 26px 0 0;padding:18px 20px calc(24px + env(safe-area-inset-bottom,0px))}
 @media (min-width:640px){#set,#fb,#cal,#sem,#pt,#hs{align-items:center}.sheet{border-radius:26px}}
-.sheet-h{display:flex;align-items:center;justify-content:space-between}
+.sheet-h{display:flex;align-items:center;justify-content:space-between;position:sticky;top:-18px;z-index:3;background:#fff;margin:-18px -20px 0;padding:16px 20px 10px;border-bottom:1px solid transparent;flex:none}
+.sheet-h.stuck{border-bottom-color:var(--line)}
 .sheet h2{font-family:var(--f-display);font-size:1.3rem;margin:0}
 .sheet h3{font-family:var(--f-display);font-size:1rem;margin:20px 0 6px}
 .hint{color:var(--muted);font-size:.88rem;margin:0 0 10px}
@@ -317,7 +318,6 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
   </div>
   <div class="grid" id="grid"></div>
   <button type="button" class="fbk" id="fb-open"><span class="ic"><svg class="i"><use href="#i-msg"/></svg></span><span><b>Fehler gefunden oder eine Idee?</b><small>Sag kurz Bescheid, damit BWIssen besser wird.</small></span></button>
-  <p class="note">Weitere Fächer kommen dazu, sobald die Unterlagen da sind.</p>
   <p class="sync" id="sync">Dein Fortschritt wird auf diesem Gerät gespeichert.</p>
 </div>
 
@@ -609,6 +609,7 @@ function hsMaybe(force){if(!force&&(!window.BW_GATE||!IS_IOS||IS_APP))return;
   const later=+(lsG("hs-later")||0);if(!force&&Date.now()-later<20*3600e3)return;const show=()=>{if(!$("#hello").hidden||!$("#login").hidden)return setTimeout(show,400);setTimeout(()=>{if(ME)$("#hs").hidden=false},700)};force?($("#hs").hidden=false):show()}
 function hsClose(){$("#hs").hidden=true;lsS("hs-later",String(Date.now()))}
 $("#hs-close").onclick=hsClose;$("#hs-later").onclick=hsClose;$("#hs-ok").onclick=hsClose;$("#hs").addEventListener("click",e=>{if(e.target.id==="hs")hsClose()});
+document.querySelectorAll(".sheet").forEach(sh=>sh.addEventListener("scroll",()=>{const h=sh.querySelector(".sheet-h");if(h)h.classList.toggle("stuck",sh.scrollTop>4)},{passive:true}));
 $("#pt-open").onclick=()=>{ppRender();cdTick();$("#pt").hidden=false};$("#pt-close").onclick=()=>{$("#pt").hidden=true};$("#pt").addEventListener("click",e=>{if(e.target.id==="pt")$("#pt").hidden=true});
 $("#sem-close").onclick=()=>{$("#sem").hidden=true};$("#sem").addEventListener("click",e=>{if(e.target.id==="sem")$("#sem").hidden=true});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#cal").hidden=true;$("#sem").hidden=true}});
@@ -838,7 +839,10 @@ function admRender(){$("#set-admin").hidden=!IS_ADMIN;if(!IS_ADMIN)return;const 
   const al=$("#ad-all");if(al)al.onclick=()=>{if(ADM.busy)return;const lock=!(z&&z.gesperrt);ADM.last=null;admSave(z2=>{z2.gesperrt=lock},lock?"Alle gesperrt":"Zugang geöffnet")}}
 if(GATE)$("#login").hidden=true;
 ready.then(async()=>{if(!await gateCheck())await gateShow();let k=null;try{k=sessionStorage.getItem("prof-session")||localStorage.getItem("dev-remember")}catch(e){}
-  if(GATE){autoEnter(lsG("dev-name")||"Gast");return}
+  if(GATE){let nm=lsG("dev-name");if(!nm&&IS_ADMIN){nm="Admin";const ok=keyOf("Gast"),nk=keyOf("Admin");
+      if(!profGet(nk)&&profGet(ok)){store.set("prof-list",profList().map(p=>p.k===ok?Object.assign({},p,{k:nk,name:"Admin"}):p));
+        try{const d=localStorage.getItem("prof-data:"+ok);if(d!=null){localStorage.setItem("prof-data:"+nk,d);localStorage.removeItem("prof-data:"+ok)}if(store.get("prof-live",null)===ok)store.set("prof-live",nk)}catch(e){}}}
+    autoEnter(nm||"Gast");return}
   const dn=null;
   if(dn&&(FRESH_NAME||!(k&&profGet(k))))autoEnter(dn);
   else if(k&&profGet(k))enter(k,(()=>{try{return localStorage.getItem("dev-remember")===k}catch(e){return false}})(),true,false);else loginShow()});
