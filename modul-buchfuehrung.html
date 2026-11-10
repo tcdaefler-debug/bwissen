@@ -452,6 +452,23 @@ body.exlock .brand{pointer-events:none}
 .vl-l{max-height:none!important}
 .vl-l .hd{white-space:normal!important}
 
+/* Zwei Wege: Lernen und Üben / Prüfungen */
+.ways{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0 6px}
+@media(max-width:560px){.ways{grid-template-columns:1fr}}
+.way{--c:var(--wc);display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--ink);background:color-mix(in srgb,var(--wc) 7%,#fff);border:2px solid color-mix(in srgb,var(--wc) 30%,#fff);border-radius:24px;padding:16px;box-shadow:0 4px 0 color-mix(in srgb,var(--wc) 25%,#fff);transition:transform .12s ease,box-shadow .2s}
+.way:active{transform:translateY(2px);box-shadow:0 1px 0 color-mix(in srgb,var(--wc) 25%,#fff)}
+.way .ico{width:56px;height:56px;border-radius:18px;background:var(--wc);color:#fff;display:grid;place-items:center;flex:none}
+.way .ico svg{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.way .wt{display:flex;flex-direction:column;gap:3px;min-width:0}.way .wt b{font-family:var(--f-display,inherit);font-size:1.12rem}.way .wt small{color:var(--muted);font-size:.86rem}
+.way .go{margin-left:auto;font-weight:900;font-size:1.3rem;color:var(--wc)}
+.way.ex{background:var(--wc);border-color:var(--wc);color:#fff;box-shadow:0 4px 0 color-mix(in srgb,var(--wc) 60%,#000)}
+.way.ex .ico{background:#fff;color:var(--wc)}.way.ex .wt small,.way.ex .go{color:#fff}.way.ex .wt small{opacity:.9}
+.way.small{padding:12px 14px}.way.small .ico{width:44px;height:44px;border-radius:14px}.way.small .ico svg{width:24px;height:24px}.way.small .wt b{font-size:1rem}
+nav.tabs .tgh{grid-column:1/-1;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:8px 2px 0}
+nav.tabs .tgh:first-child{margin-top:0}
+.vl-link{display:inline-flex;align-items:center;gap:8px;font-weight:800;color:var(--ink);text-decoration:none;background:var(--bg2);border-radius:999px;padding:8px 14px;margin:4px 0 10px}
+.vl-link svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
 /* App-Rahmen: Zurück zur Modul-Übersicht (nur sichtbar, wenn das Modul in der Lern-App läuft) */
 .appback{flex:none;width:38px;height:38px;border-radius:12px;border:1.5px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
 .appback:hover{border-color:var(--brand);color:var(--brand)}
@@ -492,17 +509,21 @@ body.exlock .brand{pointer-events:none}
     <button type="button" class="menubtn" id="menubtn" aria-expanded="false" aria-controls="tabs"><span id="menucur">Start</span><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   </div>
   <nav class="tabs" id="tabs" aria-label="Bereiche"><div class="wrap tabrow">
+    <div class="tgh">Übersicht</div>
     <a href="#start" style="--tc:var(--c-home)"><span class="ti"><svg><use href="#i-home"/></svg></span>Start</a>
+    <div class="tgh">Lernen und Üben</div>
+    <a href="#lernen" style="--tc:#3b5bdb"><span class="ti"><svg><use href="#i-gk"/></svg></span>Lernen und Üben</a>
     <a href="#grundkurs" style="--tc:var(--c-gk)"><span class="ti"><svg><use href="#i-gk"/></svg></span>Grundkurs</a>
     <a href="#kapitel" style="--tc:var(--c-04)"><span class="ti"><svg><use href="#i-list"/></svg></span>Kapitel</a>
-    <a href="#pruefung" style="--tc:var(--c-pruef)"><span class="ti"><svg><use href="#i-exam"/></svg></span>Probeprüfungen</a>
-    <a href="#verlauf" style="--tc:var(--c-verlauf)"><span class="ti"><svg><use href="#i-verlauf"/></svg></span>Mein Verlauf</a>
-    <a href="#fragen" style="--tc:var(--c-quiz)"><span class="ti"><svg><use href="#i-quiz"/></svg></span>Alle Fragen</a>
-    <a href="#spiele" style="--tc:var(--c-spiele)"><span class="ti"><svg><use href="#i-spiele"/></svg></span>Spiele</a>
     <a href="#karten" style="--tc:var(--c-karten)"><span class="ti"><svg><use href="#i-karten"/></svg></span>Karteikarten</a>
-    <a href="#uebungen" style="--tc:var(--c-uebungen)"><span class="ti"><svg><use href="#i-uebungen"/></svg></span>Übungen</a>
+    <a href="#spiele" style="--tc:var(--c-spiele)"><span class="ti"><svg><use href="#i-spiele"/></svg></span>Spiele</a>
     <a href="#trainer" style="--tc:var(--c-trainer)"><span class="ti"><svg><use href="#i-trainer"/></svg></span>Buchungstrainer</a>
+    <a href="#uebungen" style="--tc:var(--c-uebungen)"><span class="ti"><svg><use href="#i-uebungen"/></svg></span>Übungen</a>
+    <a href="#fragen" style="--tc:var(--c-quiz)"><span class="ti"><svg><use href="#i-quiz"/></svg></span>Alle Fragen</a>
     <a href="#formeln" style="--tc:var(--c-formeln)"><span class="ti"><svg><use href="#i-formeln"/></svg></span>Formeln</a>
+    <div class="tgh">Prüfungen</div>
+    <a href="#pruefung" style="--tc:#e03131"><span class="ti"><svg><use href="#i-exam"/></svg></span>Probeprüfungen</a>
+    <a href="#verlauf" style="--tc:var(--c-verlauf)"><span class="ti"><svg><use href="#i-verlauf"/></svg></span>Mein Verlauf</a>
   </div></nav>
 </header>
 
@@ -523,32 +544,13 @@ body.exlock .brand{pointer-events:none}
     </div>
   </div>
 
+  <div class="ways">
+    <a class="way" href="#lernen" style="--wc:#3b5bdb"><span class="ico"><svg><use href="#i-gk"/></svg></span><span class="wt"><b>Lernen und Üben</b><small>Grundkurs, Sitzungen, Spiele, Karteikarten, Trainer</small></span><span class="go">→</span></a>
+    <a class="way ex" href="#pruefung" style="--wc:#e03131"><span class="ico"><svg><use href="#i-exam"/></svg></span><span class="wt"><b>Prüfungen</b><small id="way-ex">Probeprüfungen wie beim Führerschein</small></span><span class="go">→</span></a>
+  </div>
+
   <h2 class="grp-h">Dein Lernpfad <small>Schritt für Schritt bis zur Klausur</small></h2>
   <ol class="lp" id="lp"></ol>
-
-  <h2 class="grp-h">Lernen <small>erst Grundkurs, dann die Sitzungen</small></h2>
-  <div class="tiles">
-    <a class="tile wide" href="#grundkurs" style="--tc:var(--c-gk)"><span class="ico"><svg><use href="#i-gk"/></svg></span><span><small>Ohne Vorwissen</small><b>Grundkurs: Buchführung von null an</b></span><span class="meta" id="home-gk">12 Lektionen von null an</span><span class="bar"><i id="hb-gk"></i></span></a>
-    <a class="tile" href="#kapitel-00" style="--tc:var(--c-00)" data-chtile="00"><span class="ico"><svg><use href="#i-00"/></svg></span><span><small>Sitzung 00</small><b>Organisatorisches</b></span><span class="meta">Modul, Klausur, Überblick</span></a>
-    <a class="tile" href="#kapitel-01" style="--tc:var(--c-01)" data-chtile="01"><span class="ico"><svg><use href="#i-01"/></svg></span><span><small>Sitzung 01</small><b>Einführung ins Rechnungswesen</b></span><span class="meta">Extern, intern, Geldströme</span></a>
-    <a class="tile" href="#kapitel-02" style="--tc:var(--c-02)" data-chtile="02"><span class="ico"><svg><use href="#i-02"/></svg></span><span><small>Sitzung 02</small><b>Bedeutung der Buchführung</b></span><span class="meta">HGB, AO, GoB</span></a>
-    <a class="tile" href="#kapitel-03" style="--tc:var(--c-03)" data-chtile="03"><span class="ico"><svg><use href="#i-03"/></svg></span><span><small>Sitzung 03</small><b>Inventur und Inventar</b></span><span class="meta">Zählen, Verfahren, Staffelform</span></a>
-    <a class="tile" href="#kapitel-04" style="--tc:var(--c-04)" data-chtile="04"><span class="ico"><svg><use href="#i-04"/></svg></span><span><small>Sitzung 04</small><b>Bilanz</b></span><span class="meta">Aufbau und Kennzahlen</span></a>
-    <a class="tile" href="#kapitel-05" style="--tc:var(--c-05)" data-chtile="05"><span class="ico"><svg><use href="#i-05"/></svg></span><span><small>Sitzung 05-01</small><b>Buchen auf Bestandskonten</b></span><span class="meta">T-Konten, Soll an Haben</span></a>
-  </div>
-
-  <h2 class="grp-h">Üben und spielen <small>bis es sitzt</small></h2>
-  <div class="tiles">
-    <a class="tile wide" href="#spiele" style="--tc:var(--c-spiele)"><span class="new">NEU</span><span class="ico"><svg><use href="#i-spiele"/></svg></span><span><small>4 Spiele</small><b>Konten sortieren, Geldflüsse legen, Bilanz-Waage</b></span><span class="meta" id="home-sp">Highscore: noch keiner</span></a>
-    <a class="tile" href="#karten" style="--tc:var(--c-karten)"><span class="ico"><svg><use href="#i-karten"/></svg></span><span><small>Begriffe</small><b>Karteikarten</b></span><span class="meta" id="home-fc">Begriffe abfragen</span><span class="bar"><i id="hb-fc"></i></span></a>
-    <a class="tile" href="#fragen" style="--tc:var(--c-quiz)"><span class="ico"><svg><use href="#i-quiz"/></svg></span><span><small>Frei üben</small><b>Alle Fragen</b></span><span class="meta" id="home-quiz">mit Bildern, ohne Druck</span></a>
-    <a class="tile" href="#pruefung" style="--tc:var(--c-pruef)"><span class="ico"><svg><use href="#i-exam"/></svg></span><span><small>Wie beim Führerschein</small><b>Probeprüfungen</b></span><span class="meta">je Thema 20 Minuten</span></a>
-    <a class="tile" href="#trainer" style="--tc:var(--c-trainer)"><span class="ico"><svg><use href="#i-trainer"/></svg></span><span><small>Soll an Haben</small><b>Buchungstrainer</b></span><span class="meta" id="home-tr">Buchungssätze bilden</span><span class="bar"><i id="hb-tr"></i></span></a>
-    <a class="tile" href="#uebungen" style="--tc:var(--c-uebungen)"><span class="ico"><svg><use href="#i-uebungen"/></svg></span><span><small>Arbeitsblätter</small><b>Übungen 1 bis 10</b></span><span class="meta">mit Lösungen und Zusatzfällen</span></a>
-    <a class="tile" href="#formeln" style="--tc:var(--c-formeln)"><span class="ico"><svg><use href="#i-formeln"/></svg></span><span><small>Zum Wiederholen</small><b>Formeln und Paragrafen</b></span><span class="meta">alles auf einer Seite</span></a>
-  </div>
-
-  <div class="merke" style="margin-top:26px"><b>Klausur</b>120 Minuten, ohne Hilfsmittel. Also auf Papier üben.</div>
 
 </section>
 
@@ -562,6 +564,34 @@ body.exlock .brand{pointer-events:none}
     <button class="gpick" type="button" data-g="pm" style="--gc:#ff7a1a" aria-pressed="false"><span class="ico"><svg><use href="#i-plusminus"/></svg></span><span><b>Plus oder Minus</b><small>Welche der vier Bilanzveränderungen ist das? Schnellrunde.</small></span></button>
   </div>
   <div class="gbox" id="g-box"></div>
+</section>
+
+<!-- ================= LERNEN UND ÜBEN ================= -->
+<section id="v-lernen" data-view="lernen" hidden>
+  <div class="vhero"><span class="ico"><svg><use href="#i-gk"/></svg></span><div><div class="eyebrow">Alles zum Lernen</div><h2>Lernen und Üben</h2></div></div>
+  <h2 class="grp-h">Lernen <small>erst Grundkurs, dann die Sitzungen</small></h2>
+  <div class="tiles">
+    <a class="tile wide" href="#grundkurs" style="--tc:var(--c-gk)"><span class="ico"><svg><use href="#i-gk"/></svg></span><span><small>Ohne Vorwissen</small><b>Grundkurs: Buchführung von null an</b></span><span class="meta" id="home-gk">12 Lektionen von null an</span><span class="bar"><i id="hb-gk"></i></span></a>
+    <a class="tile" href="#kapitel-00" style="--tc:var(--c-00)" data-chtile="00"><span class="ico"><svg><use href="#i-00"/></svg></span><span><small>Sitzung 00</small><b>Überblick</b></span><span class="meta">Bilanz, GuV, Systembereiche</span></a>
+    <a class="tile" href="#kapitel-01" style="--tc:var(--c-01)" data-chtile="01"><span class="ico"><svg><use href="#i-01"/></svg></span><span><small>Sitzung 01</small><b>Einführung ins Rechnungswesen</b></span><span class="meta">Extern, intern, Geldströme</span></a>
+    <a class="tile" href="#kapitel-02" style="--tc:var(--c-02)" data-chtile="02"><span class="ico"><svg><use href="#i-02"/></svg></span><span><small>Sitzung 02</small><b>Bedeutung der Buchführung</b></span><span class="meta">HGB, AO, GoB</span></a>
+    <a class="tile" href="#kapitel-03" style="--tc:var(--c-03)" data-chtile="03"><span class="ico"><svg><use href="#i-03"/></svg></span><span><small>Sitzung 03</small><b>Inventur und Inventar</b></span><span class="meta">Zählen, Verfahren, Staffelform</span></a>
+    <a class="tile" href="#kapitel-04" style="--tc:var(--c-04)" data-chtile="04"><span class="ico"><svg><use href="#i-04"/></svg></span><span><small>Sitzung 04</small><b>Bilanz</b></span><span class="meta">Aufbau und Kennzahlen</span></a>
+    <a class="tile" href="#kapitel-05" style="--tc:var(--c-05)" data-chtile="05"><span class="ico"><svg><use href="#i-05"/></svg></span><span><small>Sitzung 05-01</small><b>Buchen auf Bestandskonten</b></span><span class="meta">T-Konten, Soll an Haben</span></a>
+  </div>
+
+  <h2 class="grp-h">Üben und spielen <small>bis es sitzt</small></h2>
+  <div class="tiles">
+    <a class="tile wide" href="#spiele" style="--tc:var(--c-spiele)"><span class="new">NEU</span><span class="ico"><svg><use href="#i-spiele"/></svg></span><span><small>4 Spiele</small><b>Konten sortieren, Geldflüsse legen, Bilanz-Waage</b></span><span class="meta" id="home-sp">Highscore: noch keiner</span></a>
+    <a class="tile" href="#karten" style="--tc:var(--c-karten)"><span class="ico"><svg><use href="#i-karten"/></svg></span><span><small>Begriffe</small><b>Karteikarten</b></span><span class="meta" id="home-fc">Begriffe abfragen</span><span class="bar"><i id="hb-fc"></i></span></a>
+    <a class="tile" href="#fragen" style="--tc:var(--c-quiz)"><span class="ico"><svg><use href="#i-quiz"/></svg></span><span><small>Frei üben</small><b>Alle Fragen</b></span><span class="meta" id="home-quiz">mit Bildern, ohne Druck</span></a>
+    <a class="tile" href="#trainer" style="--tc:var(--c-trainer)"><span class="ico"><svg><use href="#i-trainer"/></svg></span><span><small>Soll an Haben</small><b>Buchungstrainer</b></span><span class="meta" id="home-tr">Buchungssätze bilden</span><span class="bar"><i id="hb-tr"></i></span></a>
+    <a class="tile" href="#uebungen" style="--tc:var(--c-uebungen)"><span class="ico"><svg><use href="#i-uebungen"/></svg></span><span><small>Arbeitsblätter</small><b>Übungen 1 bis 10</b></span><span class="meta">mit Lösungen und Zusatzfällen</span></a>
+    <a class="tile" href="#formeln" style="--tc:var(--c-formeln)"><span class="ico"><svg><use href="#i-formeln"/></svg></span><span><small>Zum Wiederholen</small><b>Formeln und Paragrafen</b></span><span class="meta">alles auf einer Seite</span></a>
+  </div>
+
+
+  <a class="way ex small" href="#pruefung" style="--wc:#e03131;margin-top:24px"><span class="ico"><svg><use href="#i-exam"/></svg></span><span class="wt"><b>Bereit? Zu den Prüfungen</b><small>Probeprüfungen je Thema und die große Probeklausur</small></span><span class="go">→</span></a>
 </section>
 
 <!-- ================= GRUNDKURS ================= -->
@@ -830,6 +860,7 @@ body.exlock .brand{pointer-events:none}
     <button class="btn ghost" type="button" id="gk-prev">← Vorherige Lektion</button>
     <button class="btn" type="button" id="gk-next">Nächste Lektion →</button>
   </div>
+  <a class="way ex small" id="gk-exam" href="#pruefung-gk" style="--wc:#e03131;margin-top:18px" hidden><span class="ico"><svg><use href="#i-exam"/></svg></span><span class="wt"><b>Grundkurs geschafft? Probeprüfung Grundlagen</b><small>12 Fragen, 20 Minuten</small></span><span class="go">→</span></a>
 </section>
 
 <!-- ================= KAPITEL ================= -->
@@ -838,18 +869,8 @@ body.exlock .brand{pointer-events:none}
   <div id="chapters">
 
 <article data-ch="00">
-  <div class="vhero"><span class="ico"><svg><use href="#i-00"/></svg></span><div><div class="eyebrow">Sitzung 00</div><h2>Organisatorisches und Überblick</h2></div></div>
-  <ul class="kurz" aria-label="Das Wichtigste"><li><span>1</span><span>Klausur: 120 Minuten, ohne Hilfsmittel.</span></li><li><span>2</span><span>Die Baresta Bau GmbH ist das Beispiel für das ganze Semester.</span></li><li><span>3</span><span><b>Bilanz</b> = Bestände an einem Tag. <b>GuV</b> = Bewegungen im Jahr. Zusammen: Jahresabschluss.</span></li></ul>
-  <p>Das Modul hat 5 ECTS, also rund 150 Stunden Arbeit: 54 h Präsenz und 96 h Selbststudium. Es gibt 15 Termine mit Vortrag, Übung und Kleingruppe im Wechsel. Geprüft wird mit einer <b>Klausur von 120 Minuten ohne KI und ohne digitale Hilfsmittel</b>.</p>
-  <h3>Der Veranstaltungsplan</h3>
-  <div data-ill="semester"></div>
-  <div class="tbl"><table>
-    <tr><th>Block</th><th>Inhalte</th></tr>
-    <tr><td>Grundlagen</td><td>Bilanz, Inventur, Buchungssatz, Erfolgskonten</td></tr>
-    <tr><td>Betriebliche Sachbereiche</td><td>Abschreibung, Umsatzsteuer, Beschaffung/Absatz, Personal, Anlagen</td></tr>
-    <tr><td>Abgrenzung und Bewertung</td><td>Rechnungsabgrenzung, Rückstellungen, Bewertung</td></tr>
-    <tr><td>Jahresabschluss nach HGB</td><td>Bilanz, GuV, Personen- und Kapitalgesellschaften</td></tr>
-  </table></div>
+  <div class="vhero"><span class="ico"><svg><use href="#i-00"/></svg></span><div><div class="eyebrow">Sitzung 00</div><h2>Überblick: Rechnungswesen im Bau</h2></div></div>
+  <ul class="kurz" aria-label="Das Wichtigste"><li><span>1</span><span><b>Externes</b> Rechnungswesen informiert Außenstehende, <b>internes</b> die Unternehmensführung.</span></li><li><span>2</span><span>Die Baresta Bau GmbH ist das Beispiel für das ganze Semester.</span></li><li><span>3</span><span><b>Bilanz</b> = Bestände an einem Tag. <b>GuV</b> = Bewegungen im Jahr. Zusammen: Jahresabschluss.</span></li></ul>
   <p>Ein fiktives Bauunternehmen, die <b>Baresta Bau GmbH</b>, begleitet das ganze Semester von der Eröffnungsbilanz bis zum fertigen Jahresabschluss.</p>
   <h3>Systembereiche des baubetrieblichen Rechnungswesens</h3>
   <div class="tbl"><table>
@@ -1241,6 +1262,7 @@ body.exlock .brand{pointer-events:none}
   <div class="merke"><b>Doppelte Buchführung</b>Jeder Fall wird zweimal gebucht, einmal im Soll und einmal im Haben, jeweils mit Gegenkonto. Stimmt ein Kontobestand nicht mit der Inventur überein (z. B. Betonstahl), gilt die Inventur; die Differenz (Schwund, Fehlbuchung) muss aufgeklärt und das Konto angepasst werden.</div>
 </article>
   </div>
+  <div id="ch-end"></div>
 </section>
 
 <!-- ================= KARTEIKARTEN ================= -->
@@ -1282,6 +1304,7 @@ body.exlock .brand{pointer-events:none}
 <section id="v-pruefung" data-view="pruefung" hidden>
   <div class="vhero"><span class="ico"><svg><use href="#i-exam"/></svg></span><div><div class="eyebrow">Wie beim Führerschein</div><h2>Probeprüfungen</h2></div></div>
   <p class="muted">Pro Thema eine Probeprüfung, am Ende die große. Erst nach dem Abgeben siehst du, was richtig war. Nur bestandene Prüfungen bringen dich im Lernpfad weiter.</p>
+  <a class="vl-link" href="#verlauf"><svg><use href="#i-verlauf"/></svg>Mein Verlauf: alle Ergebnisse und deine Kurve</a>
   <div id="ex-box"></div>
 </section>
 
@@ -1322,7 +1345,7 @@ body.exlock .brand{pointer-events:none}
 <!-- ================= FORMELN ================= -->
 <section id="v-formeln" data-view="formeln" hidden>
   <div class="vhero"><span class="ico"><svg><use href="#i-formeln"/></svg></span><div><div class="eyebrow">Zum Wiederholen</div><h2>Formeln, Regeln und Paragrafen</h2></div></div>
-  <p class="muted">Alles Wichtige auf einer Seite. Gut zum Wiederholen kurz vor der Klausur. In der Klausur selbst hast du keine Hilfsmittel, also lern das auswendig.</p>
+  <p class="muted">Alles Wichtige auf einer Seite. Gut zum Wiederholen kurz vor der Klausur.</p>
 
   <h3>Abkürzungen</h3>
   <div class="tbl"><table>
@@ -1428,11 +1451,11 @@ body.exlock .brand{pointer-events:none}
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const fmt=n=>n.toLocaleString('de-DE');
 const $=s=>document.querySelector(s);
-const CH={"00":"Organisatorisches","01":"Einführung","02":"Bedeutung der Buchführung","03":"Inventur und Inventar","04":"Bilanz","05":"Bestandskonten"};
+const CH={"00":"Überblick","01":"Einführung","02":"Bedeutung der Buchführung","03":"Inventur und Inventar","04":"Bilanz","05":"Bestandskonten"};
 const CHF=Object.assign({GK:"Grundlagen"},CH);
 
 /* ---------- Routing ---------- */
-const views=["start","grundkurs","kapitel","pruefung","verlauf","fragen","spiele","karten","quiz","uebungen","trainer","formeln"];
+const views=["start","lernen","grundkurs","kapitel","pruefung","verlauf","fragen","spiele","karten","quiz","uebungen","trainer","formeln"];
 function route(){
   let v=(location.hash||"#start").slice(1), sub=null;
   const mm=v.match(/^kapitel-(0[0-5])$/); if(mm){v="kapitel";sub=mm[1]}
@@ -1440,7 +1463,7 @@ function route(){
   if(EX_RUN && v!=="pruefung"){ v="pruefung"; pm=null; try{history.replaceState(null,"","#pruefung")}catch(e){} }
   if(!views.includes(v)) v="start";
   if(sub) pickCh(sub);
-  if(v==="kapitel") markCh(); if(v==="start") homeStats(); if(v!=="spiele") gStop();
+  if(v==="kapitel") markCh(); if(v==="start"||v==="lernen") homeStats(); if(v!=="spiele") gStop();
   document.querySelectorAll("[data-view]").forEach(s=>s.hidden=s.dataset.view!==v);
   document.querySelectorAll("#tabs a").forEach(a=>{ if(a.getAttribute("href")==="#"+v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
   window.scrollTo(0,0);
@@ -1463,7 +1486,8 @@ function chipRow(el,items,active,onPick){
 }
 const lastCh=store.get("bf-ch","00");
 let curCh=lastCh;
-function showCh(k){curCh=k;document.querySelectorAll("#chapters article").forEach(a=>a.hidden=a.dataset.ch!==k);store.set("bf-ch",k);markCh()}
+function chEnd(k){const el=document.getElementById("ch-end");if(!el)return;const ks=Object.keys(CH),nx=ks[ks.indexOf(k)+1];el.innerHTML=(k==="00"?"":`<a class="way ex small" href="#pruefung-${k}" style="--wc:#e03131;margin-top:22px"><span class="ico"><svg><use href="#i-exam"/></svg></span><span class="wt"><b>Fertig gelesen? Probeprüfung Sitzung ${k==="05"?"05-01":k}</b><small>${CH[k]} · 20 Minuten</small></span><span class="go">→</span></a>`)+(nx?`<div class="row-btns" style="margin-top:12px"><a class="btn ghost" href="#kapitel-${nx}">Weiter mit Sitzung ${nx==="05"?"05-01":nx} →</a></div>`:"")}
+function showCh(k){curCh=k;chEnd(k);document.querySelectorAll("#chapters article").forEach(a=>a.hidden=a.dataset.ch!==k);store.set("bf-ch",k);markCh()}
 function pickCh(k){showCh(k);document.querySelectorAll("#chapnav .chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.key===k?"true":"false"))}
 function markCh(){if(location.hash.slice(1).indexOf("kapitel")!==0)return;const s=store.get("bf-chv",[]);if(!s.includes(curCh)){s.push(curCh);store.set("bf-chv",s)}}
 chipRow($("#chapnav"),Object.entries(CH),lastCh,k=>{showCh(k);window.scrollTo(0,0)});
@@ -2414,7 +2438,7 @@ const GKC=[
   const show=k=>{st.cur=k;lessons.forEach(l=>l.hidden=+l.dataset.l!==k);
     nav.innerHTML=lessons.map(l=>{const x=+l.dataset.l;return `<button type="button" data-l="${x}" class="${st.done.includes(x)?"done":""}" ${x===k?'aria-current="step"':""} aria-label="Lektion ${x}">${x}</button>`}).join("");
     nav.querySelectorAll("button").forEach(b=>b.onclick=()=>{show(+b.dataset.l);$("#v-grundkurs").scrollIntoView()});
-    $("#gk-prev").disabled=k===1; $("#gk-next").textContent=k===n?"Weiter zu den Kapiteln →":"Nächste Lektion →";
+    $("#gk-prev").disabled=k===1;{const ge=$("#gk-exam");if(ge)ge.hidden=k!==n;} $("#gk-next").textContent=k===n?"Weiter zu den Kapiteln →":"Nächste Lektion →";
     $("#home-gk").textContent=st.done.length?`${st.done.length} von ${n} Lektionen erledigt`:"12 Lektionen von null an";
     store.set("bf-gk",st);if(typeof homeStats==="function")try{homeStats()}catch(e){}};
   $("#gk-prev").onclick=()=>{show(st.cur-1);$("#v-grundkurs").scrollIntoView()};
@@ -2425,7 +2449,7 @@ const GKC=[
 /* ---------- Kapitel-Ergänzungen: typische Fehler und Selbsttest ---------- */
 const EXTRA={
 "00":{f:["Bilanz und GuV verwechseln: Die Bilanz zeigt <b>Bestände an einem Stichtag</b> (Foto), die GuV zeigt <b>Aufwendungen und Erträge eines Zeitraums</b> (Film).","Kalkulation für externes Rechnungswesen halten: Angebots- bis Nachkalkulation sind <b>intern</b>."],
- t:[["Wie viele Stunden Selbststudium sieht das Modul vor?","96 Stunden (von 150 Stunden insgesamt)."],["Welche Hilfsmittel sind in der Klausur erlaubt?","Keine: ohne KI und ohne digitale Hilfsmittel, 120 Minuten."],["Nenne die fünf Kalkulationsarten im Bau.","Angebots-, Vertrags-, Arbeits-, Nachtrags- und Nachkalkulation."],["Was gehört zur Baubetriebsrechnung?","Kostenrechnung, Leistungsrechnung, Ergebnisrechnung."]]},
+ t:[["Nenne die fünf Kalkulationsarten im Bau.","Angebots-, Vertrags-, Arbeits-, Nachtrags- und Nachkalkulation."],["Was gehört zur Baubetriebsrechnung?","Kostenrechnung, Leistungsrechnung, Ergebnisrechnung."]]},
 "01":{f:["„Intern heißt für die Mitarbeiter.“ Falsch: Intern heißt <b>für die Unternehmensführung</b>. Beschäftigte und Betriebsrat sind externe Adressaten.","Statistik und Planungsrechnung verwechseln: Statistik <b>vergleicht Vergangenes</b>, Planungsrechnung <b>bildet die Zukunft ab</b>.","Glauben, die KLR sei gesetzlich vorgeschrieben. Sie hat <b>keine</b> gesetzliche Grundlage.","Den Kontrollbereich mit Dokumentation verwechseln: „Liegt die Baustelle im Budget?“ ist Kontrolle, „Nachweis im Streit“ ist Dokumentation."],
  t:[["Nenne drei Unterschiede zwischen externem und internem Rechnungswesen.","z. B. Gesetzliche Grundlage (ja/nein), Zeitbezug (Vergangenheit/Zukunft), Adressaten (Außenstehende/Unternehmensführung), Untersuchungsobjekt (ganzes Unternehmen/Teilbereiche), Veröffentlichung (teils Pflicht/keine)."],["Was macht das Rechnungswesen mit den Daten?","Es erfasst, verdichtet und wertet aus, in Euro und Mengen."],["Welche drei Märkte umgeben das Unternehmen?","Beschaffungsmarkt, Absatzmarkt, Finanzmarkt."],["Warum fließen Güter und Geld gegenläufig?","Weil für jede Leistung eine Gegenleistung erfolgt: Wer Material bekommt, zahlt Geld; wer eine Bauleistung erbringt, bekommt Geld."],["Zu welcher Aufgabe gehört „Bagger kaufen oder mieten?“","Planung und Disposition (Entscheidungsgrundlage)."]]},
 "02":{f:["§ 241a HGB auf eine GmbH, OHG oder KG anwenden. Die Befreiung gilt <b>nur für Einzelkaufleute</b>.","Bei § 241a nur eine Grenze prüfen. Es müssen <b>beide</b> eingehalten sein (Umsatz <b>und</b> Gewinn). Bei § 141 AO reicht dagegen <b>eine</b> überschrittene Grenze.","Freiberufler (Architekt, Arzt) nach § 141 AO verpflichten. § 141 AO gilt nur für <b>Gewerbetreibende</b>.","Glauben, ohne Handelsregistereintrag sei man nie Kaufmann. Der Istkaufmann (§ 1 HGB) ist es <b>auch ohne Eintragung</b>, wenn der Betrieb einen kaufmännischen Geschäftsbetrieb erfordert.","§ 140 und § 141 AO verwechseln: § 140 übernimmt die HGB-Pflicht, § 141 begründet eine eigene steuerliche Pflicht."],
