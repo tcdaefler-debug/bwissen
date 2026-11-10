@@ -394,8 +394,8 @@ const MODULES=[
   {id:"buchfuehrung",prefix:"bf-",name:"Buchführung",sub:"und Jahresabschluss",color:"#3b5bdb",icon:"i-konto",file:"modul-buchfuehrung.html",
    exam:"2027-01-22",time:"08:00",
    progress(){return Math.min(1,(+store.get("bf-total",0)||0)/100)}},
-  {id:"vwl",prefix:"vwl-",name:"VWL",sub:"Volkswirtschaftslehre",color:"#ee7418",icon:"i-markt",file:null,exam:"2027-01-20",time:"11:00",
-   waitText:"Für VWL fehlt noch die Datei vwl-lernpaket.html. Sobald sie hochgeladen ist, wird das Modul gebaut."},
+  {id:"vwl",prefix:"vwl-",name:"VWL",sub:"Volkswirtschaftslehre",color:"#ee7418",icon:"i-markt",file:"modul-vwl.html",exam:"2027-01-20",time:"11:00",
+   progress(){return Math.min(1,(+store.get("vwl-total",0)||0)/100)}},
   {id:"bauphysik",prefix:"bp-",name:"Bauphysik",sub:"Wärme- und Feuchtelehre",color:"#139a58",icon:"i-thermo",file:null,exam:"2027-01-21",time:"08:00",
    waitText:"Für Bauphysik fehlen noch drei Dateien: lernwerkstatt-inhalte.json, lernwerkstatt-referenz.html und Lernpaket_Bauphysik.pdf. Sobald sie hochgeladen sind, wird das Modul gebaut."},
   {id:"baustoffkunde",name:"Baustoffkunde",sub:"kommt bald",color:"#b4442f",soon:true,exam:"2027-01-21",time:"08:00"}
