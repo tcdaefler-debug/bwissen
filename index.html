@@ -60,7 +60,9 @@ button.streak{border:0;font:inherit;cursor:pointer}.streak{display:flex;align-it
 #bibo-tip::after{content:"";position:absolute;right:-8px;bottom:10px;border:8px solid transparent;border-left-color:#fff;border-right:0}
 #bibo-tip::before{content:"";position:absolute;right:-10px;bottom:9px;border:9px solid transparent;border-left-color:#d9cffd;border-right:0}
 /* Prüfungsplan */
-.pp{margin:0 0 18px;border-radius:24px;background:#fff;border:1.5px solid var(--line);padding:16px;box-shadow:0 2px 0 var(--line)}
+.pp{margin:0}
+.hello .semr{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.hello .semb.ptb{color:#c92a2a;border-color:#ffc9c9;background:#fff5f5}.hello .semb.ptb svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .pp-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .pp-h h2{font-family:var(--f-display);font-weight:600;font-size:1.15rem;margin:0}
 .pp-h span{font-size:.8rem;font-weight:800;color:var(--muted)}
@@ -129,9 +131,9 @@ button.streak{border:0;font:inherit;cursor:pointer}.streak{display:flex;align-it
 .topr{display:flex;align-items:center;gap:8px}
 .gear{width:38px;height:38px;border-radius:12px;border:1.5px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;color:var(--ink);flex:none}
 .gear svg{width:20px;height:20px}
-#set,#fb,#cal,#sem{position:fixed;inset:0;z-index:30;background:rgba(27,35,51,.4);display:flex;align-items:flex-end;justify-content:center}
+#set,#fb,#cal,#sem,#pt{position:fixed;inset:0;z-index:30;background:rgba(27,35,51,.4);display:flex;align-items:flex-end;justify-content:center}
 .sheet{background:#fff;width:100%;max-width:560px;max-height:88%;overflow:auto;border-radius:26px 26px 0 0;padding:18px 20px calc(24px + env(safe-area-inset-bottom,0px))}
-@media (min-width:640px){#set,#fb,#cal,#sem{align-items:center}.sheet{border-radius:26px}}
+@media (min-width:640px){#set,#fb,#cal,#sem,#pt{align-items:center}.sheet{border-radius:26px}}
 .sheet-h{display:flex;align-items:center;justify-content:space-between}
 .sheet h2{font-family:var(--f-display);font-size:1.3rem;margin:0}
 .sheet h3{font-family:var(--f-display);font-size:1rem;margin:20px 0 6px}
@@ -299,9 +301,8 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
   </div>
   <div class="hello">
     <h1>Deine Fächer</h1>
-    <button type="button" class="semb" id="sem-open">Wintersemester 2026/27<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+    <div class="semr"><button type="button" class="semb" id="sem-open">Wintersemester 2026/27<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><button type="button" class="semb ptb" id="pt-open"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h3"/></svg>Prüfungstermine</button></div>
   </div>
-  <section class="pp" id="pp" aria-labelledby="pp-h"></section>
   <div class="grid" id="grid"></div>
   <button type="button" class="fbk" id="fb-open"><span class="ic"><svg class="i"><use href="#i-msg"/></svg></span><span><b>Fehler gefunden oder eine Idee?</b><small>Sag kurz Bescheid, damit BWIssen besser wird.</small></span></button>
   <p class="note">Weitere Fächer kommen dazu, sobald die Unterlagen da sind.</p>
@@ -312,6 +313,12 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
   <div class="sheet">
     <div class="sheet-h"><h2 id="cal-h">Deine Lerntage</h2><button type="button" class="gear" id="cal-close" aria-label="Schließen"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div id="cal-box"></div>
+  </div>
+</div>
+<div id="pt" hidden role="dialog" aria-modal="true" aria-labelledby="pt-h">
+  <div class="sheet">
+    <div class="sheet-h"><h2 id="pt-h">Prüfungstermine</h2><button type="button" class="gear" id="pt-close" aria-label="Schließen"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <section class="pp" id="pp"></section>
   </div>
 </div>
 <div id="sem" hidden role="dialog" aria-modal="true" aria-labelledby="sem-h">
@@ -420,13 +427,11 @@ const MODULES=[
 const $=s=>document.querySelector(s);
 
 /* Laufender Countdown bis zur Klausur */
-const cdHtml=iso=>`<span class="cd" data-cd="${iso}" aria-label="Zeit bis zur Klausur"><b>–</b><small>Tage</small><span class="tk">--:--:--</span><i></i></span>`;
-function cdTick(){const now=Date.now();document.querySelectorAll("[data-cdd]").forEach(el=>{el.textContent=Math.max(0,Math.floor((new Date(el.dataset.cdd).getTime()-now)/864e5))});document.querySelectorAll("[data-cd]").forEach(el=>{const t=new Date(el.dataset.cd).getTime();let d=Math.max(0,Math.floor((t-now)/1000));
-  const D=Math.floor(d/86400);d-=D*86400;const h=Math.floor(d/3600),mi=Math.floor(d%3600/60),se=d%60,p=n=>String(n).padStart(2,"0");
-  const hms=`${p(h)}:${p(mi)}:${p(se)}`;
-  if(el.classList.contains("cd")){el.querySelector("b").textContent=D;el.querySelector("small").textContent=D===1?"Tag":"Tage";el.querySelector(".tk").textContent=hms;el.querySelector("i").style.width=(100-(h*3600+mi*60+se)/864)+"%"}
-  else el.textContent=`noch ${D} ${D===1?"Tag":"Tage"} ${hms}`})}
-setInterval(cdTick,1000);
+const cdHtml=iso=>`<span class="cd" data-cd="${iso}" aria-label="Zeit bis zur Klausur"><b>–</b><small>Tage</small></span>`;
+function calDays(iso){const t0=new Date();t0.setHours(0,0,0,0);const e=new Date(iso);e.setHours(0,0,0,0);return Math.max(0,Math.round((e-t0)/864e5))}
+function cdTick(){document.querySelectorAll("[data-cdd]").forEach(el=>{el.textContent=calDays(el.dataset.cdd)});document.querySelectorAll("[data-cd]").forEach(el=>{const D=calDays(el.dataset.cd);
+  el.querySelector("b").textContent=D;el.querySelector("small").textContent=D===1?"Tag":"Tage"})}
+setInterval(cdTick,60000);
 function tile(m){
   const b=document.createElement("button");b.type="button";b.className="tile"+(m.soon?" soon":"")+(!m.file&&!m.soon?" wait":"");
   b.style.setProperty("--c",m.color||"#9aa3b5");
@@ -459,10 +464,10 @@ function ppRender(){const el=$("#pp");if(!el)return;const t0=new Date();t0.setHo
   const mod=e=>e.id&&MODULES.find(m=>m.id===e.id),can=e=>{const m=mod(e);return !!(m&&!m.soon)};
   const rest=PP.filter(e=>e!==nx),show=ppAll?rest:rest.slice(0,3);
   const n=nx?dd(nx):0;
-  el.innerHTML=`<div class="pp-h"><h2 id="pp-h">Prüfungsphase</h2><span>20. bis 29. Januar 2027</span></div>
+  el.innerHTML=`<div class="pp-h"><span>Wintersemester 2026/27 · 20. bis 29. Januar 2027</span></div>
   ${nx?`<button type="button" class="pp-next" style="--c:${nx.c}" ${can(nx)?`data-go="${nx.id}"`:""}>
     <span class="pp-cd"><span><b data-cdd="${nx.d}T${nx.t}">${n===0?"!":n}</b><small>${n===0?"heute":n===1?"Tag":"Tage"}</small></span></span>
-    <span class="t"><small>Nächste Prüfung</small><b>${nx.n}</b><span>${lng(nx.d)}, ${nx.t} Uhr · ${nx.f}</span><br><span class="pp-tk" data-cd="${nx.d}T${nx.t}"></span></span></button>`:""}
+    <span class="t"><small>Nächste Prüfung</small><b>${nx.n}</b><span>${lng(nx.d)}, ${nx.t} Uhr · ${nx.f}</span></span></button>`:""}
   <ul class="pp-l">${show.map(e=>{const k=dd(e);return `<li><button type="button" class="pp-r${k<0?" past":""}" style="--c:${e.c}" ${can(e)?`data-go="${e.id}"`:"disabled"}>
     <span class="pp-d"><small>${wd(e.d)}</small><b>${dn(e.d)}</b></span><span class="t"><b>${e.n}</b><span>${mo(e.d)} · ${e.t} Uhr · ${e.f}</span></span>
     <span class="pp-in">${inTxt(k)}</span></button></li>`}).join("")}</ul>
@@ -571,6 +576,7 @@ $("#cal-close").onclick=()=>{$("#cal").hidden=true};$("#cal").addEventListener("
 const SEMS=(()=>{const o=[];for(let y=2026;y<2030;y++){o.push({t:`Wintersemester ${y}/${String(y+1).slice(2)}`,cur:y===2026});o.push({t:`Sommersemester ${y+1}`})}return o})();
 $("#sem-open").onclick=()=>{const act=MODULES.filter(m=>!m.soon).map(m=>m.name).join(", ");
   $("#sem-l").innerHTML=SEMS.map(x=>`<li class="${x.cur?"cur":"soon"}"><b>${x.t}${x.cur?`<span class="fx">${act}</span>`:`<span class="fx">Fächer kommen bald</span>`}</b><small>${x.cur?"aktuell":"kommt bald"}</small></li>`).join("");$("#sem").hidden=false};
+$("#pt-open").onclick=()=>{ppRender();cdTick();$("#pt").hidden=false};$("#pt-close").onclick=()=>{$("#pt").hidden=true};$("#pt").addEventListener("click",e=>{if(e.target.id==="pt")$("#pt").hidden=true});
 $("#sem-close").onclick=()=>{$("#sem").hidden=true};$("#sem").addEventListener("click",e=>{if(e.target.id==="sem")$("#sem").hidden=true});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#cal").hidden=true;$("#sem").hidden=true}});
 
