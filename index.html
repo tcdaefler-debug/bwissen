@@ -43,6 +43,35 @@ button.streak{border:0;font:inherit;cursor:pointer}.streak{display:flex;align-it
 .sync{margin-top:8px;color:var(--muted);font-size:.82rem;text-align:center}
 .exam{display:block;font-size:.78rem;font-weight:800;color:color-mix(in srgb,var(--c) 70%,#000);margin-top:6px}
 .hello p{color:var(--muted);margin:.4rem 0 0}
+/* Prüfungsplan */
+.pp{margin:0 0 18px;border-radius:24px;background:#fff;border:1.5px solid var(--line);padding:16px;box-shadow:0 2px 0 var(--line)}
+.pp-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.pp-h h2{font-family:var(--f-display);font-weight:600;font-size:1.15rem;margin:0}
+.pp-h span{font-size:.8rem;font-weight:800;color:var(--muted)}
+.pp-next{--c:#e03131;display:flex;align-items:center;gap:14px;border:0;width:100%;font:inherit;color:inherit;text-align:left;cursor:pointer;border-radius:18px;padding:14px;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c) 14%,#fff),color-mix(in srgb,var(--c) 5%,#fff));margin-bottom:10px;transition:transform .15s}
+.pp-next:active{transform:scale(.99)}
+.pp-cd{flex:none;width:76px;height:76px;border-radius:20px;background:var(--c);color:#fff;display:grid;place-items:center;text-align:center;box-shadow:0 8px 18px -10px var(--c);line-height:1}
+.pp-cd b{display:block;font-family:var(--f-display);font-size:2rem;font-weight:700}
+.pp-cd small{display:block;font-size:.68rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;margin-top:3px;opacity:.9}
+.pp-next .t small{display:block;font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:color-mix(in srgb,var(--c) 75%,#000)}
+.pp-next .t b{display:block;font-family:var(--f-display);font-weight:600;font-size:1.08rem;line-height:1.25;margin:2px 0}
+.pp-next .t span{font-size:.85rem;color:var(--muted);font-weight:600}
+.pp-l{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.pp-r{--c:#64748b;display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;font:inherit;color:inherit;text-align:left;padding:8px 6px;border-radius:14px;cursor:pointer}
+.pp-r:hover{background:var(--bg2)}.pp-r[disabled]{cursor:default}.pp-r[disabled]:hover{background:none}
+.pp-d{flex:none;width:46px;border-radius:12px;overflow:hidden;text-align:center;border:1.5px solid color-mix(in srgb,var(--c) 35%,#fff);background:#fff;line-height:1.05}
+.pp-d small{display:block;background:var(--c);color:#fff;font-size:.62rem;font-weight:800;padding:2px 0;text-transform:uppercase}
+.pp-d b{display:block;font-size:1.1rem;font-weight:800;padding:3px 0 4px}
+.pp-r .t{flex:1;min-width:0}
+.pp-r .t b{display:block;font-weight:700;font-size:.93rem;line-height:1.25}
+.pp-r .t span{font-size:.78rem;color:var(--muted);font-weight:600}
+.pp-in{flex:none;font-size:.75rem;font-weight:800;color:color-mix(in srgb,var(--c) 75%,#000);background:color-mix(in srgb,var(--c) 12%,#fff);border-radius:99px;padding:3px 9px}
+.pp-r.past{opacity:.5}.pp-r.past .pp-in{background:var(--bg2);color:var(--muted)}
+.pp-o{margin:10px 0 0;padding-top:10px;border-top:1.5px dashed var(--line);font-size:.8rem;color:var(--muted)}
+.pp-o b{color:var(--ink)}
+.pp-x{display:block;margin:8px auto 0;border:0;background:none;font:inherit;font-size:.8rem;font-weight:800;color:var(--brand);cursor:pointer;padding:4px 8px}
+
 
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .tile{--c:var(--brand);position:relative;display:flex;flex-direction:column;gap:12px;text-align:left;border:0;cursor:pointer;font:inherit;color:inherit;
@@ -256,6 +285,7 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
     <h1>Deine Fächer</h1>
     <button type="button" class="semb" id="sem-open">Wintersemester 2026/27<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
   </div>
+  <section class="pp" id="pp" aria-labelledby="pp-h"></section>
   <div class="grid" id="grid"></div>
   <button type="button" class="fbk" id="fb-open"><span class="ic"><svg class="i"><use href="#i-msg"/></svg></span><span><b>Fehler gefunden oder eine Idee?</b><small>Sag kurz Bescheid, damit BWIssen besser wird.</small></span></button>
   <p class="note">Weitere Fächer kommen dazu, sobald die Unterlagen da sind.</p>
@@ -362,13 +392,13 @@ bauphysik:'<svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="
 baustoffkunde:'<svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="18" fill="#b4442f"/><rect x="11" y="15" width="19" height="9.5" rx="2.5" fill="#fff"/><rect x="33" y="15" width="20" height="9.5" rx="2.5" fill="#fff"/><rect x="11" y="27.5" width="8" height="9.5" rx="2.5" fill="#fff"/><rect x="22" y="27.5" width="20" height="9.5" rx="2.5" fill="#ffd3c7"/><rect x="45" y="27.5" width="8" height="9.5" rx="2.5" fill="#fff"/><rect x="11" y="40" width="19" height="9.5" rx="2.5" fill="#fff"/><rect x="33" y="40" width="20" height="9.5" rx="2.5" fill="#fff"/></svg>'};
 const MODULES=[
   {id:"buchfuehrung",prefix:"bf-",name:"Buchführung",sub:"und Jahresabschluss",color:"#3b5bdb",icon:"i-konto",file:"modul-buchfuehrung.html",
-   exam:null,
+   exam:"2027-01-22",time:"08:00",
    progress(){return Math.min(1,(+store.get("bf-total",0)||0)/100)}},
-  {id:"vwl",prefix:"vwl-",name:"VWL",sub:"Volkswirtschaftslehre",color:"#ee7418",icon:"i-markt",file:null,exam:null,
+  {id:"vwl",prefix:"vwl-",name:"VWL",sub:"Volkswirtschaftslehre",color:"#ee7418",icon:"i-markt",file:null,exam:"2027-01-20",time:"11:00",
    waitText:"Für VWL fehlt noch die Datei vwl-lernpaket.html. Sobald sie hochgeladen ist, wird das Modul gebaut."},
-  {id:"bauphysik",prefix:"bp-",name:"Bauphysik",sub:"Wärme- und Feuchtelehre",color:"#139a58",icon:"i-thermo",file:null,exam:"2027-01-25",
+  {id:"bauphysik",prefix:"bp-",name:"Bauphysik",sub:"Wärme- und Feuchtelehre",color:"#139a58",icon:"i-thermo",file:null,exam:"2027-01-21",time:"08:00",
    waitText:"Für Bauphysik fehlen noch drei Dateien: lernwerkstatt-inhalte.json, lernwerkstatt-referenz.html und Lernpaket_Bauphysik.pdf. Sobald sie hochgeladen sind, wird das Modul gebaut."},
-  {id:"baustoffkunde",name:"Baustoffkunde",sub:"kommt bald",color:"#b4442f",soon:true}
+  {id:"baustoffkunde",name:"Baustoffkunde",sub:"kommt bald",color:"#b4442f",soon:true,exam:"2027-01-21",time:"08:00"}
 ];
 
 const $=s=>document.querySelector(s);
@@ -376,7 +406,7 @@ function tile(m){
   const b=document.createElement("button");b.type="button";b.className="tile"+(m.soon?" soon":"")+(!m.file&&!m.soon?" wait":"");
   b.style.setProperty("--c",m.color||"#9aa3b5");
   b.innerHTML=`${LOGOS[m.id]?`<span class="ico logo">${LOGOS[m.id]}</span>`:`<span class="ico"><svg class="i"><use href="#${m.icon||"i-plus"}"/></svg></span>`}
-    <span><b>${m.name}</b><small>${m.sub||""}</small>${m.exam?`<span class="exam">Klausur am ${fmtDate(m.exam)}</span>`:""}</span>
+    <span><b>${m.name}</b><small>${m.sub||""}</small>${m.exam?`<span class="exam">Klausur ${fmtDate(m.exam)}, ${m.time||""} Uhr</span>`:""}</span>
     <span class="foot">${m.file?`<span class="chip go">Öffnen</span>`:`<span class="chip">${m.soon?"kommt bald":"Inhalte folgen"}</span>`}</span>`;
   if(m.soon){b.setAttribute("aria-disabled","true");b.tabIndex=-1}
   else b.onclick=()=>{location.hash=m.id};
@@ -384,7 +414,39 @@ function tile(m){
 }
 function daysTo(d){const t=new Date();t.setHours(0,0,0,0);return Math.max(0,Math.round((new Date(d+"T00:00:00")-t)/864e5))}
 function fmtDate(d){return new Date(d+"T00:00:00").toLocaleDateString("de-DE",{day:"numeric",month:"short"})}
-function renderHome(){const g=$("#grid");g.innerHTML="";MODULES.forEach(m=>g.appendChild(tile(m)))}
+
+/* Prüfungsplan Wintersemester 2026/27 (Räume stehen noch nicht fest) */
+const PP=[
+  {d:"2027-01-20",t:"11:00",n:"Volkswirtschaftslehre",f:"Klausur (K2) oder KA",id:"vwl",c:"#ee7418"},
+  {d:"2027-01-21",t:"08:00",n:"Baustoffkunde und Bauphysik",f:"K2 oder K1 und K1",id:"bauphysik",c:"#139a58"},
+  {d:"2027-01-22",t:"08:00",n:"Buchführung und Jahresabschluss",f:"Klausur (K2)",id:"buchfuehrung",c:"#3b5bdb"},
+  {d:"2027-01-29",t:"08:00",n:"Technische Mechanik",f:"Klausur (K2)",c:"#64748b"}];
+const PP_OPEN=[["Lineare Algebra & Analysis","K2 oder KA"],["Einführung in Wirtschaftsingenieurwesen – Bauwirtschaft","KA"]];
+let ppAll=false;
+function ppRender(){const el=$("#pp");if(!el)return;const t0=new Date();t0.setHours(0,0,0,0);
+  const dd=e=>Math.round((new Date(e.d+"T00:00:00")-t0)/864e5);
+  const up=PP.filter(e=>dd(e)>=0),nx=up[0];
+  if(!nx&&PP.every(e=>dd(e)<-14)){el.hidden=true;return}el.hidden=false;
+  const wd=d=>new Date(d+"T00:00:00").toLocaleDateString("de-DE",{weekday:"short"}).replace(".",""),
+        mo=d=>new Date(d+"T00:00:00").toLocaleDateString("de-DE",{month:"short"}).replace(".",""),
+        dn=d=>new Date(d+"T00:00:00").getDate(),
+        lng=d=>new Date(d+"T00:00:00").toLocaleDateString("de-DE",{weekday:"long",day:"numeric",month:"long"});
+  const inTxt=n=>n<0?"geschafft":n===0?"heute":n===1?"morgen":"in "+n+" Tagen";
+  const mod=e=>e.id&&MODULES.find(m=>m.id===e.id),can=e=>{const m=mod(e);return !!(m&&!m.soon)};
+  const rest=PP.filter(e=>e!==nx),show=ppAll?rest:rest.slice(0,3);
+  const n=nx?dd(nx):0;
+  el.innerHTML=`<div class="pp-h"><h2 id="pp-h">Prüfungsphase</h2><span>20. bis 29. Januar 2027</span></div>
+  ${nx?`<button type="button" class="pp-next" style="--c:${nx.c}" ${can(nx)?`data-go="${nx.id}"`:""}>
+    <span class="pp-cd"><span><b>${n===0?"!":n}</b><small>${n===0?"heute":n===1?"Tag":"Tage"}</small></span></span>
+    <span class="t"><small>Nächste Prüfung</small><b>${nx.n}</b><span>${lng(nx.d)}, ${nx.t} Uhr · ${nx.f}</span></span></button>`:""}
+  <ul class="pp-l">${show.map(e=>{const k=dd(e);return `<li><button type="button" class="pp-r${k<0?" past":""}" style="--c:${e.c}" ${can(e)?`data-go="${e.id}"`:"disabled"}>
+    <span class="pp-d"><small>${wd(e.d)}</small><b>${dn(e.d)}</b></span><span class="t"><b>${e.n}</b><span>${mo(e.d)} · ${e.t} Uhr · ${e.f}</span></span>
+    <span class="pp-in">${inTxt(k)}</span></button></li>`}).join("")}</ul>
+  ${rest.length>3?`<button type="button" class="pp-x" id="pp-x">${ppAll?"Weniger zeigen":"Alle Termine zeigen"}</button>`:""}
+  <p class="pp-o">Termin folgt: ${PP_OPEN.map(o=>`<b>${o[0]}</b> (${o[1]})`).join(", ")}. Räume werden noch bekannt gegeben.</p>`;
+  el.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{location.hash=b.dataset.go});
+  const x=$("#pp-x");if(x)x.onclick=()=>{ppAll=!ppAll;ppRender()}}
+function renderHome(){const g=$("#grid");g.innerHTML="";MODULES.forEach(m=>g.appendChild(tile(m)));ppRender()}
 
 function openModule(m,sub){
   if(!m.file){$("#wait-p").textContent=m.waitText||"Dieses Modul ist noch leer.";$("#wait").hidden=false;$("#wait-ok").focus();return}
