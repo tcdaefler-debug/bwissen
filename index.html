@@ -366,7 +366,7 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
     <p class="hint">Löscht deinen Fortschritt in allen Fächern und deine Lernserie. Dein Profil bleibt.</p>
     <div id="set-all"></div>
     <h3>Profil löschen</h3>
-    <p class="hint">Löscht dein Profil mit Passwort und allem Fortschritt von diesem Gerät.</p>
+    <p class="hint">Löscht dein Profil und allen Fortschritt von diesem Gerät.</p>
     <div id="set-del"></div>
   </div>
 </div>
@@ -692,10 +692,12 @@ function enter(k,keep,greet,first,inherit){const live=store.get("prof-live",null
   const f=$("#mod");f.removeAttribute("src");delete f.dataset.src;
   const p=profGet(k);$("#me-n").textContent=p.name;$("#me-av").textContent=p.name[0].toUpperCase();$("#me-av").style.background=avColor(k);$("#me").hidden=false;
   if(greet)hello(p.name,first);$("#login").hidden=true;applyTheme();streak();profSave();push();renderHome();route();hsMaybe()}
-function logout(){profSave();push();ME=null;try{sessionStorage.removeItem("prof-session");localStorage.removeItem("dev-remember")}catch(e){}
+function codeOut(){try{["dev-zugang","dev-name","dev-remember"].forEach(k=>localStorage.removeItem(k));sessionStorage.removeItem("prof-session")}catch(e){}location.hash="";location.reload()}
+function logout(){profSave();push();if(GATE){codeOut();return}ME=null;try{sessionStorage.removeItem("prof-session");localStorage.removeItem("dev-remember")}catch(e){}
   location.hash="";closeModule();$("#me").hidden=true;loginShow()}
 function profDelete(k){store.set("prof-list",profList().filter(p=>p.k!==k));try{localStorage.removeItem("prof-data:"+k)}catch(e){}
   if(store.get("prof-live",null)===k){liveWipe();try{localStorage.removeItem("prof-live")}catch(e){}}
+  if(GATE){push();codeOut();return}
   ME=null;try{sessionStorage.removeItem("prof-session");localStorage.removeItem("dev-remember")}catch(e){}push();location.hash="";closeModule();$("#me").hidden=true;loginShow()}
 let LGMODE="in";
 function loginMode(m){LGMODE=m;$("#lg-m-in").setAttribute("aria-pressed",m==="in");$("#lg-m-new").setAttribute("aria-pressed",m==="new");
@@ -833,8 +835,10 @@ function admRender(){$("#set-admin").hidden=!IS_ADMIN;if(!IS_ADMIN)return;const 
     if(b.dataset.sure!=="1"){b.dataset.sure="1";b.textContent="Löschen?";b.classList.add("red");return}ADM.last=null;
     admSave((z,l)=>{delete z.codes[e.h];const k=l.findIndex(x=>x.h===e.h);if(k>=0)l.splice(k,1)},"Code gelöscht")});
   const al=$("#ad-all");if(al)al.onclick=()=>{if(ADM.busy)return;const lock=!(z&&z.gesperrt);ADM.last=null;admSave(z2=>{z2.gesperrt=lock},lock?"Alle gesperrt":"Zugang geöffnet")}}
+if(GATE)$("#login").hidden=true;
 ready.then(async()=>{if(!await gateCheck())await gateShow();let k=null;try{k=sessionStorage.getItem("prof-session")||localStorage.getItem("dev-remember")}catch(e){}
-  const dn=GATE?lsG("dev-name"):null;
+  if(GATE){autoEnter(lsG("dev-name")||"Gast");return}
+  const dn=null;
   if(dn&&(FRESH_NAME||!(k&&profGet(k))))autoEnter(dn);
   else if(k&&profGet(k))enter(k,(()=>{try{return localStorage.getItem("dev-remember")===k}catch(e){return false}})(),true,false);else loginShow()});
 </script>
