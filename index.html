@@ -131,9 +131,9 @@ button.streak{border:0;font:inherit;cursor:pointer}.streak{display:flex;align-it
 .topr{display:flex;align-items:center;gap:8px}
 .gear{width:38px;height:38px;border-radius:12px;border:1.5px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;color:var(--ink);flex:none}
 .gear svg{width:20px;height:20px}
-#set,#fb,#cal,#sem,#pt{position:fixed;inset:0;z-index:30;background:rgba(27,35,51,.4);display:flex;align-items:flex-end;justify-content:center}
+#set,#fb,#cal,#sem,#pt,#hs{position:fixed;inset:0;z-index:30;background:rgba(27,35,51,.4);display:flex;align-items:flex-end;justify-content:center}
 .sheet{background:#fff;width:100%;max-width:560px;max-height:88%;overflow:auto;border-radius:26px 26px 0 0;padding:18px 20px calc(24px + env(safe-area-inset-bottom,0px))}
-@media (min-width:640px){#set,#fb,#cal,#sem,#pt{align-items:center}.sheet{border-radius:26px}}
+@media (min-width:640px){#set,#fb,#cal,#sem,#pt,#hs{align-items:center}.sheet{border-radius:26px}}
 .sheet-h{display:flex;align-items:center;justify-content:space-between}
 .sheet h2{font-family:var(--f-display);font-size:1.3rem;margin:0}
 .sheet h3{font-family:var(--f-display);font-size:1rem;margin:20px 0 6px}
@@ -282,6 +282,18 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
 .bb-typing{display:inline-flex;gap:4px}.bb-typing i{width:7px;height:7px;border-radius:50%;background:#a996f3;animation:biboDot 1s infinite}.bb-typing i:nth-child(2){animation-delay:.15s}.bb-typing i:nth-child(3){animation-delay:.3s}
 @keyframes biboDot{50%{transform:translateY(-4px);opacity:.5}}
 @media (prefers-reduced-motion:reduce){#bibo-btn,.bibo .eyes{animation:none}}
+
+/* Hinweis: Zum Home-Bildschirm (iPhone/iPad in Safari) */
+.hs-warn{display:flex;gap:10px;align-items:flex-start;background:#fff4e6;border:1.5px solid #ffd8a8;color:#7a3a00;border-radius:14px;padding:11px 13px;font-size:.88rem;line-height:1.4;margin:4px 0 14px}
+.hs-warn svg{flex:none;width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin-top:1px}
+.hs-steps{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:hs}
+.hs-steps li{display:flex;gap:12px;align-items:center;background:var(--bg2);border-radius:14px;padding:11px 13px;font-size:.92rem;line-height:1.35}
+.hs-steps li::before{counter-increment:hs;content:counter(hs);flex:none;width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800;font-size:.85rem}
+.hs-steps .k{display:inline-flex;align-items:center;gap:4px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:1px 7px;font-weight:700;white-space:nowrap}
+.hs-steps .k svg{width:15px;height:15px;stroke:var(--brand);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hs-foot{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+.hs-foot button{font:inherit;font-weight:800;border-radius:12px;padding:10px 16px;border:1.5px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.hs-foot .go{background:var(--brand);border-color:var(--brand);color:#fff}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -319,6 +331,19 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
   <div class="sheet">
     <div class="sheet-h"><h2 id="pt-h">Prüfungstermine</h2><button type="button" class="gear" id="pt-close" aria-label="Schließen"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <section class="pp" id="pp"></section>
+  </div>
+</div>
+<div id="hs" hidden role="dialog" aria-modal="true" aria-labelledby="hs-h">
+  <div class="sheet">
+    <div class="sheet-h"><h2 id="hs-h">BWIssen als App speichern</h2><button type="button" class="gear" id="hs-close" aria-label="Schließen"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="hs-warn"><svg viewBox="0 0 24 24"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4.5M12 17.5v.01"/></svg><span><b>Wichtig für deinen Fortschritt:</b> Safari löscht die Daten von Webseiten, die du 7 Tage lang nicht öffnest. Als App auf dem Home-Bildschirm passiert das nicht.</span></div>
+    <ol class="hs-steps">
+      <li><span>Tippe in Safari auf <span class="k"><svg viewBox="0 0 24 24"><path d="M12 15V3.5M8 7.5l4-4 4 4"/><path d="M7 11H5.5v9.5h13V11H17"/></svg>Teilen</span> (bei neuem iOS erst auf <span class="k">•••</span>).</span></li>
+      <li><span>Wähle <span class="k"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/></svg>Zum Home-Bildschirm</span>. Eventuell musst du dafür etwas nach unten scrollen.</span></li>
+      <li><span>Tippe oben rechts auf <span class="k">Hinzufügen</span>.</span></li>
+      <li><span>Öffne BWIssen ab jetzt nur noch über das neue Symbol und gib dort einmal deinen Code ein.</span></li>
+    </ol>
+    <div class="hs-foot"><button type="button" id="hs-later">Später</button><button type="button" class="go" id="hs-ok">Verstanden</button></div>
   </div>
 </div>
 <div id="sem" hidden role="dialog" aria-modal="true" aria-labelledby="sem-h">
@@ -576,6 +601,13 @@ $("#cal-close").onclick=()=>{$("#cal").hidden=true};$("#cal").addEventListener("
 const SEMS=(()=>{const o=[];for(let y=2026;y<2030;y++){o.push({t:`Wintersemester ${y}/${String(y+1).slice(2)}`,cur:y===2026});o.push({t:`Sommersemester ${y+1}`})}return o})();
 $("#sem-open").onclick=()=>{const act=MODULES.filter(m=>!m.soon).map(m=>m.name).join(", ");
   $("#sem-l").innerHTML=SEMS.map(x=>`<li class="${x.cur?"cur":"soon"}"><b>${x.t}${x.cur?`<span class="fx">${act}</span>`:`<span class="fx">Fächer kommen bald</span>`}</b><small>${x.cur?"aktuell":"kommt bald"}</small></li>`).join("");$("#sem").hidden=false};
+/* Zum Home-Bildschirm: nur iPhone/iPad in Safari, nicht in der Home-Bildschirm-App */
+const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+const IS_APP=navigator.standalone===true||(window.matchMedia&&matchMedia("(display-mode: standalone)").matches);
+function hsMaybe(force){if(!force&&(!window.BW_GATE||!IS_IOS||IS_APP))return;
+  const later=+(lsG("hs-later")||0);if(!force&&Date.now()-later<20*3600e3)return;const show=()=>{if(!$("#hello").hidden||!$("#login").hidden)return setTimeout(show,400);setTimeout(()=>{if(ME)$("#hs").hidden=false},700)};force?($("#hs").hidden=false):show()}
+function hsClose(){$("#hs").hidden=true;lsS("hs-later",String(Date.now()))}
+$("#hs-close").onclick=hsClose;$("#hs-later").onclick=hsClose;$("#hs-ok").onclick=hsClose;$("#hs").addEventListener("click",e=>{if(e.target.id==="hs")hsClose()});
 $("#pt-open").onclick=()=>{ppRender();cdTick();$("#pt").hidden=false};$("#pt-close").onclick=()=>{$("#pt").hidden=true};$("#pt").addEventListener("click",e=>{if(e.target.id==="pt")$("#pt").hidden=true});
 $("#sem-close").onclick=()=>{$("#sem").hidden=true};$("#sem").addEventListener("click",e=>{if(e.target.id==="sem")$("#sem").hidden=true});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#cal").hidden=true;$("#sem").hidden=true}});
@@ -659,7 +691,7 @@ function enter(k,keep,greet,first,inherit){const live=store.get("prof-live",null
   try{keep?localStorage.setItem("dev-remember",k):localStorage.removeItem("dev-remember")}catch(e){}
   const f=$("#mod");f.removeAttribute("src");delete f.dataset.src;
   const p=profGet(k);$("#me-n").textContent=p.name;$("#me-av").textContent=p.name[0].toUpperCase();$("#me-av").style.background=avColor(k);$("#me").hidden=false;
-  if(greet)hello(p.name,first);$("#login").hidden=true;applyTheme();streak();profSave();push();renderHome();route()}
+  if(greet)hello(p.name,first);$("#login").hidden=true;applyTheme();streak();profSave();push();renderHome();route();hsMaybe()}
 function logout(){profSave();push();ME=null;try{sessionStorage.removeItem("prof-session");localStorage.removeItem("dev-remember")}catch(e){}
   location.hash="";closeModule();$("#me").hidden=true;loginShow()}
 function profDelete(k){store.set("prof-list",profList().filter(p=>p.k!==k));try{localStorage.removeItem("prof-data:"+k)}catch(e){}
