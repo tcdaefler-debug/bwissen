@@ -43,6 +43,22 @@ button.streak{border:0;font:inherit;cursor:pointer}.streak{display:flex;align-it
 .sync{margin-top:8px;color:var(--muted);font-size:.82rem;text-align:center}
 .exam{display:block;font-size:.78rem;font-weight:800;color:color-mix(in srgb,var(--c) 70%,#000);margin-top:6px}
 .hello p{color:var(--muted);margin:.4rem 0 0}
+
+/* Countdown auf den Fach-Kacheln */
+.t-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.cd{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:64px;padding:7px 8px 6px;border-radius:16px;
+  background:color-mix(in srgb,var(--c) 16%,#fff);color:color-mix(in srgb,var(--c) 78%,#000);border:1.5px solid color-mix(in srgb,var(--c) 30%,#fff);line-height:1;position:relative;overflow:hidden}
+.cd b{font-family:var(--f-display);font-size:1.35rem;font-weight:700}
+.cd small{font-size:.62rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-top:2px;color:inherit}
+.cd .tk{font-variant-numeric:tabular-nums;font-size:.72rem;font-weight:800;margin-top:5px;padding-top:4px;border-top:1px dashed color-mix(in srgb,var(--c) 35%,#fff);width:100%;text-align:center}
+.cd i{position:absolute;left:0;bottom:0;height:3px;background:var(--c);opacity:.7;transition:width 1s linear}
+.tile.soon .cd{filter:saturate(.6)}
+.pp-tk{display:inline-block;margin-top:6px;font-variant-numeric:tabular-nums;font-weight:800;font-size:.85rem;color:color-mix(in srgb,var(--c) 75%,#000);background:#fff;border-radius:99px;padding:3px 10px}
+@media (max-width:380px){.cd{min-width:56px;padding:6px}.cd b{font-size:1.15rem}}
+/* Bibo-Sprechblase */
+#bibo-tip{max-width:210px;border-radius:18px 18px 4px 18px;padding:10px 14px;font-weight:700;line-height:1.35;cursor:pointer}
+#bibo-tip::after{content:"";position:absolute;right:-8px;bottom:10px;border:8px solid transparent;border-left-color:#fff;border-right:0}
+#bibo-tip::before{content:"";position:absolute;right:-10px;bottom:9px;border:9px solid transparent;border-left-color:#d9cffd;border-right:0}
 /* Prüfungsplan */
 .pp{margin:0 0 18px;border-radius:24px;background:#fff;border:1.5px solid var(--line);padding:16px;box-shadow:0 2px 0 var(--line)}
 .pp-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:12px}
@@ -367,7 +383,7 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
   </div>
 </div>
 <button type="button" id="bibo-btn" aria-label="Bibo fragen"><svg class="bibo" viewBox="0 0 100 100" aria-hidden="true"><rect x="26" y="8" width="14" height="14" rx="4" fill="#3b5bdb"/><rect x="43" y="3" width="14" height="14" rx="4" fill="#ee7418"/><rect x="60" y="8" width="14" height="14" rx="4" fill="#139a58"/><rect x="13" y="20" width="74" height="72" rx="24" fill="#7048e8"/><g class="eyes"><circle cx="37" cy="50" r="8.5" fill="#fff"/><circle cx="63" cy="50" r="8.5" fill="#fff"/><circle cx="39" cy="51" r="4.2" fill="#1b2333"/><circle cx="65" cy="51" r="4.2" fill="#1b2333"/></g><circle cx="25" cy="66" r="4.5" fill="#ff9ec7" opacity=".75"/><circle cx="75" cy="66" r="4.5" fill="#ff9ec7" opacity=".75"/><path d="M39 70l8 7 15-14" stroke="#fff" stroke-width="5.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-<div id="bibo-tip" hidden>Frag mich was!</div>
+<div id="bibo-tip" hidden role="button" tabindex="0">Wenn du Fragen hast, frag mich einfach. Ich bin für dich da!</div>
 <div id="bibo" hidden role="dialog" aria-modal="true" aria-labelledby="bb-h">
   <div class="sheet">
     <div class="sheet-h bb-h"><svg class="bibo" viewBox="0 0 100 100" aria-hidden="true"><rect x="26" y="8" width="14" height="14" rx="4" fill="#3b5bdb"/><rect x="43" y="3" width="14" height="14" rx="4" fill="#ee7418"/><rect x="60" y="8" width="14" height="14" rx="4" fill="#139a58"/><rect x="13" y="20" width="74" height="72" rx="24" fill="#7048e8"/><g class="eyes"><circle cx="37" cy="50" r="8.5" fill="#fff"/><circle cx="63" cy="50" r="8.5" fill="#fff"/><circle cx="39" cy="51" r="4.2" fill="#1b2333"/><circle cx="65" cy="51" r="4.2" fill="#1b2333"/></g><circle cx="25" cy="66" r="4.5" fill="#ff9ec7" opacity=".75"/><circle cx="75" cy="66" r="4.5" fill="#ff9ec7" opacity=".75"/><path d="M39 70l8 7 15-14" stroke="#fff" stroke-width="5.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><h2 id="bb-h">Bibo<small>dein Lernbuddy · kennt die Begriffe aus BWIssen</small></h2><button type="button" class="gear" id="bibo-close" aria-label="Schließen"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
@@ -402,10 +418,19 @@ const MODULES=[
 ];
 
 const $=s=>document.querySelector(s);
+
+/* Laufender Countdown bis zur Klausur */
+const cdHtml=iso=>`<span class="cd" data-cd="${iso}" aria-label="Zeit bis zur Klausur"><b>–</b><small>Tage</small><span class="tk">--:--:--</span><i></i></span>`;
+function cdTick(){const now=Date.now();document.querySelectorAll("[data-cdd]").forEach(el=>{el.textContent=Math.max(0,Math.floor((new Date(el.dataset.cdd).getTime()-now)/864e5))});document.querySelectorAll("[data-cd]").forEach(el=>{const t=new Date(el.dataset.cd).getTime();let d=Math.max(0,Math.floor((t-now)/1000));
+  const D=Math.floor(d/86400);d-=D*86400;const h=Math.floor(d/3600),mi=Math.floor(d%3600/60),se=d%60,p=n=>String(n).padStart(2,"0");
+  const hms=`${p(h)}:${p(mi)}:${p(se)}`;
+  if(el.classList.contains("cd")){el.querySelector("b").textContent=D;el.querySelector("small").textContent=D===1?"Tag":"Tage";el.querySelector(".tk").textContent=hms;el.querySelector("i").style.width=(100-(h*3600+mi*60+se)/864)+"%"}
+  else el.textContent=`noch ${D} ${D===1?"Tag":"Tage"} ${hms}`})}
+setInterval(cdTick,1000);
 function tile(m){
   const b=document.createElement("button");b.type="button";b.className="tile"+(m.soon?" soon":"")+(!m.file&&!m.soon?" wait":"");
   b.style.setProperty("--c",m.color||"#9aa3b5");
-  b.innerHTML=`${LOGOS[m.id]?`<span class="ico logo">${LOGOS[m.id]}</span>`:`<span class="ico"><svg class="i"><use href="#${m.icon||"i-plus"}"/></svg></span>`}
+  b.innerHTML=`<span class="t-top">${LOGOS[m.id]?`<span class="ico logo">${LOGOS[m.id]}</span>`:`<span class="ico"><svg class="i"><use href="#${m.icon||"i-plus"}"/></svg></span>`}${m.exam?cdHtml(m.exam+"T"+(m.time||"08:00")):""}</span>
     <span><b>${m.name}</b><small>${m.sub||""}</small>${m.exam?`<span class="exam">Klausur ${fmtDate(m.exam)}, ${m.time||""} Uhr</span>`:""}</span>
     <span class="foot">${m.file?`<span class="chip go">Öffnen</span>`:`<span class="chip">${m.soon?"kommt bald":"Inhalte folgen"}</span>`}</span>`;
   if(m.soon){b.setAttribute("aria-disabled","true");b.tabIndex=-1}
@@ -421,7 +446,6 @@ const PP=[
   {d:"2027-01-21",t:"08:00",n:"Baustoffkunde und Bauphysik",f:"K2 oder K1 und K1",id:"bauphysik",c:"#139a58"},
   {d:"2027-01-22",t:"08:00",n:"Buchführung und Jahresabschluss",f:"Klausur (K2)",id:"buchfuehrung",c:"#3b5bdb"},
   {d:"2027-01-29",t:"08:00",n:"Technische Mechanik",f:"Klausur (K2)",c:"#64748b"}];
-const PP_OPEN=[["Lineare Algebra & Analysis","K2 oder KA"],["Einführung in Wirtschaftsingenieurwesen – Bauwirtschaft","KA"]];
 let ppAll=false;
 function ppRender(){const el=$("#pp");if(!el)return;const t0=new Date();t0.setHours(0,0,0,0);
   const dd=e=>Math.round((new Date(e.d+"T00:00:00")-t0)/864e5);
@@ -437,16 +461,16 @@ function ppRender(){const el=$("#pp");if(!el)return;const t0=new Date();t0.setHo
   const n=nx?dd(nx):0;
   el.innerHTML=`<div class="pp-h"><h2 id="pp-h">Prüfungsphase</h2><span>20. bis 29. Januar 2027</span></div>
   ${nx?`<button type="button" class="pp-next" style="--c:${nx.c}" ${can(nx)?`data-go="${nx.id}"`:""}>
-    <span class="pp-cd"><span><b>${n===0?"!":n}</b><small>${n===0?"heute":n===1?"Tag":"Tage"}</small></span></span>
-    <span class="t"><small>Nächste Prüfung</small><b>${nx.n}</b><span>${lng(nx.d)}, ${nx.t} Uhr · ${nx.f}</span></span></button>`:""}
+    <span class="pp-cd"><span><b data-cdd="${nx.d}T${nx.t}">${n===0?"!":n}</b><small>${n===0?"heute":n===1?"Tag":"Tage"}</small></span></span>
+    <span class="t"><small>Nächste Prüfung</small><b>${nx.n}</b><span>${lng(nx.d)}, ${nx.t} Uhr · ${nx.f}</span><br><span class="pp-tk" data-cd="${nx.d}T${nx.t}"></span></span></button>`:""}
   <ul class="pp-l">${show.map(e=>{const k=dd(e);return `<li><button type="button" class="pp-r${k<0?" past":""}" style="--c:${e.c}" ${can(e)?`data-go="${e.id}"`:"disabled"}>
     <span class="pp-d"><small>${wd(e.d)}</small><b>${dn(e.d)}</b></span><span class="t"><b>${e.n}</b><span>${mo(e.d)} · ${e.t} Uhr · ${e.f}</span></span>
     <span class="pp-in">${inTxt(k)}</span></button></li>`}).join("")}</ul>
   ${rest.length>3?`<button type="button" class="pp-x" id="pp-x">${ppAll?"Weniger zeigen":"Alle Termine zeigen"}</button>`:""}
-  <p class="pp-o">Termin folgt: ${PP_OPEN.map(o=>`<b>${o[0]}</b> (${o[1]})`).join(", ")}. Räume werden noch bekannt gegeben.</p>`;
+  <p class="pp-o">Die Räume werden noch bekannt gegeben.</p>`;
   el.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{location.hash=b.dataset.go});
   const x=$("#pp-x");if(x)x.onclick=()=>{ppAll=!ppAll;ppRender()}}
-function renderHome(){const g=$("#grid");g.innerHTML="";MODULES.forEach(m=>g.appendChild(tile(m)));ppRender()}
+function renderHome(){const g=$("#grid");g.innerHTML="";MODULES.forEach(m=>g.appendChild(tile(m)));ppRender();cdTick()}
 
 function openModule(m,sub){
   if(!m.file){$("#wait-p").textContent=m.waitText||"Dieses Modul ist noch leer.";$("#wait").hidden=false;$("#wait-ok").focus();return}
@@ -582,7 +606,9 @@ const shuffle0=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(
 $("#bb-f").onsubmit=e=>{e.preventDefault();const v=$("#bb-in").value;$("#bb-in").value="";bbAsk(v)};
 $("#bibo-close").onclick=()=>{$("#bibo").hidden=true};$("#bibo").addEventListener("click",e=>{if(e.target.id==="bibo")$("#bibo").hidden=true});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#bibo").hidden=true});
-setTimeout(()=>{let seen=null;try{seen=localStorage.getItem("app-bibo")}catch(e){}if(!seen&&$("#frame").hidden){$("#bibo-tip").hidden=false;setTimeout(()=>{$("#bibo-tip").hidden=true},6000)}},4500);
+function biboTip(){if(!$("#frame").hidden||!$("#bibo").hidden||$("#bibo-btn").hidden)return;$("#bibo-tip").hidden=false;clearTimeout(biboTip.t);biboTip.t=setTimeout(()=>{$("#bibo-tip").hidden=true},9000)}
+$("#bibo-tip").onclick=()=>$("#bibo-btn").click();
+setTimeout(biboTip,4500);window.addEventListener("hashchange",()=>{if(!location.hash.slice(1)||location.hash==="#start")setTimeout(biboTip,800)});
 $("#set-open").onclick=()=>{setRender();admRender();applyTheme();$("#set").hidden=false};
 $("#me").onclick=()=>$("#set-open").click();
 $("#set-close").onclick=()=>{$("#set").hidden=true};

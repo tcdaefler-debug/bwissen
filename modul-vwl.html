@@ -526,6 +526,21 @@ article[data-ch="4"]{--c:var(--c-4)}article[data-ch="5"]{--c:var(--c-5)}article[
 .tiles>.tile{min-width:0}.tile b{hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}
 .lab-t{background:color-mix(in srgb,var(--c-labor) 8%,#fff);border-radius:14px;padding:10px 12px;font-size:.92rem}
 
+/* Lernvideos */
+.vids{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:10px}
+.vid{display:flex;flex-direction:column;text-decoration:none;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:18px;overflow:hidden;transition:transform .15s,box-shadow .2s;min-width:0}
+.vid:hover{transform:translateY(-2px);box-shadow:0 8px 20px -12px rgba(27,35,51,.35)}
+.vid .th{position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,#ff4d4d,#c4161c);display:grid;place-items:center;overflow:hidden}
+.vid .th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vid .th .pl{position:relative;width:52px;height:36px;border-radius:10px;background:rgba(255,0,0,.92);display:grid;place-items:center;box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.vid .th .pl::after{content:"";border-left:14px solid #fff;border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:3px}
+.vid .vt{padding:10px 12px 12px;display:flex;flex-direction:column;gap:4px}
+.vid .vt small{font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.vid .vt b{font-size:.95rem;line-height:1.3}
+.vid .vt span{font-size:.82rem;color:var(--muted)}
+@media(max-width:560px){.vids{grid-template-columns:1fr;gap:10px}.vid{flex-direction:row;align-items:stretch}.vid .th{width:132px;flex:none;aspect-ratio:auto;min-height:84px}.vid .vt{padding:9px 12px;justify-content:center}}
+.vid-h{margin:22px 0 4px;font-family:var(--f-display);font-weight:600;font-size:1.05rem}
+
 .appback{flex:none;width:38px;height:38px;border-radius:12px;border:1.5px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
 .appback:hover{border-color:var(--brand);color:var(--brand)}
 .appback svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
@@ -550,6 +565,7 @@ article[data-ch="4"]{--c:var(--c-4)}article[data-ch="5"]{--c:var(--c-5)}article[
   <symbol id="i-spiele" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 10.5v4M5 12.5h4"/><path d="M15.5 11h.01M18 13.5h.01"/></symbol>
   <symbol id="i-sort" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/><path d="M14 6.5h4a2 2 0 0 1 2 2V11M10 17.5H6a2 2 0 0 1-2-2V13"/></symbol>
   <symbol id="i-shift" viewBox="0 0 24 24"><path d="M4 3v18h17"/><path d="M7 6l9 11"/><path d="M11 6l9 11" stroke-dasharray="2 2.5"/><path d="M14 9h5"/></symbol>
+<symbol id="i-video" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="4"/><path d="M10 9.2v5.6l4.8-2.8z"/></symbol>
   <symbol id="i-later" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4.5L6 21z"/><path d="M10 9.5h4"/></symbol>
   <symbol id="i-learn" viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.5V16c3 2.5 9 2.5 12 0v-4.5"/><path d="M22 9v6"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
@@ -574,6 +590,7 @@ article[data-ch="4"]{--c:var(--c-4)}article[data-ch="5"]{--c:var(--c-5)}article[
     <a href="#fragen" style="--tc:var(--c-quiz)"><span class="ti"><svg><use href="#i-quiz"/></svg></span>Alle Fragen</a>
     <a href="#schwach" style="--tc:#c2255c"><span class="ti"><svg><use href="#i-later"/></svg></span>Kann ich noch nicht</a>
     <a href="#formeln" style="--tc:var(--c-formeln)"><span class="ti"><svg><use href="#i-formeln"/></svg></span>Formeln</a>
+    <a href="#videos" style="--tc:#e03131"><span class="ti"><svg><use href="#i-video"/></svg></span>Lernvideos</a>
     <div class="tgh">Prüfungen</div>
     <a href="#pruefung" style="--tc:#e03131"><span class="ti"><svg><use href="#i-exam"/></svg></span>Probeprüfungen</a>
     <a href="#verlauf" style="--tc:var(--c-verlauf)"><span class="ti"><svg><use href="#i-verlauf"/></svg></span>Mein Verlauf</a>
@@ -623,10 +640,48 @@ article[data-ch="4"]{--c:var(--c-4)}article[data-ch="5"]{--c:var(--c-5)}article[
     <a class="tile" href="#fragen" style="--tc:var(--c-quiz)"><span class="ico"><svg><use href="#i-quiz"/></svg></span><span><small>Frei üben</small><b>Alle Fragen</b></span><span class="meta">mit Grafiken, ohne Druck</span></a>
     <a class="tile" href="#schwach" style="--tc:#c2255c"><span class="ico"><svg><use href="#i-later"/></svg></span><span><small>Deine Baustellen</small><b>Kann ich noch nicht</b></span><span class="meta" id="home-later">Fragen, die du dir merkst</span></a>
     <a class="tile" href="#formeln" style="--tc:var(--c-formeln)"><span class="ico"><svg><use href="#i-formeln"/></svg></span><span><small>Zum Wiederholen</small><b>Formeln</b></span><span class="meta">alles auf einer Seite</span></a>
+    <a class="tile" href="#videos" style="--tc:#e03131"><span class="ico"><svg><use href="#i-video"/></svg></span><span><small>Auf YouTube</small><b>Lernvideos</b></span><span class="meta">14 ausgewählte Erklärvideos</span></a>
   </div>
 
 
   <a class="way ex small" href="#pruefung" style="--wc:#e03131;margin-top:24px"><span class="ico"><svg><use href="#i-exam"/></svg></span><span class="wt"><b>Bereit? Zu den Prüfungen</b><small>Probeprüfungen je Kapitel und die große Probeklausur</small></span><span class="go">→</span></a>
+</section>
+
+<section id="v-videos" data-view="videos" hidden style="--c:#e03131">
+  <div class="vhero"><span class="ico"><svg><use href="#i-video"/></svg></span><div><div class="eyebrow">Auf YouTube</div><h2>Lernvideos</h2></div></div>
+  <p class="muted">Zu jedem Kapitel ein oder zwei Videos, die das Thema noch einmal anders erklären. Die Videos öffnen sich auf YouTube. Sie stammen von freien Kanälen, nicht aus der Vorlesung. Im Zweifel gilt immer, was im Kapitel steht.</p>
+  <h3 class="vid-h">Kapitel 1: Überblick</h3>
+  <div class="vids">
+    <a class="vid" href="https://www.youtube.com/watch?v=tkhqjeGQFSQ" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/tkhqjeGQFSQ/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Kapitel 1: Überblick</small><b>Opportunitätskosten einfach erklärt</b><span>Was kostet der Verzicht?</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=lDenWK01Kvg" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/lDenWK01Kvg/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Kapitel 1: Überblick</small><b>Pareto-Effizienz einfach erklärt</b><span>Definition und Beispiel</span></span></a>
+  </div>
+  <h3 class="vid-h">Kapitel 2: Märkte</h3>
+  <div class="vids">
+    <a class="vid" href="https://www.youtube.com/watch?v=bH1pQJFYZnw" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/bH1pQJFYZnw/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Kapitel 2: Märkte</small><b>Angebot und Nachfrage mit Konsumenten- und Produzentenrente</b><span>Mit Rechenbeispiel</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=CW8xYgvl9g0" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/CW8xYgvl9g0/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Kapitel 2: Märkte</small><b>Marktgleichgewicht, Nachfrage- und Angebotsfunktion</b><span>Gleichgewicht aus Funktionen berechnen</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=UYouW4Xk90U" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/UYouW4Xk90U/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Kapitel 2: Märkte</small><b>Preiselastizität berechnen: elastisch und unelastisch</b><span>Elastizität verstehen und rechnen</span></span></a>
+  </div>
+  <h3 class="vid-h">Kapitel 3: Effizienz und Staatseingriffe</h3>
+  <div class="vids">
+    <a class="vid" href="https://www.youtube.com/watch?v=i_gVCeOjw9A" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/i_gVCeOjw9A/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Kapitel 3: Effizienz und Staatseingriffe</small><b>Steuerinzidenz, Steuereffizienz, Zusatzlast</b><span>Wer trägt die Steuer?</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=dGX5ITC7EzQ" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/dGX5ITC7EzQ/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Kapitel 3: Effizienz und Staatseingriffe</small><b>Mindest- und Höchstpreise</b><span>Überschuss und Mangel im Diagramm</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=7AwLUi3a71Y" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/7AwLUi3a71Y/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Kapitel 3: Effizienz und Staatseingriffe</small><b>Externe Effekte und Pigou-Steuern mit Rechenbeispiel</b><span>Marktversagen und Korrektur</span></span></a>
+  </div>
+  <h3 class="vid-h">Kapitel 4: Handel</h3>
+  <div class="vids">
+    <a class="vid" href="https://www.youtube.com/watch?v=7g6TWFoAsQQ" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/7g6TWFoAsQQ/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Kapitel 4: Handel</small><b>Komparative Kostenvorteile</b><span>Warum sich Handel lohnt</span></span></a>
+  </div>
+  <h3 class="vid-h">Kapitel 5: Kreislauf und BIP</h3>
+  <div class="vids">
+    <a class="vid" href="https://www.youtube.com/watch?v=vcnSYRY55bA" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/vcnSYRY55bA/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Kapitel 5: Kreislauf und BIP</small><b>Der einfache Wirtschaftskreislauf, BIP, Produktionsfaktoren</b><span>Kreislauf und Sozialprodukt</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=RFHvNIW6knY" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/RFHvNIW6knY/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Kapitel 5: Kreislauf und BIP</small><b>Reales und nominales BIP einfach erklärt</b><span>Preisbereinigung</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=Ty9kqEIkjTY" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/Ty9kqEIkjTY/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Kapitel 5: Kreislauf und BIP</small><b>BIP und BNE: der Unterschied</b><span>Inlands- gegen Inländerprinzip</span></span></a>
+  </div>
+  <h3 class="vid-h">Kapitel 6: Außenwirtschaft</h3>
+  <div class="vids">
+    <a class="vid" href="https://www.youtube.com/watch?v=H4CStgcVptc" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/H4CStgcVptc/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Kapitel 6: Außenwirtschaft</small><b>Die Zahlungsbilanz und ihre Teilbilanzen</b><span>Leistungs-, Kapital- und Finanzbilanz</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=1AN99mlXIuM" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/1AN99mlXIuM/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Kapitel 6: Außenwirtschaft</small><b>Wechselkurse einfach erklärt</b><span>Auf- und Abwertung</span></span></a>
+  </div>
 </section>
 
 <section id="v-schwach" data-view="schwach" hidden style="--c:#c2255c">
@@ -1649,7 +1704,7 @@ const CHC=k=>k==="ALL"?"var(--c-pruef)":`var(--c-${k})`;
 const POOL=[];Object.entries(QD).forEach(([ch,arr])=>arr.forEach(([src,q,o,e,img])=>POOL.push({ch,src,q,o,a:0,e,img:img&&FIG[img]?`<div class="qfig">${FIG[img]()}</div>`:""})));
 
 /* ---------- Routing ---------- */
-const views=["start","lernen","kapitel","aufgaben","pruefung","verlauf","fragen","schwach","labor","spiele","karten","formeln"];
+const views=["start","lernen","videos","kapitel","aufgaben","pruefung","verlauf","fragen","schwach","labor","spiele","karten","formeln"];
 function route(){
   let v=(location.hash||"#start").slice(1), sub=null;
   const mm=v.match(/^kapitel-([1-6])$/); if(mm){v="kapitel";sub=mm[1]}

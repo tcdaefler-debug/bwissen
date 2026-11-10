@@ -469,6 +469,21 @@ nav.tabs .tgh:first-child{margin-top:0}
 .vl-link{display:inline-flex;align-items:center;gap:8px;font-weight:800;color:var(--ink);text-decoration:none;background:var(--bg2);border-radius:999px;padding:8px 14px;margin:4px 0 10px}
 .vl-link svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 
+
+/* Lernvideos */
+.vids{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:10px}
+.vid{display:flex;flex-direction:column;text-decoration:none;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:18px;overflow:hidden;transition:transform .15s,box-shadow .2s;min-width:0}
+.vid:hover{transform:translateY(-2px);box-shadow:0 8px 20px -12px rgba(27,35,51,.35)}
+.vid .th{position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,#ff4d4d,#c4161c);display:grid;place-items:center;overflow:hidden}
+.vid .th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vid .th .pl{position:relative;width:52px;height:36px;border-radius:10px;background:rgba(255,0,0,.92);display:grid;place-items:center;box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.vid .th .pl::after{content:"";border-left:14px solid #fff;border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:3px}
+.vid .vt{padding:10px 12px 12px;display:flex;flex-direction:column;gap:4px}
+.vid .vt small{font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.vid .vt b{font-size:.95rem;line-height:1.3}
+.vid .vt span{font-size:.82rem;color:var(--muted)}
+@media(max-width:560px){.vids{grid-template-columns:1fr;gap:10px}.vid{flex-direction:row;align-items:stretch}.vid .th{width:132px;flex:none;aspect-ratio:auto;min-height:84px}.vid .vt{padding:9px 12px;justify-content:center}}
+.vid-h{margin:22px 0 4px;font-family:var(--f-display);font-weight:600;font-size:1.05rem}
 .later-row{margin-top:10px}.later-b{font-size:.88rem}.later-b.on{border-color:#c2255c;color:#c2255c;background:#fff0f6}
 
 /* App-Rahmen: Zurück zur Modul-Übersicht (nur sichtbar, wenn das Modul in der Lern-App läuft) */
@@ -489,6 +504,7 @@ nav.tabs .tgh:first-child{margin-top:0}
   <symbol id="i-karten" viewBox="0 0 24 24"><rect x="3" y="7" width="13" height="14" rx="2.5"/><path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h8A2.5 2.5 0 0 1 21 5.5v9a2.5 2.5 0 0 1-2.5 2.5H16"/></symbol>
   <symbol id="i-verlauf" viewBox="0 0 24 24"><path d="M4 4v16h16"/><path d="M7 15l4-4 3 3 5-6"/></symbol>
   <symbol id="i-exam" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M10 14l2 2 3.5-4"/></symbol>
+<symbol id="i-video" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="4"/><path d="M10 9.2v5.6l4.8-2.8z"/></symbol>
   <symbol id="i-later" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4.5L6 21z"/><path d="M10 9.5h4"/></symbol>
   <symbol id="i-quiz" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.3a2.6 2.6 0 1 1 3.6 2.4c-.7.3-1.1.9-1.1 1.6v.6"/><path d="M12 17h.01"/></symbol>
   <symbol id="i-uebungen" viewBox="0 0 24 24"><path d="M4 20l1-4.5L16 4.5l3.5 3.5L8.5 19z"/><path d="M14 7l3 3"/></symbol>
@@ -525,6 +541,7 @@ nav.tabs .tgh:first-child{margin-top:0}
     <a href="#fragen" style="--tc:var(--c-quiz)"><span class="ti"><svg><use href="#i-quiz"/></svg></span>Alle Fragen</a>
     <a href="#schwach" style="--tc:#c2255c"><span class="ti"><svg><use href="#i-later"/></svg></span>Kann ich noch nicht</a>
     <a href="#formeln" style="--tc:var(--c-formeln)"><span class="ti"><svg><use href="#i-formeln"/></svg></span>Formeln</a>
+    <a href="#videos" style="--tc:#e03131"><span class="ti"><svg><use href="#i-video"/></svg></span>Lernvideos</a>
     <div class="tgh">Prüfungen</div>
     <a href="#pruefung" style="--tc:#e03131"><span class="ti"><svg><use href="#i-exam"/></svg></span>Probeprüfungen</a>
     <a href="#verlauf" style="--tc:var(--c-verlauf)"><span class="ti"><svg><use href="#i-verlauf"/></svg></span>Mein Verlauf</a>
@@ -593,6 +610,7 @@ nav.tabs .tgh:first-child{margin-top:0}
     <a class="tile" href="#trainer" style="--tc:var(--c-trainer)"><span class="ico"><svg><use href="#i-trainer"/></svg></span><span><small>Soll an Haben</small><b>Buchungstrainer</b></span><span class="meta" id="home-tr">Buchungssätze bilden</span><span class="bar"><i id="hb-tr"></i></span></a>
     <a class="tile" href="#uebungen" style="--tc:var(--c-uebungen)"><span class="ico"><svg><use href="#i-uebungen"/></svg></span><span><small>Arbeitsblätter</small><b>Übungen 1 bis 10</b></span><span class="meta">mit Lösungen und Zusatzfällen</span></a>
     <a class="tile" href="#formeln" style="--tc:var(--c-formeln)"><span class="ico"><svg><use href="#i-formeln"/></svg></span><span><small>Zum Wiederholen</small><b>Formeln und Paragrafen</b></span><span class="meta">alles auf einer Seite</span></a>
+    <a class="tile" href="#videos" style="--tc:#e03131"><span class="ico"><svg><use href="#i-video"/></svg></span><span><small>Auf YouTube</small><b>Lernvideos</b></span><span class="meta">9 ausgewählte Erklärvideos</span></a>
   </div>
 
 
@@ -1320,6 +1338,29 @@ nav.tabs .tgh:first-child{margin-top:0}
 </section>
 
 <!-- ================= ALLE FRAGEN ================= -->
+<section id="v-videos" data-view="videos" hidden style="--c:#e03131">
+  <div class="vhero"><span class="ico"><svg><use href="#i-video"/></svg></span><div><div class="eyebrow">Auf YouTube</div><h2>Lernvideos</h2></div></div>
+  <p class="muted">Zum Wiederholen und als zweite Erklärung: Videos passend zu Inventur, Bilanz und Buchungssätzen. Die Videos öffnen sich auf YouTube. Sie stammen von freien Kanälen, nicht aus der Vorlesung. Im Zweifel gilt immer, was im Kapitel steht.</p>
+  <h3 class="vid-h">Überblick</h3>
+  <div class="vids">
+    <a class="vid" href="https://www.youtube.com/watch?v=gp51tDDjUys" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/gp51tDDjUys/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Überblick</small><b>Einführung in die doppelte Buchhaltung: ein Überblick</b><span>Der rote Faden für den Einstieg</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=hS-chwB-rhw" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/hS-chwB-rhw/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Überblick</small><b>Buchhaltung erklärt in 30 Minuten</b><span>Alles Wichtige am Stück</span></span></a>
+  </div>
+  <h3 class="vid-h">Inventur, Inventar, Bilanz</h3>
+  <div class="vids">
+    <a class="vid" href="https://www.youtube.com/watch?v=mINhTyjaBD0" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/mINhTyjaBD0/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Inventur, Inventar, Bilanz</small><b>Inventur, Inventar und Bilanz einfach erklärt</b><span>Die drei Begriffe sauber getrennt</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=cvJzTeLCyYA" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/cvJzTeLCyYA/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Inventur, Inventar, Bilanz</small><b>Von der Inventur zur Bilanz anhand eines Beispiels</b><span>Durchgerechnetes Beispiel</span></span></a>
+  </div>
+  <h3 class="vid-h">Konten und Buchungssätze</h3>
+  <div class="vids">
+    <a class="vid" href="https://www.youtube.com/watch?v=1PKHoa1uHWQ" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/1PKHoa1uHWQ/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Konten und Buchungssätze</small><b>Aktivkonten und Passivkonten</b><span>Wo steht der Anfangsbestand?</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=aRv7d9It52A" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/aRv7d9It52A/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Konten und Buchungssätze</small><b>Buchen auf T-Konten mit Soll und Haben</b><span>Aktiv- und Passivkonto Schritt für Schritt</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=Uvkh4zaFs9c" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/Uvkh4zaFs9c/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Konten und Buchungssätze</small><b>Buchen auf Bestandskonten, Abschluss über das SBK</b><span>Vom Eröffnen bis zum Abschluss</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=gF0Ba8BMpJY" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/gF0Ba8BMpJY/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Konten und Buchungssätze</small><b>Buchungssätze mit Bestandskonten richtig bilden</b><span>Soll an Haben üben</span></span></a>
+    <a class="vid" href="https://www.youtube.com/watch?v=6S7SNRAbi78" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/6S7SNRAbi78/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="pl"></span></span><span class="vt"><small>Konten und Buchungssätze</small><b>Buchungssatz erklärt: Buchen eines Geschäftsfalls</b><span>Geschäftsfall in vier Fragen zerlegen</span></span></a>
+  </div>
+</section>
+
 <section id="v-schwach" data-view="schwach" hidden style="--c:#c2255c">
   <div class="vhero"><span class="ico"><svg><use href="#i-later"/></svg></span><div><div class="eyebrow">Deine Baustellen</div><h2>Kann ich noch nicht</h2></div></div>
   <p class="muted">Hier landen Fragen, die du falsch beantwortet oder auf später verschoben hast, auch aus den Probeprüfungen. Wenn du eine sicher kannst, tippst du auf „Kann ich jetzt“.</p>
@@ -1466,7 +1507,7 @@ const CH={"00":"Überblick","01":"Einführung","02":"Bedeutung der Buchführung"
 const CHF=Object.assign({GK:"Grundlagen"},CH);
 
 /* ---------- Routing ---------- */
-const views=["start","lernen","schwach","grundkurs","kapitel","pruefung","verlauf","fragen","spiele","karten","quiz","uebungen","trainer","formeln"];
+const views=["start","lernen","schwach","videos","grundkurs","kapitel","pruefung","verlauf","fragen","spiele","karten","quiz","uebungen","trainer","formeln"];
 function route(){
   let v=(location.hash||"#start").slice(1), sub=null;
   const mm=v.match(/^kapitel-(0[0-5])$/); if(mm){v="kapitel";sub=mm[1]}
