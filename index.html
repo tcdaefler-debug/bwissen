@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="BWIssen">
+<script>window.BW_GATE=true</script>
 <link rel="icon" href="logo.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}img{max-width:100%}</style>
@@ -108,6 +109,11 @@ svg.i{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-l
 /* Dunkel: die ganze App (auch das geöffnete Fach) wird umgekehrt, Farbtöne bleiben erhalten */
 html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
 /* Anmeldung mit Profil */
+#gate{position:fixed;inset:0;z-index:41;background:linear-gradient(160deg,#eef3ff 0%,#fff 45%,#fff4ea 100%);overflow:auto;display:flex;padding:24px 16px}
+.adm{background:var(--bg2);border-radius:16px;padding:12px 14px}.adm p{margin:0 0 8px;font-size:.92rem}.adm .st{font-weight:800}.adm .st.on{color:#15803d}.adm .st.off{color:#dc2626}
+.adm pre{white-space:pre-wrap;word-break:break-all;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;font-size:.78rem;margin:6px 0}
+.adm .code{font-family:ui-monospace,Menlo,monospace;font-size:1.15rem;font-weight:800;letter-spacing:.04em;background:#fff;border-radius:10px;padding:6px 10px;display:inline-block;margin:4px 0}
+.adm ol{margin:6px 0 0;padding-left:1.2rem;font-size:.9rem}.adm .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 #login{position:fixed;inset:0;z-index:40;background:linear-gradient(160deg,#eef3ff 0%,#fff 45%,#fff4ea 100%);overflow:auto;display:flex;padding:24px max(16px,env(safe-area-inset-left,0px)) 24px max(16px,env(safe-area-inset-right,0px))}
 .lg-card{margin:auto;width:100%;max-width:400px;background:#fff;border-radius:28px;padding:26px 22px;box-shadow:0 24px 50px -28px rgba(27,35,51,.45);animation:pop .4s cubic-bezier(.2,.8,.2,1)}
 .lg-logo{width:64px;height:64px;border-radius:19px;background:#fff;display:grid;place-items:center;margin-bottom:14px;box-shadow:0 8px 22px -10px rgba(27,35,51,.35)}
@@ -204,6 +210,7 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
     <div class="sme"><span class="av" id="set-av">?</span><b id="set-who"></b><button type="button" class="sbtn" id="set-logout">Abmelden</button></div>
     <h3>Darstellung</h3>
     <div class="seg" role="group" aria-label="Darstellung"><button type="button" data-theme-set="light">Hell</button><button type="button" data-theme-set="dark">Dunkel</button></div>
+    <div id="set-admin" hidden><h3>Zugang für Freunde (Admin)</h3><div class="adm" id="adm"></div></div>
     <h3>Fach zurücksetzen</h3>
     <p class="hint">Löscht Haken, Probeprüfungen und Verlauf von einem Fach.</p>
     <div id="set-mods"></div>
@@ -228,6 +235,19 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
   </div>
 </div>
 <div id="hello" hidden aria-live="polite"><div class="hl-w"><span class="hl-a" id="hl-a">Hallo</span><span class="hl-n" id="hl-n"></span><span class="hl-s" id="hl-s">Schön, dass du da bist.</span></div></div>
+<div id="gate" hidden role="dialog" aria-modal="true" aria-labelledby="gt-h">
+  <div class="lg-card">
+    <div class="lg-logo" id="gt-logo"></div>
+    <h1 id="gt-h">BWIssen</h1>
+    <p class="sub" id="gt-sub">Gib den Zugangscode ein, den du bekommen hast.</p>
+    <form class="lg-f" id="gt-form" autocomplete="off">
+      <label>Zugangscode<input type="text" id="gt-code" autocapitalize="characters" spellcheck="false" placeholder="BWI-XXXX-XXXX" maxlength="30" required></label>
+      <div class="lg-err" id="gt-err" role="alert"></div>
+      <button type="submit" class="lg-go" id="gt-go">Weiter</button>
+    </form>
+    <p class="lg-note">Den Code gibst du nur einmal pro Gerät ein. Wird er geändert, fragt BWIssen nach dem neuen.</p>
+  </div>
+</div>
 <div id="login" role="dialog" aria-modal="true" aria-labelledby="lg-h">
   <div class="lg-card">
     <div class="lg-logo"><svg class="mk" viewBox="76 76 360 360" aria-hidden="true"><rect x="76" y="76" width="166" height="166" rx="40" fill="#3b5bdb"/><rect x="270" y="76" width="166" height="166" rx="40" fill="#ee7418"/><rect x="76" y="270" width="166" height="166" rx="40" fill="#139a58"/><rect x="270" y="270" width="166" height="166" rx="40" fill="#7048e8"/><path d="M310 356l38 36 62-74" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -239,7 +259,6 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
       <label>Name<input type="text" id="lg-name" autocomplete="username" maxlength="30" required></label>
       <label>Passwort<input type="password" id="lg-pw" autocomplete="current-password" required></label>
       <label id="lg-pw2-l" hidden>Passwort wiederholen<input type="password" id="lg-pw2" autocomplete="new-password"></label>
-      <label id="lg-code-l" hidden>Zugangscode<input type="text" id="lg-code" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="BWI-XXXX-XXXX" maxlength="20"></label>
       <label class="lg-chk"><input type="checkbox" id="lg-keep">Angemeldet bleiben</label>
       <div class="lg-err" id="lg-err" role="alert"></div>
       <button type="submit" class="lg-go" id="lg-go">Anmelden</button>
@@ -358,7 +377,7 @@ function setRender(){
       all.querySelector("[data-n]").onclick=setRender;
       $("#set-all-3").onclick=()=>{const t=store.get("app-theme","light");wipe(LIVE_RX);store.set("app-theme",t);
         try{localStorage.setItem("app-days",JSON.stringify([new Date().toISOString().slice(0,10)]))}catch(e){}streak();profSave();push();all.innerHTML=`<div class="sdone">Alles ist zurückgesetzt. Du startest wieder bei null.</div>`}}}}
-$("#set-open").onclick=()=>{setRender();applyTheme();$("#set").hidden=false};
+$("#set-open").onclick=()=>{setRender();admRender();applyTheme();$("#set").hidden=false};
 $("#me").onclick=()=>$("#set-open").click();
 $("#set-close").onclick=()=>{$("#set").hidden=true};
 $("#set").addEventListener("click",e=>{if(e.target.id==="set")$("#set").hidden=true});
@@ -409,17 +428,13 @@ function profDelete(k){store.set("prof-list",profList().filter(p=>p.k!==k));try{
   if(store.get("prof-live",null)===k){liveWipe();try{localStorage.removeItem("prof-live")}catch(e){}}
   ME=null;try{sessionStorage.removeItem("prof-session");localStorage.removeItem("dev-remember")}catch(e){}push();location.hash="";closeModule();$("#me").hidden=true;loginShow()}
 let LGMODE="in";
-/* Zugangscodes: neue Profile nur mit Code. Hier stehen nur Prüfsummen, die Codes selbst stehen nicht im Quelltext. */
-const ACCESS_H=["29a3b7d92eff6d91a5c68e9f", "94688451df43bfec27a2880a", "52bc280679d1a90e11f07fd8", "e195d539373bf0ca24616f20", "de98b3c191a1508be733f069", "47114839b89db2f9398b2057", "da999a0f791d4fccddc69436", "979df26aeebcc5210c98b0e8", "a7d5fe57a0a18c478343d886", "42e657dfa832032781db7eda", "e9d5ca35c8f401cd707ac5e4", "940082a2461269b93999826c", "1982f19356e6717abc21b809", "ef94f9e87c58cb8d14a9aba0", "401b2883c79c45f1158319bb", "c2fe865405bb0c001f5250e4", "4db8e2a564d9693f5eb1e1b0", "0ce2651f8ea7e7d5eb57aa60", "33cca5e83b00ca550512aded", "83e2e240037ef3b3d3e9074f"];
-async function codeOk(c){c=String(c||"").toUpperCase().replace(/[^A-Z0-9]/g,"");if(c.length<8)return false;
-  try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("bwissen:"+c));const h=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("").slice(0,24);return ACCESS_H.includes(h)}catch(e){return false}}
 function loginMode(m){LGMODE=m;$("#lg-m-in").setAttribute("aria-pressed",m==="in");$("#lg-m-new").setAttribute("aria-pressed",m==="new");
-  $("#lg-pw2-l").hidden=m!=="new";$("#lg-code-l").hidden=m!=="new";$("#lg-go").textContent=m==="new"?"Profil anlegen":"Anmelden";$("#lg-err").textContent="";
+  $("#lg-pw2-l").hidden=m!=="new";$("#lg-go").textContent=m==="new"?"Profil anlegen":"Anmelden";$("#lg-err").textContent="";
   $("#lg-pw").autocomplete=m==="new"?"new-password":"current-password";
   $("#lg-sub").textContent=m==="new"?"Leg ein Profil an. Dein Fortschritt gehört dann nur dir.":"Melde dich mit deinem Profil an.";
   const L=profList();$("#lg-who").innerHTML=m==="in"?L.map(p=>`<button type="button" data-k="${p.k}" aria-pressed="false"><span class="av" style="background:${avColor(p.k)}">${p.name[0].toUpperCase()}</span>${p.name.replace(/</g,"&lt;")}</button>`).join(""):"";
   $("#lg-who").querySelectorAll("button").forEach(b=>b.onclick=()=>{$("#lg-name").value=profGet(b.dataset.k).name;$("#lg-who").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));$("#lg-pw").focus()})}
-function loginShow(){$("#login").hidden=false;$("#lg-pw").value="";$("#lg-pw2").value="";$("#lg-code").value="";loginMode(profList().length?"in":"new")}
+function loginShow(){$("#login").hidden=false;$("#lg-pw").value="";$("#lg-pw2").value="";loginMode(profList().length?"in":"new")}
 $("#lg-m-in").onclick=()=>loginMode("in");$("#lg-m-new").onclick=()=>loginMode("new");
 $("#lg-form").addEventListener("submit",async ev=>{ev.preventDefault();const err=$("#lg-err"),name=$("#lg-name").value.trim(),pw=$("#lg-pw").value,k=keyOf(name),keep=$("#lg-keep").checked;
   if(!name){err.textContent="Bitte gib einen Namen ein.";return}
@@ -428,7 +443,6 @@ $("#lg-form").addEventListener("submit",async ev=>{ev.preventDefault();const err
   try{if(LGMODE==="new"){
       if(profGet(k)){err.textContent="Diesen Namen gibt es schon. Melde dich an oder nimm einen anderen.";return}
       if(pw!==$("#lg-pw2").value){err.textContent="Die beiden Passwörter sind nicht gleich.";return}
-      if(!await codeOk($("#lg-code").value)){err.textContent="Der Zugangscode stimmt nicht. Den Code bekommst du von der Person, die dir BWIssen geschickt hat.";return}
       const salt=Math.random().toString(36).slice(2,12),h=await pwHash(k,pw,salt);
       const isFirst=!profList().length;store.set("prof-list",profList().concat([{k,name,salt,h,at:Date.now()}]));
       enter(k,keep,true,true,isFirst&&!store.get("prof-live",null));
@@ -441,7 +455,40 @@ setInterval(()=>{if(ME)profSave()},10000);
 document.addEventListener("visibilitychange",()=>{if(document.hidden&&ME)profSave()});
 window.addEventListener("message",e=>{if(e.data&&e.data.lernapp==="home"&&ME)profSave()});
 applyTheme();renderHome();loginMode("in");
-ready.then(()=>{let k=null;try{k=sessionStorage.getItem("prof-session")||localStorage.getItem("dev-remember")}catch(e){}
+
+/* ===== Zugang: ein Code für alle Freunde (Prüfsumme in zugang.json, jederzeit änderbar) + Admin-Code ===== */
+const GATE=!!window.BW_GATE, ADMIN_H="d50a5b75411b81e7c23cba0b15b1a559e17ae652cf62bed8937ec6502fa16f01", GH_EDIT="https://github.com/tcdaefler-debug/bwissen/edit/main/zugang.json";
+let IS_ADMIN=false, ZG=null, gateDone=null;
+const normC=c=>String(c||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
+async function shaC(c){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("bwissen:"+normC(c)));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}
+async function zgLoad(){try{const r=await fetch("zugang.json?t="+Date.now(),{cache:"no-store"});if(r.ok){ZG=await r.json();return ZG}}catch(e){}return null}
+const devZ=()=>{try{return localStorage.getItem("dev-zugang")}catch(e){return null}};
+async function gateCheck(){if(!GATE)return true;const d=devZ();if(d&&d===ADMIN_H){IS_ADMIN=true;zgLoad();return true}
+  const z=await zgLoad();if(!z)return !!d;return !!(d&&!z.gesperrt&&d===z.freunde)}
+function gateShow(){const m=document.querySelector(".lg-logo .mk");if(m)$("#gt-logo").innerHTML=m.outerHTML;
+  if(devZ())$("#gt-sub").textContent=ZG&&ZG.gesperrt?"Der Zugang ist gerade gesperrt.":"Der Zugangscode wurde geändert. Gib den neuen Code ein.";
+  $("#gate").hidden=false;setTimeout(()=>$("#gt-code").focus(),200);return new Promise(res=>{gateDone=res})}
+$("#gt-form").addEventListener("submit",async ev=>{ev.preventDefault();const err=$("#gt-err");$("#gt-go").disabled=true;
+  try{const h=await shaC($("#gt-code").value);
+  if(h===ADMIN_H){IS_ADMIN=true}else{const z=await zgLoad();
+    if(!z){err.textContent="Keine Verbindung. Prüf dein Internet und versuch es nochmal.";return}
+    if(z.gesperrt){err.textContent="Der Zugang ist gerade gesperrt.";return}
+    if(h!==z.freunde){err.textContent="Der Code stimmt nicht.";$("#gt-code").select();return}}
+  try{localStorage.setItem("dev-zugang",h)}catch(e){}
+  $("#gate").hidden=true;$("#gt-code").value="";err.textContent="";if(gateDone)gateDone()}finally{$("#gt-go").disabled=false}});
+document.addEventListener("visibilitychange",async()=>{if(GATE&&document.visibilityState==="visible"&&$("#gate").hidden&&!await gateCheck())location.reload()});
+function admRender(){$("#set-admin").hidden=!IS_ADMIN;if(!IS_ADMIN)return;const a=$("#adm"),z=ZG;
+  a.innerHTML=`<p>Status: ${z?(z.gesperrt?'<span class="st off">gesperrt</span>':'<span class="st on">offen</span>'):'<span class="st">unbekannt (keine Verbindung)</span>'}</p>
+  <p>Wechselst oder sperrst du den Code, müssen alle Freunde danach den neuen Code eingeben. Du als Admin bleibst drin.</p>
+  <div class="row"><button type="button" class="sbtn" id="adm-new">Neuen Code erzeugen</button><button type="button" class="sbtn red" id="adm-lock">Zugang sperren</button></div><div id="adm-out"></div>`;
+  const out=(title,code,json)=>{$("#adm-out").innerHTML=`<p style="margin-top:12px"><b>${title}</b></p>${code?`<p>Neuer Code für deine Freunde (aufschreiben!):<br><span class="code">${code}</span></p>`:""}
+    <ol><li>Tippe auf „Text kopieren“.</li><li>Tippe auf „Auf GitHub öffnen“, lösche dort alles und füge den Text ein.</li><li>Auf „Commit changes“ tippen. Nach ein paar Minuten gilt es.</li></ol>
+    <pre id="adm-json">${json}</pre><div class="row"><button type="button" class="sbtn" id="adm-copy">Text kopieren</button><a class="sbtn" href="${GH_EDIT}" target="_blank" rel="noopener" style="text-decoration:none">Auf GitHub öffnen</a></div>`;
+    $("#adm-copy").onclick=async()=>{try{await navigator.clipboard.writeText(json);$("#adm-copy").textContent="Kopiert ✓"}catch(e){const r=document.createRange();r.selectNodeContents($("#adm-json"));const s=getSelection();s.removeAllRanges();s.addRange(r)}}};
+  $("#adm-new").onclick=async()=>{const A="ABCDEFGHJKLMNPQRSTUVWXYZ23456789",rnd=n=>[...crypto.getRandomValues(new Uint8Array(n))].map(x=>A[x%32]).join("");
+    const code="BWI-"+rnd(4)+"-"+rnd(4);out("Neuer Code ist bereit",code,JSON.stringify({freunde:await shaC(code),gesperrt:false},null,1))};
+  $("#adm-lock").onclick=()=>out("Zugang sperren","",JSON.stringify({freunde:(ZG&&ZG.freunde)||"",gesperrt:true},null,1))}
+ready.then(async()=>{if(!await gateCheck())await gateShow();let k=null;try{k=sessionStorage.getItem("prof-session")||localStorage.getItem("dev-remember")}catch(e){}
   if(k&&profGet(k))enter(k,(()=>{try{return localStorage.getItem("dev-remember")===k}catch(e){return false}})(),true,false);else loginShow()});
 </script>
 
