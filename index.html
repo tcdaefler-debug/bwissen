@@ -309,13 +309,13 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
   <div class="lg-card">
     <div class="lg-logo" id="gt-logo"></div>
     <h1 id="gt-h">BWIssen</h1>
-    <p class="sub" id="gt-sub">Gib den Zugangscode ein, den du bekommen hast.</p>
+    <p class="sub" id="gt-sub">Gib den Zugangscode ein, den du bekommen hast. Er ist gleichzeitig deine Anmeldung.</p>
     <form class="lg-f" id="gt-form" autocomplete="off">
       <label>Zugangscode<input type="text" id="gt-code" autocapitalize="characters" spellcheck="false" placeholder="BWI-XXXX-XXXX" maxlength="30" required></label>
       <div class="lg-err" id="gt-err" role="alert"></div>
       <button type="submit" class="lg-go" id="gt-go">Weiter</button>
     </form>
-    <p class="lg-note">Den Code gibst du nur einmal pro Gerät ein. Wird er geändert, fragt BWIssen nach dem neuen.</p>
+    <p class="lg-note">Den Code gibst du nur einmal pro Gerät ein. Danach bist du direkt mit deinem Namen angemeldet.</p>
   </div>
 </div>
 <div id="login" role="dialog" aria-modal="true" aria-labelledby="lg-h">
@@ -327,7 +327,7 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
     <div class="lg-who" id="lg-who"></div>
     <form class="lg-f" id="lg-form" autocomplete="on">
       <label>Name<input type="text" id="lg-name" autocomplete="username" maxlength="30" required></label>
-      <label>Passwort<input type="password" id="lg-pw" autocomplete="current-password" required></label>
+      <label>Passwort<input type="password" id="lg-pw" autocomplete="current-password"></label>
       <label id="lg-pw2-l" hidden>Passwort wiederholen<input type="password" id="lg-pw2" autocomplete="new-password"></label>
       <label class="lg-chk"><input type="checkbox" id="lg-keep">Angemeldet bleiben</label>
       <div class="lg-err" id="lg-err" role="alert"></div>
@@ -577,11 +577,12 @@ function loginMode(m){LGMODE=m;$("#lg-m-in").setAttribute("aria-pressed",m==="in
   $("#lg-pw").autocomplete=m==="new"?"new-password":"current-password";
   $("#lg-sub").textContent=m==="new"?"Leg ein Profil an. Dein Fortschritt gehört dann nur dir.":"Melde dich mit deinem Profil an.";
   const L=profList();$("#lg-who").innerHTML=m==="in"?L.map(p=>`<button type="button" data-k="${p.k}" aria-pressed="false"><span class="av" style="background:${avColor(p.k)}">${p.name[0].toUpperCase()}</span>${p.name.replace(/</g,"&lt;")}</button>`).join(""):"";
-  $("#lg-who").querySelectorAll("button").forEach(b=>b.onclick=()=>{$("#lg-name").value=profGet(b.dataset.k).name;$("#lg-who").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));$("#lg-pw").focus()})}
+  $("#lg-who").querySelectorAll("button").forEach(b=>b.onclick=()=>{const cp=profGet(b.dataset.k);if(cp&&cp.code&&!cp.h&&keyOf(lsG("dev-name")||"")===cp.k){enter(cp.k,true,true,false);return}$("#lg-name").value=profGet(b.dataset.k).name;$("#lg-who").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));$("#lg-pw").focus()})}
 function loginShow(){$("#login").hidden=false;$("#lg-pw").value="";$("#lg-pw2").value="";loginMode(profList().length?"in":"new")}
 $("#lg-m-in").onclick=()=>loginMode("in");$("#lg-m-new").onclick=()=>loginMode("new");
 $("#lg-form").addEventListener("submit",async ev=>{ev.preventDefault();const err=$("#lg-err"),name=$("#lg-name").value.trim(),pw=$("#lg-pw").value,k=keyOf(name),keep=$("#lg-keep").checked;
   if(!name){err.textContent="Bitte gib einen Namen ein.";return}
+  {const p=profGet(k);if(LGMODE==="in"&&p&&p.code&&!p.h&&keyOf(lsG("dev-name")||"")===k){enter(k,true,true,false);return}}
   if(pw.length<4){err.textContent="Das Passwort braucht mindestens 4 Zeichen.";return}
   $("#lg-go").disabled=true;
   try{if(LGMODE==="new"){
@@ -619,20 +620,33 @@ function gateShow(){const m=document.querySelector(".lg-logo .mk");if(m)$("#gt-l
 /* Schlüssel für die Namensliste aus dem Admin-Code ableiten (bleibt nur auf deinem Gerät) */
 async function admKeyFrom(code){const base=await crypto.subtle.importKey("raw",new TextEncoder().encode("bwissen-admin:"+normC(code)),"PBKDF2",false,["deriveKey"]);
   const k=await crypto.subtle.deriveKey({name:"PBKDF2",salt:new TextEncoder().encode("bwissen-liste-v1"),iterations:150000,hash:"SHA-256"},base,{name:"AES-GCM",length:256},true,["encrypt","decrypt"]);
-  const raw=new Uint8Array(await crypto.subtle.exportKey("raw",k));lsS("adm-key",btoa(String.fromCharCode(...raw)))}
+  const raw=new Uint8Array(await crypto.subtle.exportKey("raw",k));lsS("adm-key",btoa(String.fromCharCode(...raw)));
+  const nk=new Uint8Array(await crypto.subtle.exportKey("raw",await nameKey(code,true)));lsS("adm-nk",btoa(String.fromCharCode(...nk)))}
 async function admKey(){const s=lsG("adm-key");if(!s)return null;try{return await crypto.subtle.importKey("raw",Uint8Array.from(atob(s),c=>c.charCodeAt(0)),"AES-GCM",false,["encrypt","decrypt"])}catch(e){return null}}
+/* Name je Code: verschlüsselt mit einem Schlüssel aus dem Code selbst. Nur wer den Code hat, kann den Namen lesen. */
+async function nameKey(code,raw){const base=await crypto.subtle.importKey("raw",new TextEncoder().encode("bwissen-name:"+normC(code)),"PBKDF2",false,["deriveKey"]);
+  return crypto.subtle.deriveKey({name:"PBKDF2",salt:new TextEncoder().encode("bwissen-name-v1"),iterations:100000,hash:"SHA-256"},base,{name:"AES-GCM",length:256},!!raw,["encrypt","decrypt"])}
+async function encWith(k,str){const iv=crypto.getRandomValues(new Uint8Array(12));const ct=new Uint8Array(await crypto.subtle.encrypt({name:"AES-GCM",iv},k,new TextEncoder().encode(str)));
+  const all=new Uint8Array(12+ct.length);all.set(iv);all.set(ct,12);let s="";all.forEach(b=>s+=String.fromCharCode(b));return btoa(s)}
+async function decWith(k,b64){try{const all=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));return new TextDecoder().decode(await crypto.subtle.decrypt({name:"AES-GCM",iv:all.slice(0,12)},k,all.slice(12)))}catch(e){return null}}
+async function nameFor(code,h,z){const e=z&&z.names&&z.names[h];if(!e)return null;const n=await decWith(await nameKey(code),e);return n&&n.trim()?n.trim().slice(0,40):null}
+let FRESH_NAME=false;
+function autoEnter(name){const k=keyOf(name),had=profList().length,neu=!profGet(k);
+  if(neu)store.set("prof-list",profList().concat([{k,name,code:1,at:Date.now()}]));
+  enter(k,true,true,neu,neu&&!had&&!store.get("prof-live",null))}
 async function encList(list){const k=await admKey(),iv=crypto.getRandomValues(new Uint8Array(12));const ct=new Uint8Array(await crypto.subtle.encrypt({name:"AES-GCM",iv},k,new TextEncoder().encode(JSON.stringify(list))));
   const all=new Uint8Array(12+ct.length);all.set(iv);all.set(ct,12);let s="";all.forEach(b=>s+=String.fromCharCode(b));return btoa(s)}
 async function decList(b64){if(!b64)return [];const k=await admKey();if(!k)return null;try{const all=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));
   return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:"AES-GCM",iv:all.slice(0,12)},k,all.slice(12))))}catch(e){return null}}
 $("#gt-form").addEventListener("submit",async ev=>{ev.preventDefault();const err=$("#gt-err");$("#gt-go").disabled=true;
   try{const code=$("#gt-code").value,h=await shaC(code);
-  if(h===ADMIN_H){IS_ADMIN=true;await admKeyFrom(code)}else{const z=await zgLoad();
+  let z=null;if(h===ADMIN_H){IS_ADMIN=true;await admKeyFrom(code);z=await zgLoad()}else{z=await zgLoad();
     if(!z){err.textContent="Keine Verbindung. Prüf dein Internet und versuch es nochmal.";return}
     if(z.gesperrt){err.textContent="Der Zugang ist gerade für alle gesperrt.";return}
     if(z.codes&&z.codes[h]===0){err.textContent="Dieser Code wurde gesperrt.";return}
     if(!zOk(z,h)){err.textContent="Der Code stimmt nicht.";$("#gt-code").select();return}}
   lsS("dev-zugang",h);
+  const nm=await nameFor(code,h,z);if(nm){lsS("dev-name",nm);FRESH_NAME=true}else lsS("dev-name",null);
   $("#gate").hidden=true;$("#gt-code").value="";err.textContent="";if(gateDone)gateDone()}finally{$("#gt-go").disabled=false}});
 document.addEventListener("visibilitychange",async()=>{if(GATE&&document.visibilityState==="visible"&&$("#gate").hidden&&!await gateCheck())location.reload()});
 
@@ -649,11 +663,19 @@ const rndCode=()=>{const A="ABCDEFGHJKLMNPQRSTUVWXYZ23456789",rnd=n=>[...crypto.
 async function admSave(change,msg){ADM.busy=true;ADM.msg="Speichere …";admRender();
   try{if(!await admKey())throw new Error("key");const {sha,z}=await ghGet();let list=await decList(z.liste);if(list===null)throw new Error("key");
     if(!z.codes){z.codes={};list=[];if(z.freunde){z.codes[z.freunde]=1;list.push({n:"Gemeinsamer Code (alt)",c:"",h:z.freunde,t:new Date().toISOString().slice(0,10)})}delete z.freunde}
-    change(z,list);z.v=2;z.liste=await encList(list);
+    change(z,list);z.v=2;z.liste=await encList(list);await fillNames(z,list);
     ADM.sha=await ghPut(z,sha,msg);ADM.list=list;ZG=z;ADM.msg="Gespeichert. Auf allen Geräten gilt es nach ein paar Minuten."}
   catch(e){ADM.msg=e.message==="tok"?"GitHub-Schlüssel fehlt oder ist abgelaufen. Trag unten einen neuen ein.":e.message==="key"?"Die Liste lässt sich nicht öffnen. Gib unten deinen Admin-Code ein.":e.message==="conf"?"Gerade gleichzeitig geändert. Versuch es nochmal.":"GitHub antwortet nicht ("+(e.message||"?").replace("net","Fehler ")+"). Versuch es nochmal."}
   ADM.busy=false;admRender()}
-async function admLoad(){if(!ghTok())return;try{const {sha,z}=await ghGet();ADM.sha=sha;ZG=z;const l=await decList(z.liste);ADM.list=l;if(l===null)ADM.msg="Die Liste lässt sich nicht öffnen. Gib unten deinen Admin-Code ein."}
+async function fillNames(z,list){const nm=z.names||{},keep={};
+  for(const e of list){if(!e.h||!(e.h in z.codes))continue;if(nm[e.h]&&e.nn===e.n){keep[e.h]=nm[e.h];continue}
+    if(e.c){keep[e.h]=await encWith(await nameKey(e.c),e.n);e.nn=e.n}}
+  if(nm[ADMIN_H])keep[ADMIN_H]=nm[ADMIN_H];const ak=lsG("adm-nk"),me=ME&&profGet(ME);
+  if(ak&&me&&!keep[ADMIN_H]){try{const k=await crypto.subtle.importKey("raw",Uint8Array.from(atob(ak),c=>c.charCodeAt(0)),"AES-GCM",false,["encrypt","decrypt"]);keep[ADMIN_H]=await encWith(k,me.name)}catch(e){}}
+  z.names=keep;z.liste=await encList(list)}
+const needNames=(z,l)=>!!(z&&l&&z.codes&&(l.some(e=>e.c&&e.h in z.codes&&!(z.names&&z.names[e.h]))||(lsG("adm-nk")&&ME&&!(z.names&&z.names[ADMIN_H]))));
+async function admLoad(){if(!ghTok())return;try{const {sha,z}=await ghGet();ADM.sha=sha;ZG=z;const l=await decList(z.liste);ADM.list=l;if(l===null)ADM.msg="Die Liste lässt sich nicht öffnen. Gib unten deinen Admin-Code ein.";
+    else if(needNames(z,l)){admRender();await admSave(()=>{},"Namen für Code-Anmeldung");return}}
   catch(e){ADM.msg=e.message==="tok"?"GitHub-Schlüssel fehlt oder ist abgelaufen. Trag unten einen neuen ein.":"GitHub antwortet nicht ("+(e.message||"?").replace("net","Fehler ")+")."}admRender()}
 function admRender(){$("#set-admin").hidden=!IS_ADMIN;if(!IS_ADMIN)return;const a=$("#adm"),z=ZG,tok=ghTok(),hasKey=!!lsG("adm-key");
   if(tok&&ADM.list==null&&!ADM.busy&&!ADM.loading){ADM.loading=true;admLoad().finally(()=>{ADM.loading=false})}
@@ -686,7 +708,9 @@ function admRender(){$("#set-admin").hidden=!IS_ADMIN;if(!IS_ADMIN)return;const 
     admSave((z,l)=>{delete z.codes[e.h];const k=l.findIndex(x=>x.h===e.h);if(k>=0)l.splice(k,1)},"Code gelöscht")});
   const al=$("#ad-all");if(al)al.onclick=()=>{if(ADM.busy)return;const lock=!(z&&z.gesperrt);ADM.last=null;admSave(z2=>{z2.gesperrt=lock},lock?"Alle gesperrt":"Zugang geöffnet")}}
 ready.then(async()=>{if(!await gateCheck())await gateShow();let k=null;try{k=sessionStorage.getItem("prof-session")||localStorage.getItem("dev-remember")}catch(e){}
-  if(k&&profGet(k))enter(k,(()=>{try{return localStorage.getItem("dev-remember")===k}catch(e){return false}})(),true,false);else loginShow()});
+  const dn=GATE?lsG("dev-name"):null;
+  if(dn&&(FRESH_NAME||!(k&&profGet(k))))autoEnter(dn);
+  else if(k&&profGet(k))enter(k,(()=>{try{return localStorage.getItem("dev-remember")===k}catch(e){return false}})(),true,false);else loginShow()});
 </script>
 
 </html>
