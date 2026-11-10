@@ -6,6 +6,8 @@
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="BWIssen">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}img{max-width:100%}</style>
 <title>BWIssen</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -32,8 +34,7 @@ svg.i{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-l
 
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:600;font-size:1rem}
-.logo span{width:36px;height:36px;border-radius:11px;background:var(--brand);color:#fff;display:grid;place-items:center}
-.logo svg{width:20px;height:20px}
+.logo .mk{width:32px;height:32px;flex:none}
 .streak{display:flex;align-items:center;gap:6px;background:#fff4e6;color:#b34700;border-radius:999px;padding:6px 12px 6px 9px;font-weight:800;font-size:.9rem;white-space:nowrap}
 .streak svg{width:18px;height:18px;color:var(--flame)}
 .hello{margin-bottom:16px}
@@ -63,6 +64,16 @@ svg.i{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-l
 .tile.soon .ico{background:#fff;color:#9aa3b5;box-shadow:none;border:2px dashed var(--line)}
 .tile.wait .ico{opacity:.9}
 
+.fbk{display:flex;align-items:center;gap:12px;width:100%;margin-top:22px;border:1.5px dashed var(--line);background:var(--bg2);border-radius:18px;padding:13px 15px;font:inherit;color:var(--ink);text-align:left;cursor:pointer;transition:border-color .2s,transform .2s}
+.fbk:hover{border-color:var(--brand)}.fbk:active{transform:scale(.99)}
+.fbk .ic{width:38px;height:38px;border-radius:12px;background:#fff;color:var(--brand);display:grid;place-items:center;flex:none}
+.fbk .ic svg{width:20px;height:20px}
+.fbk b{display:block;font-weight:800;font-size:.98rem}.fbk small{display:block;line-height:1.35;color:var(--muted);font-size:.86rem}
+.fb-f{display:grid;gap:12px}.fb-f label{display:grid;gap:5px;font-weight:700;font-size:.9rem;color:var(--muted)}
+.fb-f select,.fb-f textarea{font:inherit;font-size:16px;border:1.5px solid var(--line);border-radius:14px;padding:11px 13px;background:#fff;color:var(--ink);width:100%}
+.fb-f textarea{min-height:130px;resize:vertical}
+.fb-go{display:block;text-align:center;text-decoration:none;border:0;border-radius:14px;background:var(--brand);color:#fff;font:inherit;font-weight:800;padding:13px;cursor:pointer}
+.fb-go[aria-disabled="true"]{opacity:.45;pointer-events:none}
 .note{margin-top:22px;color:var(--muted);font-size:.9rem;text-align:center}
 
 /* Modul-Ansicht */
@@ -71,9 +82,9 @@ svg.i{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-l
 .topr{display:flex;align-items:center;gap:8px}
 .gear{width:38px;height:38px;border-radius:12px;border:1.5px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;color:var(--ink);flex:none}
 .gear svg{width:20px;height:20px}
-#set{position:fixed;inset:0;z-index:30;background:rgba(27,35,51,.4);display:flex;align-items:flex-end;justify-content:center}
+#set,#fb{position:fixed;inset:0;z-index:30;background:rgba(27,35,51,.4);display:flex;align-items:flex-end;justify-content:center}
 .sheet{background:#fff;width:100%;max-width:560px;max-height:88%;overflow:auto;border-radius:26px 26px 0 0;padding:18px 20px calc(24px + env(safe-area-inset-bottom,0px))}
-@media (min-width:640px){#set{align-items:center}.sheet{border-radius:26px}}
+@media (min-width:640px){#set,#fb{align-items:center}.sheet{border-radius:26px}}
 .sheet-h{display:flex;align-items:center;justify-content:space-between}
 .sheet h2{font-family:var(--f-display);font-size:1.3rem;margin:0}
 .sheet h3{font-family:var(--f-display);font-size:1rem;margin:20px 0 6px}
@@ -92,15 +103,15 @@ svg.i{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-l
 .sconf .row{display:flex;gap:8px;flex-wrap:wrap}
 .sdone{background:#dcf5e4;border-radius:14px;padding:10px 12px;font-weight:700;margin-bottom:8px;animation:rise .25s ease}
 @keyframes sheetUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
-#set:not([hidden]){animation:rise .2s ease}
-#set:not([hidden]) .sheet{animation:sheetUp .32s cubic-bezier(.2,.8,.2,1)}
+#set:not([hidden]),#fb:not([hidden]){animation:rise .2s ease}
+#set:not([hidden]) .sheet,#fb:not([hidden]) .sheet{animation:sheetUp .32s cubic-bezier(.2,.8,.2,1)}
 /* Dunkel: die ganze App (auch das geöffnete Fach) wird umgekehrt, Farbtöne bleiben erhalten */
 html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
 /* Anmeldung mit Profil */
 #login{position:fixed;inset:0;z-index:40;background:linear-gradient(160deg,#eef3ff 0%,#fff 45%,#fff4ea 100%);overflow:auto;display:flex;padding:24px max(16px,env(safe-area-inset-left,0px)) 24px max(16px,env(safe-area-inset-right,0px))}
 .lg-card{margin:auto;width:100%;max-width:400px;background:#fff;border-radius:28px;padding:26px 22px;box-shadow:0 24px 50px -28px rgba(27,35,51,.45);animation:pop .4s cubic-bezier(.2,.8,.2,1)}
-.lg-logo{width:56px;height:56px;border-radius:17px;background:var(--brand);color:#fff;display:grid;place-items:center;margin-bottom:14px;box-shadow:0 8px 18px -10px var(--brand)}
-.lg-logo svg{width:30px;height:30px}
+.lg-logo{width:64px;height:64px;border-radius:19px;background:#fff;display:grid;place-items:center;margin-bottom:14px;box-shadow:0 8px 22px -10px rgba(27,35,51,.35)}
+.lg-logo .mk{width:42px;height:42px}
 .lg-card h1{font-size:1.7rem}
 .lg-card .sub{color:var(--muted);margin:.3rem 0 18px}
 .lg-card .seg{margin-bottom:16px}
@@ -167,13 +178,14 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
   <symbol id="i-konto" viewBox="0 0 24 24"><path d="M3 6h18M12 6v14"/><path d="M5 10h4M5 13.5h3M15 10h4M15 13.5h3"/></symbol>
   <symbol id="i-markt" viewBox="0 0 24 24"><path d="M4 3v18h17"/><path d="M7 6l11 11M7 17L18 6"/><circle cx="12.5" cy="11.5" r="1.3"/></symbol>
   <symbol id="i-thermo" viewBox="0 0 24 24"><path d="M10 13.5V5a2 2 0 0 1 4 0v8.5a4 4 0 1 1-4 0z"/><path d="M12 9v6"/><path d="M18 6h3M18 10h3"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></symbol>
   <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-5 1-8.5z"/></symbol>
 </svg>
 
 <div class="wrap">
   <div class="top">
-    <div class="logo"><span><svg class="i"><use href="#i-cap"/></svg></span>BWIssen</div>
+    <div class="logo"><svg class="mk" viewBox="76 76 360 360" aria-hidden="true"><rect x="76" y="76" width="166" height="166" rx="40" fill="#3b5bdb"/><rect x="270" y="76" width="166" height="166" rx="40" fill="#ee7418"/><rect x="76" y="270" width="166" height="166" rx="40" fill="#139a58"/><rect x="270" y="270" width="166" height="166" rx="40" fill="#7048e8"/><path d="M310 356l38 36 62-74" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg>BWIssen</div>
     <div class="topr"><button type="button" class="me" id="me" hidden aria-label="Profil"><span class="av" id="me-av">?</span><span id="me-n"></span></button><div class="streak" id="streak" title="Tage in Folge gelernt"><svg class="i"><use href="#i-flame"/></svg><span id="streak-n">1 Tag</span></div><button type="button" class="gear" id="set-open" aria-label="Einstellungen"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></div>
   </div>
   <div class="hello">
@@ -181,6 +193,7 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
     <p>Wintersemester 2026/27</p>
   </div>
   <div class="grid" id="grid"></div>
+  <button type="button" class="fbk" id="fb-open"><span class="ic"><svg class="i"><use href="#i-msg"/></svg></span><span><b>Fehler gefunden oder eine Idee?</b><small>Sag kurz Bescheid, damit BWIssen besser wird.</small></span></button>
   <p class="note">Weitere Fächer kommen dazu, sobald die Unterlagen da sind.</p>
   <p class="sync" id="sync">Dein Fortschritt wird auf diesem Gerät gespeichert.</p>
 </div>
@@ -202,10 +215,22 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
     <div id="set-del"></div>
   </div>
 </div>
+<div id="fb" hidden role="dialog" aria-modal="true" aria-labelledby="fb-h">
+  <div class="sheet">
+    <div class="sheet-h"><h2 id="fb-h">Feedback</h2><button type="button" class="gear" id="fb-close" aria-label="Schließen"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <p class="hint">Fehler in einer Aufgabe, etwas klemmt oder du hast eine Idee? Schreib es hier rein. Beim Senden öffnet sich dein Mail-Programm mit fertiger Nachricht.</p>
+    <div class="fb-f">
+      <div class="seg" role="group" aria-label="Art"><button type="button" data-fb="Fehler" aria-pressed="true">Fehler melden</button><button type="button" data-fb="Idee" aria-pressed="false">Idee vorschlagen</button></div>
+      <label>Wo?<select id="fb-wo"></select></label>
+      <label>Was ist dir aufgefallen?<textarea id="fb-txt" maxlength="1500" placeholder="z. B. Aufgabe 3 im Lernpfad: Die Lösung müsste 450 € sein."></textarea></label>
+      <a class="fb-go" id="fb-go" aria-disabled="true" target="_blank" rel="noopener">Per Mail senden</a>
+    </div>
+  </div>
+</div>
 <div id="hello" hidden aria-live="polite"><div class="hl-w"><span class="hl-a" id="hl-a">Hallo</span><span class="hl-n" id="hl-n"></span><span class="hl-s" id="hl-s">Schön, dass du da bist.</span></div></div>
 <div id="login" role="dialog" aria-modal="true" aria-labelledby="lg-h">
   <div class="lg-card">
-    <div class="lg-logo"><svg class="i"><use href="#i-cap"/></svg></div>
+    <div class="lg-logo"><svg class="mk" viewBox="76 76 360 360" aria-hidden="true"><rect x="76" y="76" width="166" height="166" rx="40" fill="#3b5bdb"/><rect x="270" y="76" width="166" height="166" rx="40" fill="#ee7418"/><rect x="76" y="270" width="166" height="166" rx="40" fill="#139a58"/><rect x="270" y="270" width="166" height="166" rx="40" fill="#7048e8"/><path d="M310 356l38 36 62-74" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <h1 id="lg-h">BWIssen</h1>
     <p class="sub" id="lg-sub">Melde dich mit deinem Profil an.</p>
     <div class="seg" role="group" aria-label="Anmelden oder neues Profil"><button type="button" id="lg-m-in" aria-pressed="true">Anmelden</button><button type="button" id="lg-m-new" aria-pressed="false">Neues Profil</button></div>
@@ -337,6 +362,20 @@ $("#me").onclick=()=>$("#set-open").click();
 $("#set-close").onclick=()=>{$("#set").hidden=true};
 $("#set").addEventListener("click",e=>{if(e.target.id==="set")$("#set").hidden=true});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#set").hidden=true});
+/* ===== Feedback: öffnet das Mail-Programm mit fertiger Nachricht ===== */
+const FB_MAIL="tcdaefler@outlook.de";let fbType="Fehler";
+function fbUpd(){const t=$("#fb-txt").value.trim(),wo=$("#fb-wo").value,a=$("#fb-go");
+  a.setAttribute("aria-disabled",t?"false":"true");
+  a.href="mailto:"+FB_MAIL+"?subject="+encodeURIComponent("BWIssen "+fbType+": "+wo)+"&body="+encodeURIComponent(t+"\n\n(Bereich: "+wo+")")}
+$("#fb-open").onclick=()=>{const w=$("#fb-wo");w.innerHTML=["Startseite",...MODULES.filter(m=>!m.soon).map(m=>m.name),"Sonstiges"].map(x=>`<option>${x}</option>`).join("");fbUpd();$("#fb").hidden=false;setTimeout(()=>$("#fb-txt").focus(),250)};
+document.querySelectorAll("[data-fb]").forEach(b=>b.onclick=()=>{fbType=b.dataset.fb;document.querySelectorAll("[data-fb]").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));
+  $("#fb-txt").placeholder=fbType==="Idee"?"z. B. Ein Quiz zu den Elastizitäten wäre cool.":"z. B. Aufgabe 3 im Lernpfad: Die Lösung müsste 450 € sein.";fbUpd()});
+$("#fb-txt").oninput=fbUpd;$("#fb-wo").onchange=fbUpd;
+$("#fb-go").addEventListener("click",()=>{setTimeout(()=>{$("#fb").hidden=true;$("#fb-txt").value="";fbUpd()},600)});
+$("#fb-close").onclick=()=>{$("#fb").hidden=true};
+$("#fb").addEventListener("click",e=>{if(e.target.id==="fb")$("#fb").hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#fb").hidden=true});
+
 /* ===== Profile auf diesem Gerät: Name und Passwort trennen den Fortschritt mehrerer Personen.
    Kein echter Schutz (alles liegt im Browser), sondern eigene Lernstände pro Person. */
 let ME=null;
