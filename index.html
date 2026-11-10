@@ -113,6 +113,11 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
 .adm{background:var(--bg2);border-radius:16px;padding:12px 14px}.adm p{margin:0 0 8px;font-size:.92rem}.adm .st{font-weight:800}.adm .st.on{color:#15803d}.adm .st.off{color:#dc2626}
 .adm pre{white-space:pre-wrap;word-break:break-all;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;font-size:.78rem;margin:6px 0}
 .adm .code{font-family:ui-monospace,Menlo,monospace;font-size:1.15rem;font-weight:800;letter-spacing:.04em;background:#fff;border-radius:10px;padding:6px 10px;display:inline-block;margin:4px 0}
+.adm .ad-l{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}.ad-it{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:8px 10px}
+.ad-it.off{opacity:.7}.ad-n{flex:1;min-width:140px}.ad-n b{display:block}.ad-n small{color:var(--muted);font-size:.8rem}.ad-c{font-family:ui-monospace,Menlo,monospace;font-weight:700;color:var(--ink)}
+.ad-st{font-size:.78rem;font-weight:800;border-radius:99px;padding:3px 9px}.ad-st.on{background:#dcf5e4;color:#15803d}.ad-st.off{background:#fde4e4;color:#dc2626}.ad-b{display:flex;gap:6px}
+.ad-msg{font-size:.85rem;color:var(--muted)}.ad-new{background:#fff;border-radius:12px;padding:8px 12px;margin-top:8px;border:1.5px solid #15803d}.adm input{font:inherit;border:1.5px solid var(--line);border-radius:10px;padding:7px 10px}
+.ad-setup ol{margin-bottom:6px}
 .adm ol{margin:6px 0 0;padding-left:1.2rem;font-size:.9rem}.adm .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 #login{position:fixed;inset:0;z-index:40;background:linear-gradient(160deg,#eef3ff 0%,#fff 45%,#fff4ea 100%);overflow:auto;display:flex;padding:24px max(16px,env(safe-area-inset-left,0px)) 24px max(16px,env(safe-area-inset-right,0px))}
 .lg-card{margin:auto;width:100%;max-width:400px;background:#fff;border-radius:28px;padding:26px 22px;box-shadow:0 24px 50px -28px rgba(27,35,51,.45);animation:pop .4s cubic-bezier(.2,.8,.2,1)}
@@ -456,38 +461,91 @@ document.addEventListener("visibilitychange",()=>{if(document.hidden&&ME)profSav
 window.addEventListener("message",e=>{if(e.data&&e.data.lernapp==="home"&&ME)profSave()});
 applyTheme();renderHome();loginMode("in");
 
-/* ===== Zugang: ein Code für alle Freunde (Prüfsumme in zugang.json, jederzeit änderbar) + Admin-Code ===== */
-const GATE=!!window.BW_GATE, ADMIN_H="d50a5b75411b81e7c23cba0b15b1a559e17ae652cf62bed8937ec6502fa16f01", GH_EDIT="https://github.com/tcdaefler-debug/bwissen/edit/main/zugang.json";
-let IS_ADMIN=false, ZG=null, gateDone=null;
+/* ===== Zugang: eigener Code je Freund (nur Prüfsummen in zugang.json), Liste mit Namen verschlüsselt mit dem Admin-Code ===== */
+const GATE=!!window.BW_GATE, ADMIN_H="d50a5b75411b81e7c23cba0b15b1a559e17ae652cf62bed8937ec6502fa16f01", GH_REPO="tcdaefler-debug/bwissen", GH_FILE="zugang.json";
+let IS_ADMIN=false, ZG=null, gateDone=null, ADM={list:null,sha:null,busy:false,msg:"",last:null};
 const normC=c=>String(c||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
+const escH=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 async function shaC(c){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("bwissen:"+normC(c)));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}
 async function zgLoad(){try{const r=await fetch("zugang.json?t="+Date.now(),{cache:"no-store"});if(r.ok){ZG=await r.json();return ZG}}catch(e){}return null}
-const devZ=()=>{try{return localStorage.getItem("dev-zugang")}catch(e){return null}};
+const lsG=k=>{try{return localStorage.getItem(k)}catch(e){return null}}, lsS=(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}};
+const devZ=()=>lsG("dev-zugang");
+/* Gilt ein Code? Einzelcodes in z.codes {hash:1 aktiv, 0 gesperrt}; z.freunde = alter gemeinsamer Code */
+const zOk=(z,h)=>!!(h&&!z.gesperrt&&((z.codes&&z.codes[h]===1)||(!z.codes&&h===z.freunde)));
 async function gateCheck(){if(!GATE)return true;const d=devZ();if(d&&d===ADMIN_H){IS_ADMIN=true;zgLoad();return true}
-  const z=await zgLoad();if(!z)return !!d;return !!(d&&!z.gesperrt&&d===z.freunde)}
+  const z=await zgLoad();if(!z)return !!d;return zOk(z,d)}
 function gateShow(){const m=document.querySelector(".lg-logo .mk");if(m)$("#gt-logo").innerHTML=m.outerHTML;
-  if(devZ())$("#gt-sub").textContent=ZG&&ZG.gesperrt?"Der Zugang ist gerade gesperrt.":"Der Zugangscode wurde geändert. Gib den neuen Code ein.";
+  const d=devZ();if(d)$("#gt-sub").textContent=ZG&&ZG.gesperrt?"Der Zugang ist gerade für alle gesperrt.":ZG&&ZG.codes&&ZG.codes[d]===0?"Dein Zugangscode wurde gesperrt.":"Dein Zugangscode gilt nicht mehr. Gib einen neuen Code ein.";
   $("#gate").hidden=false;setTimeout(()=>$("#gt-code").focus(),200);return new Promise(res=>{gateDone=res})}
+/* Schlüssel für die Namensliste aus dem Admin-Code ableiten (bleibt nur auf deinem Gerät) */
+async function admKeyFrom(code){const base=await crypto.subtle.importKey("raw",new TextEncoder().encode("bwissen-admin:"+normC(code)),"PBKDF2",false,["deriveKey"]);
+  const k=await crypto.subtle.deriveKey({name:"PBKDF2",salt:new TextEncoder().encode("bwissen-liste-v1"),iterations:150000,hash:"SHA-256"},base,{name:"AES-GCM",length:256},true,["encrypt","decrypt"]);
+  const raw=new Uint8Array(await crypto.subtle.exportKey("raw",k));lsS("adm-key",btoa(String.fromCharCode(...raw)))}
+async function admKey(){const s=lsG("adm-key");if(!s)return null;try{return await crypto.subtle.importKey("raw",Uint8Array.from(atob(s),c=>c.charCodeAt(0)),"AES-GCM",false,["encrypt","decrypt"])}catch(e){return null}}
+async function encList(list){const k=await admKey(),iv=crypto.getRandomValues(new Uint8Array(12));const ct=new Uint8Array(await crypto.subtle.encrypt({name:"AES-GCM",iv},k,new TextEncoder().encode(JSON.stringify(list))));
+  const all=new Uint8Array(12+ct.length);all.set(iv);all.set(ct,12);let s="";all.forEach(b=>s+=String.fromCharCode(b));return btoa(s)}
+async function decList(b64){if(!b64)return [];const k=await admKey();if(!k)return null;try{const all=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));
+  return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:"AES-GCM",iv:all.slice(0,12)},k,all.slice(12))))}catch(e){return null}}
 $("#gt-form").addEventListener("submit",async ev=>{ev.preventDefault();const err=$("#gt-err");$("#gt-go").disabled=true;
-  try{const h=await shaC($("#gt-code").value);
-  if(h===ADMIN_H){IS_ADMIN=true}else{const z=await zgLoad();
+  try{const code=$("#gt-code").value,h=await shaC(code);
+  if(h===ADMIN_H){IS_ADMIN=true;await admKeyFrom(code)}else{const z=await zgLoad();
     if(!z){err.textContent="Keine Verbindung. Prüf dein Internet und versuch es nochmal.";return}
-    if(z.gesperrt){err.textContent="Der Zugang ist gerade gesperrt.";return}
-    if(h!==z.freunde){err.textContent="Der Code stimmt nicht.";$("#gt-code").select();return}}
-  try{localStorage.setItem("dev-zugang",h)}catch(e){}
+    if(z.gesperrt){err.textContent="Der Zugang ist gerade für alle gesperrt.";return}
+    if(z.codes&&z.codes[h]===0){err.textContent="Dieser Code wurde gesperrt.";return}
+    if(!zOk(z,h)){err.textContent="Der Code stimmt nicht.";$("#gt-code").select();return}}
+  lsS("dev-zugang",h);
   $("#gate").hidden=true;$("#gt-code").value="";err.textContent="";if(gateDone)gateDone()}finally{$("#gt-go").disabled=false}});
 document.addEventListener("visibilitychange",async()=>{if(GATE&&document.visibilityState==="visible"&&$("#gate").hidden&&!await gateCheck())location.reload()});
-function admRender(){$("#set-admin").hidden=!IS_ADMIN;if(!IS_ADMIN)return;const a=$("#adm"),z=ZG;
-  a.innerHTML=`<p>Status: ${z?(z.gesperrt?'<span class="st off">gesperrt</span>':'<span class="st on">offen</span>'):'<span class="st">unbekannt (keine Verbindung)</span>'}</p>
-  <p>Wechselst oder sperrst du den Code, müssen alle Freunde danach den neuen Code eingeben. Du als Admin bleibst drin.</p>
-  <div class="row"><button type="button" class="sbtn" id="adm-new">Neuen Code erzeugen</button><button type="button" class="sbtn red" id="adm-lock">Zugang sperren</button></div><div id="adm-out"></div>`;
-  const out=(title,code,json)=>{$("#adm-out").innerHTML=`<p style="margin-top:12px"><b>${title}</b></p>${code?`<p>Neuer Code für deine Freunde (aufschreiben!):<br><span class="code">${code}</span></p>`:""}
-    <ol><li>Tippe auf „Text kopieren“.</li><li>Tippe auf „Auf GitHub öffnen“, lösche dort alles und füge den Text ein.</li><li>Auf „Commit changes“ tippen. Nach ein paar Minuten gilt es.</li></ol>
-    <pre id="adm-json">${json}</pre><div class="row"><button type="button" class="sbtn" id="adm-copy">Text kopieren</button><a class="sbtn" href="${GH_EDIT}" target="_blank" rel="noopener" style="text-decoration:none">Auf GitHub öffnen</a></div>`;
-    $("#adm-copy").onclick=async()=>{try{await navigator.clipboard.writeText(json);$("#adm-copy").textContent="Kopiert ✓"}catch(e){const r=document.createRange();r.selectNodeContents($("#adm-json"));const s=getSelection();s.removeAllRanges();s.addRange(r)}}};
-  $("#adm-new").onclick=async()=>{const A="ABCDEFGHJKLMNPQRSTUVWXYZ23456789",rnd=n=>[...crypto.getRandomValues(new Uint8Array(n))].map(x=>A[x%32]).join("");
-    const code="BWI-"+rnd(4)+"-"+rnd(4);out("Neuer Code ist bereit",code,JSON.stringify({freunde:await shaC(code),gesperrt:false},null,1))};
-  $("#adm-lock").onclick=()=>out("Zugang sperren","",JSON.stringify({freunde:(ZG&&ZG.freunde)||"",gesperrt:true},null,1))}
+
+/* GitHub: zugang.json direkt aus der App lesen und speichern (Schlüssel nur auf dem Admin-Gerät) */
+const ghTok=()=>lsG("adm-gh");
+const b64u=s=>btoa(unescape(encodeURIComponent(s))), u64=s=>decodeURIComponent(escape(atob(s.replace(/\s/g,""))));
+async function ghGet(){const r=await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}?ref=main&t=${Date.now()}`,{headers:{Authorization:"Bearer "+ghTok(),Accept:"application/vnd.github+json"},cache:"no-store"});
+  if(!r.ok)throw new Error(r.status===401||r.status===403||r.status===404?"tok":"net");const j=await r.json();return {sha:j.sha,z:JSON.parse(u64(j.content))}}
+async function ghPut(z,sha,msg){const r=await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`,{method:"PUT",headers:{Authorization:"Bearer "+ghTok(),Accept:"application/vnd.github+json","Content-Type":"application/json"},
+  body:JSON.stringify({message:msg,content:b64u(JSON.stringify(z,null,1)+"\n"),sha,branch:"main"})});
+  if(!r.ok)throw new Error(r.status===409?"conf":r.status===401||r.status===403||r.status===404?"tok":"net");return (await r.json()).content.sha}
+const rndCode=()=>{const A="ABCDEFGHJKLMNPQRSTUVWXYZ23456789",rnd=n=>[...crypto.getRandomValues(new Uint8Array(n))].map(x=>A[x%32]).join("");return "BWI-"+rnd(4)+"-"+rnd(4)};
+/* Änderung anwenden: frisch laden, ändern, verschlüsselt speichern */
+async function admSave(change,msg){ADM.busy=true;ADM.msg="Speichere …";admRender();
+  try{if(!await admKey())throw new Error("key");const {sha,z}=await ghGet();let list=await decList(z.liste);if(list===null)throw new Error("key");
+    if(!z.codes){z.codes={};list=[];if(z.freunde){z.codes[z.freunde]=1;list.push({n:"Gemeinsamer Code (alt)",c:"",h:z.freunde,t:new Date().toISOString().slice(0,10)})}delete z.freunde}
+    change(z,list);z.v=2;z.liste=await encList(list);
+    ADM.sha=await ghPut(z,sha,msg);ADM.list=list;ZG=z;ADM.msg="Gespeichert. Auf allen Geräten gilt es nach ein paar Minuten."}
+  catch(e){ADM.msg=e.message==="tok"?"GitHub-Schlüssel fehlt oder ist abgelaufen. Trag unten einen neuen ein.":e.message==="key"?"Die Liste lässt sich nicht öffnen. Gib unten deinen Admin-Code ein.":e.message==="conf"?"Gerade gleichzeitig geändert. Versuch es nochmal.":"Keine Verbindung zu GitHub. Versuch es nochmal."}
+  ADM.busy=false;admRender()}
+async function admLoad(){if(!ghTok())return;try{const {sha,z}=await ghGet();ADM.sha=sha;ZG=z;const l=await decList(z.liste);ADM.list=l;if(l===null)ADM.msg="Die Liste lässt sich nicht öffnen. Gib unten deinen Admin-Code ein."}
+  catch(e){ADM.msg=e.message==="tok"?"GitHub-Schlüssel fehlt oder ist abgelaufen. Trag unten einen neuen ein.":"Keine Verbindung zu GitHub."}admRender()}
+function admRender(){$("#set-admin").hidden=!IS_ADMIN;if(!IS_ADMIN)return;const a=$("#adm"),z=ZG,tok=ghTok(),hasKey=!!lsG("adm-key");
+  if(tok&&ADM.list==null&&!ADM.busy&&!ADM.loading){ADM.loading=true;admLoad().finally(()=>{ADM.loading=false})}
+  const L=ADM.list||[],codes=(z&&z.codes)||{};
+  const rows=L.map((e,i)=>{const on=codes[e.h]===1;return `<li class="ad-it${on?"":" off"}"><div class="ad-n"><b>${escH(e.n)}</b><small>${e.c?`<span class="ad-c">${escH(e.c)}</span> · `:""}seit ${escH((e.t||"").split("-").reverse().join("."))}</small></div>
+    <span class="ad-st ${on?"on":"off"}">${on?"aktiv":"gesperrt"}</span><div class="ad-b"><button type="button" class="sbtn${on?" redo":""}" data-tg="${i}">${on?"Sperren":"Freigeben"}</button><button type="button" class="sbtn" data-del="${i}" aria-label="Löschen">✕</button></div></li>`}).join("");
+  a.innerHTML=`${!tok?`<div class="ad-setup"><p><b>Einmal einrichten:</b> Damit die App die Liste speichern darf, braucht sie einen GitHub-Schlüssel. Er bleibt nur auf diesem Gerät.</p>
+      <ol><li>Tippe auf „Schlüssel anlegen“ und melde dich bei GitHub an.</li><li>Name egal, Ablauf z. B. 1 Jahr. Bei „Repository access“: <b>Only select repositories</b> → <b>bwissen</b>.</li><li>Bei „Permissions“ → „Contents“: <b>Read and write</b>.</li><li>„Generate token“ tippen, den Schlüssel kopieren und hier einfügen.</li></ol>
+      <div class="row"><a class="sbtn" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="text-decoration:none">Schlüssel anlegen</a></div>
+      <div class="row"><input type="password" id="ad-tok" placeholder="github_pat_…" autocomplete="off" style="flex:1;min-width:0"><button type="button" class="sbtn" id="ad-tok-s">Speichern</button></div></div>`
+    :`<p>Status: ${z?(z.gesperrt?'<span class="st off">alle gesperrt</span>':'<span class="st on">offen</span>'):'<span class="st">unbekannt</span>'} · ${L.length} ${L.length===1?"Person":"Personen"}</p>
+      ${!hasKey||ADM.list===null&&ADM.msg.includes("Admin-Code")?`<div class="row"><input type="password" id="ad-key" placeholder="Admin-Code" autocomplete="off" style="flex:1;min-width:0"><button type="button" class="sbtn" id="ad-key-s">Liste öffnen</button></div>`:""}
+      <form class="row" id="ad-add"><input type="text" id="ad-name" placeholder="Name, z. B. Stefan" maxlength="40" autocomplete="off" style="flex:1;min-width:0" ${ADM.busy?"disabled":""}><button type="submit" class="sbtn" ${ADM.busy?"disabled":""}>Code erzeugen</button></form>
+      ${ADM.last?`<div class="ad-new"><p>Code für <b>${escH(ADM.last.n)}</b>:</p><span class="code">${ADM.last.c}</span><div class="row"><button type="button" class="sbtn" id="ad-copy">Kopieren</button></div></div>`:""}
+      ${ADM.msg?`<p class="ad-msg">${escH(ADM.msg)}</p>`:""}
+      ${L.length?`<ul class="ad-l">${rows}</ul>`:ADM.list?'<p class="ad-msg">Noch keine Codes vergeben.</p>':""}
+      <div class="row" style="margin-top:12px">${z&&z.gesperrt?'<button type="button" class="sbtn" id="ad-all">Zugang für alle wieder öffnen</button>':'<button type="button" class="sbtn red" id="ad-all">Alle sperren</button>'}<button type="button" class="sbtn" id="ad-tok-x">GitHub-Schlüssel ändern</button></div>
+      <p class="ad-msg">Gesperrte Freunde sehen nach ein paar Minuten die Code-Abfrage. Du als Admin bleibst immer drin.</p>`}`;
+  const ts=$("#ad-tok-s");if(ts)ts.onclick=()=>{const v=$("#ad-tok").value.trim();if(!v)return;lsS("adm-gh",v);ADM.msg="";ADM.list=null;admRender()};
+  const tx=$("#ad-tok-x");if(tx)tx.onclick=()=>{lsS("adm-gh",null);ADM.list=null;ADM.msg="";admRender()};
+  const ks=$("#ad-key-s");if(ks)ks.onclick=async()=>{const c=$("#ad-key").value;if(await shaC(c)!==ADMIN_H){ADM.msg="Das ist nicht der Admin-Code.";admRender();return}await admKeyFrom(c);ADM.msg="";ADM.list=null;admRender()};
+  const f=$("#ad-add");if(f)f.onsubmit=async ev=>{ev.preventDefault();const n=$("#ad-name").value.trim();if(!n||ADM.busy)return;const c=rndCode(),h=await shaC(c);
+    await admSave((z,l)=>{z.codes[h]=1;l.push({n,c,h,t:new Date().toISOString().slice(0,10)})},"Code für "+n.slice(0,20));
+    if(ADM.msg.startsWith("Gespeichert")){ADM.last={n,c};admRender()}};
+  const cp=$("#ad-copy");if(cp)cp.onclick=async()=>{try{await navigator.clipboard.writeText(ADM.last.c);cp.textContent="Kopiert ✓"}catch(e){}};
+  a.querySelectorAll("[data-tg]").forEach(b=>b.onclick=()=>{const e=L[+b.dataset.tg];if(!e||ADM.busy)return;const on=codes[e.h]===1;ADM.last=null;
+    admSave((z,l)=>{z.codes[e.h]=on?0:1},(on?"Sperre ":"Freigabe ")+"Code")});
+  a.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{const i=+b.dataset.del,e=L[i];if(!e||ADM.busy)return;
+    if(b.dataset.sure!=="1"){b.dataset.sure="1";b.textContent="Löschen?";b.classList.add("red");return}ADM.last=null;
+    admSave((z,l)=>{delete z.codes[e.h];const k=l.findIndex(x=>x.h===e.h);if(k>=0)l.splice(k,1)},"Code gelöscht")});
+  const al=$("#ad-all");if(al)al.onclick=()=>{if(ADM.busy)return;const lock=!(z&&z.gesperrt);ADM.last=null;admSave(z2=>{z2.gesperrt=lock},lock?"Alle gesperrt":"Zugang geöffnet")}}
 ready.then(async()=>{if(!await gateCheck())await gateShow();let k=null;try{k=sessionStorage.getItem("prof-session")||localStorage.getItem("dev-remember")}catch(e){}
   if(k&&profGet(k))enter(k,(()=>{try{return localStorage.getItem("dev-remember")===k}catch(e){return false}})(),true,false);else loginShow()});
 </script>
