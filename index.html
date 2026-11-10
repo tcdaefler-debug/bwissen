@@ -239,6 +239,7 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
       <label>Name<input type="text" id="lg-name" autocomplete="username" maxlength="30" required></label>
       <label>Passwort<input type="password" id="lg-pw" autocomplete="current-password" required></label>
       <label id="lg-pw2-l" hidden>Passwort wiederholen<input type="password" id="lg-pw2" autocomplete="new-password"></label>
+      <label id="lg-code-l" hidden>Zugangscode<input type="text" id="lg-code" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="BWI-XXXX-XXXX" maxlength="20"></label>
       <label class="lg-chk"><input type="checkbox" id="lg-keep">Angemeldet bleiben</label>
       <div class="lg-err" id="lg-err" role="alert"></div>
       <button type="submit" class="lg-go" id="lg-go">Anmelden</button>
@@ -408,13 +409,17 @@ function profDelete(k){store.set("prof-list",profList().filter(p=>p.k!==k));try{
   if(store.get("prof-live",null)===k){liveWipe();try{localStorage.removeItem("prof-live")}catch(e){}}
   ME=null;try{sessionStorage.removeItem("prof-session");localStorage.removeItem("dev-remember")}catch(e){}push();location.hash="";closeModule();$("#me").hidden=true;loginShow()}
 let LGMODE="in";
+/* Zugangscodes: neue Profile nur mit Code. Hier stehen nur Prüfsummen, die Codes selbst stehen nicht im Quelltext. */
+const ACCESS_H=["29a3b7d92eff6d91a5c68e9f", "94688451df43bfec27a2880a", "52bc280679d1a90e11f07fd8", "e195d539373bf0ca24616f20", "de98b3c191a1508be733f069", "47114839b89db2f9398b2057", "da999a0f791d4fccddc69436", "979df26aeebcc5210c98b0e8", "a7d5fe57a0a18c478343d886", "42e657dfa832032781db7eda", "e9d5ca35c8f401cd707ac5e4", "940082a2461269b93999826c", "1982f19356e6717abc21b809", "ef94f9e87c58cb8d14a9aba0", "401b2883c79c45f1158319bb", "c2fe865405bb0c001f5250e4", "4db8e2a564d9693f5eb1e1b0", "0ce2651f8ea7e7d5eb57aa60", "33cca5e83b00ca550512aded", "83e2e240037ef3b3d3e9074f"];
+async function codeOk(c){c=String(c||"").toUpperCase().replace(/[^A-Z0-9]/g,"");if(c.length<8)return false;
+  try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("bwissen:"+c));const h=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("").slice(0,24);return ACCESS_H.includes(h)}catch(e){return false}}
 function loginMode(m){LGMODE=m;$("#lg-m-in").setAttribute("aria-pressed",m==="in");$("#lg-m-new").setAttribute("aria-pressed",m==="new");
-  $("#lg-pw2-l").hidden=m!=="new";$("#lg-go").textContent=m==="new"?"Profil anlegen":"Anmelden";$("#lg-err").textContent="";
+  $("#lg-pw2-l").hidden=m!=="new";$("#lg-code-l").hidden=m!=="new";$("#lg-go").textContent=m==="new"?"Profil anlegen":"Anmelden";$("#lg-err").textContent="";
   $("#lg-pw").autocomplete=m==="new"?"new-password":"current-password";
   $("#lg-sub").textContent=m==="new"?"Leg ein Profil an. Dein Fortschritt gehört dann nur dir.":"Melde dich mit deinem Profil an.";
   const L=profList();$("#lg-who").innerHTML=m==="in"?L.map(p=>`<button type="button" data-k="${p.k}" aria-pressed="false"><span class="av" style="background:${avColor(p.k)}">${p.name[0].toUpperCase()}</span>${p.name.replace(/</g,"&lt;")}</button>`).join(""):"";
   $("#lg-who").querySelectorAll("button").forEach(b=>b.onclick=()=>{$("#lg-name").value=profGet(b.dataset.k).name;$("#lg-who").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));$("#lg-pw").focus()})}
-function loginShow(){$("#login").hidden=false;$("#lg-pw").value="";$("#lg-pw2").value="";loginMode(profList().length?"in":"new")}
+function loginShow(){$("#login").hidden=false;$("#lg-pw").value="";$("#lg-pw2").value="";$("#lg-code").value="";loginMode(profList().length?"in":"new")}
 $("#lg-m-in").onclick=()=>loginMode("in");$("#lg-m-new").onclick=()=>loginMode("new");
 $("#lg-form").addEventListener("submit",async ev=>{ev.preventDefault();const err=$("#lg-err"),name=$("#lg-name").value.trim(),pw=$("#lg-pw").value,k=keyOf(name),keep=$("#lg-keep").checked;
   if(!name){err.textContent="Bitte gib einen Namen ein.";return}
@@ -423,6 +428,7 @@ $("#lg-form").addEventListener("submit",async ev=>{ev.preventDefault();const err
   try{if(LGMODE==="new"){
       if(profGet(k)){err.textContent="Diesen Namen gibt es schon. Melde dich an oder nimm einen anderen.";return}
       if(pw!==$("#lg-pw2").value){err.textContent="Die beiden Passwörter sind nicht gleich.";return}
+      if(!await codeOk($("#lg-code").value)){err.textContent="Der Zugangscode stimmt nicht. Den Code bekommst du von der Person, die dir BWIssen geschickt hat.";return}
       const salt=Math.random().toString(36).slice(2,12),h=await pwHash(k,pw,salt);
       const isFirst=!profList().length;store.set("prof-list",profList().concat([{k,name,salt,h,at:Date.now()}]));
       enter(k,keep,true,true,isFirst&&!store.get("prof-live",null));
