@@ -469,6 +469,8 @@ nav.tabs .tgh:first-child{margin-top:0}
 .vl-link{display:inline-flex;align-items:center;gap:8px;font-weight:800;color:var(--ink);text-decoration:none;background:var(--bg2);border-radius:999px;padding:8px 14px;margin:4px 0 10px}
 .vl-link svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 
+.later-row{margin-top:10px}.later-b{font-size:.88rem}.later-b.on{border-color:#c2255c;color:#c2255c;background:#fff0f6}
+
 /* App-Rahmen: Zurück zur Modul-Übersicht (nur sichtbar, wenn das Modul in der Lern-App läuft) */
 .appback{flex:none;width:38px;height:38px;border-radius:12px;border:1.5px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
 .appback:hover{border-color:var(--brand);color:var(--brand)}
@@ -487,6 +489,7 @@ nav.tabs .tgh:first-child{margin-top:0}
   <symbol id="i-karten" viewBox="0 0 24 24"><rect x="3" y="7" width="13" height="14" rx="2.5"/><path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h8A2.5 2.5 0 0 1 21 5.5v9a2.5 2.5 0 0 1-2.5 2.5H16"/></symbol>
   <symbol id="i-verlauf" viewBox="0 0 24 24"><path d="M4 4v16h16"/><path d="M7 15l4-4 3 3 5-6"/></symbol>
   <symbol id="i-exam" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M10 14l2 2 3.5-4"/></symbol>
+  <symbol id="i-later" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4.5L6 21z"/><path d="M10 9.5h4"/></symbol>
   <symbol id="i-quiz" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.3a2.6 2.6 0 1 1 3.6 2.4c-.7.3-1.1.9-1.1 1.6v.6"/><path d="M12 17h.01"/></symbol>
   <symbol id="i-uebungen" viewBox="0 0 24 24"><path d="M4 20l1-4.5L16 4.5l3.5 3.5L8.5 19z"/><path d="M14 7l3 3"/></symbol>
   <symbol id="i-trainer" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
@@ -520,6 +523,7 @@ nav.tabs .tgh:first-child{margin-top:0}
     <a href="#trainer" style="--tc:var(--c-trainer)"><span class="ti"><svg><use href="#i-trainer"/></svg></span>Buchungstrainer</a>
     <a href="#uebungen" style="--tc:var(--c-uebungen)"><span class="ti"><svg><use href="#i-uebungen"/></svg></span>Übungen</a>
     <a href="#fragen" style="--tc:var(--c-quiz)"><span class="ti"><svg><use href="#i-quiz"/></svg></span>Alle Fragen</a>
+    <a href="#schwach" style="--tc:#c2255c"><span class="ti"><svg><use href="#i-later"/></svg></span>Kann ich noch nicht</a>
     <a href="#formeln" style="--tc:var(--c-formeln)"><span class="ti"><svg><use href="#i-formeln"/></svg></span>Formeln</a>
     <div class="tgh">Prüfungen</div>
     <a href="#pruefung" style="--tc:#e03131"><span class="ti"><svg><use href="#i-exam"/></svg></span>Probeprüfungen</a>
@@ -585,6 +589,7 @@ nav.tabs .tgh:first-child{margin-top:0}
     <a class="tile wide" href="#spiele" style="--tc:var(--c-spiele)"><span class="new">NEU</span><span class="ico"><svg><use href="#i-spiele"/></svg></span><span><small>4 Spiele</small><b>Konten sortieren, Geldflüsse legen, Bilanz-Waage</b></span><span class="meta" id="home-sp">Highscore: noch keiner</span></a>
     <a class="tile" href="#karten" style="--tc:var(--c-karten)"><span class="ico"><svg><use href="#i-karten"/></svg></span><span><small>Begriffe</small><b>Karteikarten</b></span><span class="meta" id="home-fc">Begriffe abfragen</span><span class="bar"><i id="hb-fc"></i></span></a>
     <a class="tile" href="#fragen" style="--tc:var(--c-quiz)"><span class="ico"><svg><use href="#i-quiz"/></svg></span><span><small>Frei üben</small><b>Alle Fragen</b></span><span class="meta" id="home-quiz">mit Bildern, ohne Druck</span></a>
+    <a class="tile" href="#schwach" style="--tc:#c2255c"><span class="ico"><svg><use href="#i-later"/></svg></span><span><small>Deine Baustellen</small><b>Kann ich noch nicht</b></span><span class="meta" id="home-later">Fragen, die du dir merkst</span></a>
     <a class="tile" href="#trainer" style="--tc:var(--c-trainer)"><span class="ico"><svg><use href="#i-trainer"/></svg></span><span><small>Soll an Haben</small><b>Buchungstrainer</b></span><span class="meta" id="home-tr">Buchungssätze bilden</span><span class="bar"><i id="hb-tr"></i></span></a>
     <a class="tile" href="#uebungen" style="--tc:var(--c-uebungen)"><span class="ico"><svg><use href="#i-uebungen"/></svg></span><span><small>Arbeitsblätter</small><b>Übungen 1 bis 10</b></span><span class="meta">mit Lösungen und Zusatzfällen</span></a>
     <a class="tile" href="#formeln" style="--tc:var(--c-formeln)"><span class="ico"><svg><use href="#i-formeln"/></svg></span><span><small>Zum Wiederholen</small><b>Formeln und Paragrafen</b></span><span class="meta">alles auf einer Seite</span></a>
@@ -1315,6 +1320,12 @@ nav.tabs .tgh:first-child{margin-top:0}
 </section>
 
 <!-- ================= ALLE FRAGEN ================= -->
+<section id="v-schwach" data-view="schwach" hidden style="--c:#c2255c">
+  <div class="vhero"><span class="ico"><svg><use href="#i-later"/></svg></span><div><div class="eyebrow">Deine Baustellen</div><h2>Kann ich noch nicht</h2></div></div>
+  <p class="muted">Hier landen Fragen, die du falsch beantwortet oder auf später verschoben hast, auch aus den Probeprüfungen. Wenn du eine sicher kannst, tippst du auf „Kann ich jetzt“.</p>
+  <div id="sw-box"></div>
+</section>
+
 <section id="v-fragen" data-view="fragen" hidden>
   <div class="vhero"><span class="ico"><svg><use href="#i-quiz"/></svg></span><div><div class="eyebrow">Frei üben</div><h2>Alle Fragen</h2></div></div>
   <p class="muted">Hier übst du ohne Druck. Nach jeder Antwort siehst du sofort, ob sie stimmt. Das zählt nicht für den Fortschritt.</p>
@@ -1455,7 +1466,7 @@ const CH={"00":"Überblick","01":"Einführung","02":"Bedeutung der Buchführung"
 const CHF=Object.assign({GK:"Grundlagen"},CH);
 
 /* ---------- Routing ---------- */
-const views=["start","lernen","grundkurs","kapitel","pruefung","verlauf","fragen","spiele","karten","quiz","uebungen","trainer","formeln"];
+const views=["start","lernen","schwach","grundkurs","kapitel","pruefung","verlauf","fragen","spiele","karten","quiz","uebungen","trainer","formeln"];
 function route(){
   let v=(location.hash||"#start").slice(1), sub=null;
   const mm=v.match(/^kapitel-(0[0-5])$/); if(mm){v="kapitel";sub=mm[1]}
@@ -1470,6 +1481,7 @@ function route(){
   if(v==="pruefung"){ if(pm){ examStart(pm[1].toUpperCase()); try{history.replaceState(null,"","#pruefung")}catch(e){} } else examList(); }
   if(v==="fragen" && !FQ.deck.length) fragenInit();
   if(v==="verlauf") verlaufShow();
+  if(v==="schwach") swInit();
 }
 window.addEventListener("hashchange",route);
 
@@ -2935,6 +2947,7 @@ function examShow(){const R=EX_RUN,q=R.qs[R.i],box=$("#ex-box"),last=R.i===R.qs.
   const p=$("#ex-prev");if(p)p.onclick=()=>{R.i--;exSave();examShow()};
   const ea=$("#ex-early");if(ea)ea.onclick=()=>{const c=$("#ex-confirm");c.innerHTML=`<div class="fb no"><b>Wirklich abgeben?</b> ${open?`${open} Fragen sind noch offen und zählen als falsch.`:"Alle Fragen sind beantwortet."}<div class="row-btns"><button class="btn" type="button" id="ex-yes">Ja, abgeben</button><button class="btn ghost" type="button" id="ex-no">Weiter prüfen</button></div></div>`;$("#ex-yes").onclick=()=>examEnd();$("#ex-no").onclick=()=>{c.innerHTML=""}}}
 function examEnd(){const R=EX_RUN;if(!R)return;clearInterval(R.timer);EX_RUN=null;store.set(RUNKEY,null);exLock(false);
+  R.qs.forEach((q,i)=>{if(R.ans[i]!==q.a)laterSet(q,true)});
   const n=R.qs.length,ok=R.qs.filter((q,i)=>R.ans[i]===q.a).length,passed=ok/n>=PASS,s=exStore(),old=s[R.e.id]||{};
   const hist=(old.hist||[]).concat([{t:Date.now(),ok,n}]).slice(-60);
   s[R.e.id]={best:Math.max(ok,old.best||0),n,passed:passed||!!old.passed,last:ok,date:new Date().toISOString().slice(0,10),hist};store.set("bf-exams",s);homeStats();
@@ -2942,7 +2955,7 @@ function examEnd(){const R=EX_RUN;if(!R)return;clearInterval(R.timer);EX_RUN=nul
   $("#ex-box").innerHTML=`<div class="exres ${passed?"ok":"no"}"><div class="exscore">${ok}<small>/${n}</small></div><div><h3>${passed?"Bestanden!":"Noch nicht bestanden"}</h3><p>${pct} % richtig${diff!=null?` (${diff>=0?"+":""}${diff} Punkte zum letzten Versuch)`:""}. ${passed?"Der Haken im Lernpfad ist gesetzt.":`Ab ${Math.round(PASS*100)} % ist es geschafft. Schau dir unten die Fehler an und versuch es nochmal.`}</p>
   <div class="row-btns"><button class="btn" type="button" id="ex-again">Nochmal</button><a class="btn ghost" href="#start">Zum Lernpfad</a><button class="btn ghost" type="button" id="ex-all">Alle Prüfungen</button></div></div></div>
   ${histBlock(R.e.id)}
-  <h3>Auswertung</h3><div class="exrev">${R.qs.map((q,i)=>{const r=R.ans[i]===q.a;return `<details class="exq ${r?"ok":"no"}"${r?"":" open"}><summary><span class="exmark">${r?"✓":"✗"}</span><span>${strip(q.q).slice(0,110)}</span></summary><div class="exa">${q.img}${!r?`<p>Deine Antwort: ${R.ans[i]!=null?q.o[R.ans[i]]:"<i>keine</i>"}</p>`:""}<p><b>Richtig:</b> ${q.o[q.a]}</p><div class="small muted">${q.e}</div></div></details>`}).join("")}</div>`;
+  <h3>Auswertung</h3><p class="muted small">Falsch beantwortete Fragen stehen jetzt unter <a href="#schwach">Kann ich noch nicht</a>.</p><div class="exrev">${R.qs.map((q,i)=>{const r=R.ans[i]===q.a;return `<details class="exq ${r?"ok":"no"}"${r?"":" open"}><summary><span class="exmark">${r?"✓":"✗"}</span><span>${strip(q.q).slice(0,110)}</span></summary><div class="exa">${q.img}${!r?`<p>Deine Antwort: ${R.ans[i]!=null?q.o[R.ans[i]]:"<i>keine</i>"}</p>`:""}<p><b>Richtig:</b> ${q.o[q.a]}</p><div class="small muted">${q.e}</div></div></details>`}).join("")}</div>`;
   $("#ex-again").onclick=()=>examStart(R.e.id);$("#ex-all").onclick=()=>examList();window.scrollTo(0,0)}
 /* Verlauf: Liste aller Versuche und Kurve der eigenen Steigerung */
 function histBlock(id){const e=EXAMS.find(x=>x.id===id),h=((exStore()[id]||{}).hist)||[];if(!h.length)return "";
@@ -2988,11 +3001,32 @@ function fragenInit(){const chs=[["all","Alle"],["GK","Grundlagen"]].concat(["01
 function fragenDeck(){FQ.deck=shuffle(POOL.filter(q=>FQ.f==="all"||q.ch===FQ.f));FQ.i=0;FQ.ok=0;FQ.done=0;fragenShow()}
 function fragenShow(){const q0=FQ.deck[FQ.i%FQ.deck.length],order=shuffle(q0.o.map((_,i)=>i)),q=Object.assign({},q0,{o:order.map(i=>q0.o[i]),a:order.indexOf(q0.a)});
   $("#fq-box").innerHTML=`<div class="exhud"><span class="pill" style="--pc:${CHC(q.ch)}">${CHN[q.ch]}</span><span class="pill">${FQ.deck.length} Fragen</span><span class="pill">${FQ.ok} von ${FQ.done} richtig</span></div>
-  <div class="task qcard"><p class="mq">${q.q}</p>${q.img}<div class="opts">${q.o.map((o,i)=>`<button class="opt" type="button" data-i="${i}">${o}</button>`).join("")}</div><div id="fq-fb"></div></div>`;
-  $("#fq-box").querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const i=+b.dataset.i,ok=i===q.a;FQ.done++;if(ok)FQ.ok++;
+  <div class="task qcard"><p class="mq">${q.q}</p>${q.img}<div class="opts">${q.o.map((o,i)=>`<button class="opt" type="button" data-i="${i}">${o}</button>`).join("")}</div><div id="fq-fb"></div><div class="row-btns later-row">${laterBtn(q0)}</div></div>`;
+  laterWire($("#fq-box"),q0);
+  $("#fq-box").querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const i=+b.dataset.i,ok=i===q.a;FQ.done++;if(ok)FQ.ok++;if(!ok){laterSet(q0,true);const lb=$("#fq-box [data-later]");if(lb){lb.classList.add("on");lb.textContent="✓ Gemerkt"}}
     $("#fq-box").querySelectorAll(".opt").forEach((x,j)=>{x.disabled=true;if(j===q.a)x.classList.add("right");else if(j===i)x.classList.add("wrong")});
     $("#fq-fb").innerHTML=`<div class="fb ${ok?"ok":"no"}"><b>${ok?"Richtig.":"Leider falsch."}</b> ${q.e}</div><div class="row-btns"><button class="btn" type="button" id="fq-next">Nächste Frage</button></div>`;
     $("#fq-next").onclick=()=>{FQ.i++;fragenShow()}})}
+
+/* Kann ich noch nicht: gemerkte und falsch beantwortete Fragen (bf-later) */
+const qid=q=>{let h=0;for(const c of strip(q.q))h=(h*31+c.charCodeAt(0))|0;return "q"+(h>>>0).toString(36)};
+const later=()=>store.get("bf-later",[]);
+function laterSet(q,on){const id=qid(q);let l=later().filter(x=>x!==id);if(on)l.push(id);store.set("bf-later",l);laterBadge()}
+function laterBadge(){const n=later().length,el=document.getElementById("home-later");if(el)el.textContent=n?`${n} ${n===1?"Frage":"Fragen"} zum Wiederholen`:"Fragen, die du dir merkst"}
+function laterBtn(q){const on=later().includes(qid(q));return `<button class="btn ghost later-b${on?" on":""}" type="button" data-later>${on?"✓ Gemerkt":"Kann ich noch nicht"}</button>`}
+function laterWire(box,q){const b=box.querySelector("[data-later]");if(!b)return;b.onclick=()=>{const on=!later().includes(qid(q));laterSet(q,on);b.classList.toggle("on",on);b.textContent=on?"✓ Gemerkt":"Kann ich noch nicht"}}
+let SW={deck:[],i:0};
+function swInit(){const l=later();SW.deck=shuffle(POOL.filter(q=>l.includes(qid(q))));SW.i=0;swShow()}
+function swShow(){const box=$("#sw-box");
+  if(!SW.deck.length){box.innerHTML=`<div class="task"><p><b>Gerade nichts offen.</b></p><p class="muted">Beantwortest du in „Alle Fragen“ oder in einer Probeprüfung etwas falsch, oder tippst du auf „Kann ich noch nicht“, taucht die Frage hier auf.</p><div class="row-btns"><a class="btn" href="#fragen">Zu allen Fragen</a></div></div>`;return}
+  if(SW.i>=SW.deck.length){const n=later().length;box.innerHTML=`<div class="task"><p><b>Runde geschafft.</b> ${n?`Noch ${n} ${n===1?"Frage":"Fragen"} auf deiner Liste.`:"Deine Liste ist leer."}</p><div class="row-btns">${n?'<button class="btn" type="button" id="sw-again">Nochmal durchgehen</button>':""}<a class="btn ghost" href="#lernen">Zu Lernen und Üben</a></div></div>`;const a=$("#sw-again");if(a)a.onclick=swInit;return}
+  const q0=SW.deck[SW.i],order=shuffle(q0.o.map((_,i)=>i)),q=Object.assign({},q0,{o:order.map(i=>q0.o[i]),a:order.indexOf(q0.a)});
+  box.innerHTML=`<div class="exhud"><span class="pill" style="--pc:${CHC(q.ch)}">${CHN[q.ch]}</span><span class="pill">Frage ${SW.i+1} von ${SW.deck.length}</span></div>
+  <div class="task qcard"><p class="mq">${q.q}</p>${q.img}<div class="opts">${q.o.map((o,i)=>`<button class="opt" type="button" data-i="${i}">${o}</button>`).join("")}</div><div id="sw-fb"></div></div>`;
+  box.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const i=+b.dataset.i,ok=i===q.a;
+    box.querySelectorAll(".opt").forEach((x,j)=>{x.disabled=true;if(j===q.a)x.classList.add("right");else if(j===i)x.classList.add("wrong")});
+    $("#sw-fb").innerHTML=`<div class="fb ${ok?"ok":"no"}"><b>${ok?"Richtig.":"Leider falsch."}</b> ${q.e}</div><div class="row-btns">${ok?'<button class="btn" type="button" id="sw-know">Kann ich jetzt ✓</button>':""}<button class="btn${ok?" ghost":""}" type="button" id="sw-next">${ok?"Bleibt auf der Liste":"Nächste Frage"}</button></div>`;
+    const k=$("#sw-know");if(k)k.onclick=()=>{laterSet(q0,false);SW.i++;swShow()};$("#sw-next").onclick=()=>{SW.i++;swShow()}})}
 /* Lernpfad */
 const PATH=[{id:"GK",t:"Grundlagen",s:"Grundkurs mit 12 Lektionen",learn:"#grundkurs"}].concat(["01","02","03","04","05"].map(k=>({id:k,t:`Sitzung ${k==="05"?"05-01":k}`,s:CH[k],learn:"#kapitel-"+k}))).concat([{id:"ALL",t:"Große Probeklausur",s:"alle Themen gemischt",learn:null}]);
 function renderPath(){const s=exStore(),el=$("#lp");if(!el)return;const next=PATH.find(p=>!(s[p.id]&&s[p.id].passed));
@@ -3024,7 +3058,7 @@ function homeStats(){
   $("#home-cont-t").textContent=all?"Grundkurs geschafft":gk.done.length?"Weiterlernen":"Grundkurs starten";
   $("#home-cont-s").textContent=all?"Weiter mit Kapitel 03 bis 05 und den Spielen":`Lektion ${n}: ${l?l.textContent:""}`;
   $("#home-continue").href=all?"#kapitel-05":"#grundkurs";
-  renderPath();
+  renderPath();laterBadge();
 }
 
 if(store.get(RUNKEY,null)){ try{history.replaceState(null,"","#pruefung")}catch(e){} }

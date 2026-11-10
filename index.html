@@ -36,7 +36,7 @@ svg.i{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-l
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:600;font-size:1rem}
 .logo .mk{width:32px;height:32px;flex:none}
-.streak{display:flex;align-items:center;gap:6px;background:#fff4e6;color:#b34700;border-radius:999px;padding:6px 12px 6px 9px;font-weight:800;font-size:.9rem;white-space:nowrap}
+button.streak{border:0;font:inherit;cursor:pointer}.streak{display:flex;align-items:center;gap:6px;background:#fff4e6;color:#b34700;border-radius:999px;padding:6px 12px 6px 9px;font-weight:800;font-size:.9rem;white-space:nowrap}
 .streak svg{width:18px;height:18px;color:var(--flame)}
 .hello{margin-bottom:16px}
 .chip.go{background:var(--c);color:#fff;border-color:var(--c)}
@@ -83,9 +83,9 @@ svg.i{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-l
 .topr{display:flex;align-items:center;gap:8px}
 .gear{width:38px;height:38px;border-radius:12px;border:1.5px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;color:var(--ink);flex:none}
 .gear svg{width:20px;height:20px}
-#set,#fb{position:fixed;inset:0;z-index:30;background:rgba(27,35,51,.4);display:flex;align-items:flex-end;justify-content:center}
+#set,#fb,#cal,#sem{position:fixed;inset:0;z-index:30;background:rgba(27,35,51,.4);display:flex;align-items:flex-end;justify-content:center}
 .sheet{background:#fff;width:100%;max-width:560px;max-height:88%;overflow:auto;border-radius:26px 26px 0 0;padding:18px 20px calc(24px + env(safe-area-inset-bottom,0px))}
-@media (min-width:640px){#set,#fb{align-items:center}.sheet{border-radius:26px}}
+@media (min-width:640px){#set,#fb,#cal,#sem{align-items:center}.sheet{border-radius:26px}}
 .sheet-h{display:flex;align-items:center;justify-content:space-between}
 .sheet h2{font-family:var(--f-display);font-size:1.3rem;margin:0}
 .sheet h3{font-family:var(--f-display);font-size:1rem;margin:20px 0 6px}
@@ -104,8 +104,8 @@ svg.i{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-l
 .sconf .row{display:flex;gap:8px;flex-wrap:wrap}
 .sdone{background:#dcf5e4;border-radius:14px;padding:10px 12px;font-weight:700;margin-bottom:8px;animation:rise .25s ease}
 @keyframes sheetUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
-#set:not([hidden]),#fb:not([hidden]){animation:rise .2s ease}
-#set:not([hidden]) .sheet,#fb:not([hidden]) .sheet{animation:sheetUp .32s cubic-bezier(.2,.8,.2,1)}
+#set:not([hidden]),#fb:not([hidden]),#cal:not([hidden]),#sem:not([hidden]){animation:rise .2s ease}
+#set:not([hidden]) .sheet,#fb:not([hidden]) .sheet,#cal:not([hidden]) .sheet,#sem:not([hidden]) .sheet{animation:sheetUp .32s cubic-bezier(.2,.8,.2,1)}
 /* Dunkel: die ganze App (auch das geöffnete Fach) wird umgekehrt, Farbtöne bleiben erhalten */
 html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
 /* Anmeldung mit Profil */
@@ -147,16 +147,29 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
 .sme .av{width:34px;height:34px;font-size:1rem}
 .sme b{flex:1;min-width:0}
 /* Begrüßung wie beim Einrichten eines iPhones */
-#hello{position:fixed;inset:0;z-index:50;background:#fff;display:grid;place-items:center;text-align:center;padding:24px;cursor:pointer}
-#hello.go{animation:helloOut .6s ease forwards}
-.hl-w{font-family:var(--f-display);font-weight:700;line-height:1.05;letter-spacing:-.02em}
-.hl-a{display:block;font-size:clamp(2.4rem,12.5vw,7rem);background:linear-gradient(90deg,#3b5bdb,#7048e8,#e11d74,#ee7418,#139a58,#3b5bdb);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hlIn 1s cubic-bezier(.2,.8,.2,1) both,hlFlow 4s linear infinite}
-.hl-n{display:block;font-size:clamp(2rem,9vw,4rem);color:var(--ink);margin-top:6px;animation:hlIn 1s .45s cubic-bezier(.2,.8,.2,1) both}
-.hl-s{display:block;margin-top:18px;color:var(--muted);font-family:var(--f-body);font-weight:700;font-size:1rem;letter-spacing:0;animation:hlIn .8s 1s ease both}
+#hello{position:fixed;inset:0;z-index:50;background:#fff;display:grid;place-items:center;text-align:center;padding:24px;cursor:pointer;overflow:hidden}
+#hello.go{animation:helloOut .55s cubic-bezier(.5,0,.8,.3) forwards}
+#hello.go .hl-w{animation:hlShrink .55s cubic-bezier(.5,0,.8,.3) forwards}
+.hl-w{font-family:var(--f-display);font-weight:700;line-height:1.05;letter-spacing:-.02em;display:flex;flex-direction:column;align-items:center}
+.hl-logo{width:clamp(110px,30vw,170px);height:auto;overflow:visible;animation:hlLogo .9s 1.55s cubic-bezier(.2,.8,.2,1) both}
+.hl-logo rect{transform-box:fill-box;transform-origin:center;animation:hlTile .5s cubic-bezier(.3,1.6,.5,1) both}
+.hl-logo rect:nth-of-type(2){animation-delay:.1s}.hl-logo rect:nth-of-type(3){animation-delay:.2s}.hl-logo rect:nth-of-type(4){animation:hlTile .5s .3s cubic-bezier(.3,1.6,.5,1) both,hlPop .45s 1.15s cubic-bezier(.3,1.8,.5,1)}
+.hl-logo path{stroke-dasharray:200;stroke-dashoffset:200;animation:hlCheck .45s .8s cubic-bezier(.6,0,.3,1) forwards}
+.hl-bw{display:block;margin-top:14px;font-size:clamp(1.4rem,6vw,2.2rem);color:var(--ink);animation:hlIn .6s .45s cubic-bezier(.2,.8,.2,1) both,hlAway .4s 1.5s ease forwards}
+.hl-t{display:flex;flex-direction:column;align-items:center;margin-top:0}
+.hl-a{display:block;font-size:clamp(2.4rem,12.5vw,7rem);background:linear-gradient(90deg,#3b5bdb,#7048e8,#e11d74,#ee7418,#139a58,#3b5bdb);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hlIn .8s 1.75s cubic-bezier(.2,.8,.2,1) both,hlFlow 4s linear infinite}
+.hl-n{display:block;font-size:clamp(2rem,9vw,4rem);color:var(--ink);margin-top:6px;animation:hlIn .8s 2s cubic-bezier(.2,.8,.2,1) both}
+.hl-s{display:block;margin-top:18px;color:var(--muted);font-family:var(--f-body);font-weight:700;font-size:1rem;letter-spacing:0;animation:hlIn .7s 2.3s ease both}
+@keyframes hlTile{from{transform:scale(0);opacity:0}to{transform:none;opacity:1}}
+@keyframes hlCheck{to{stroke-dashoffset:0}}
+@keyframes hlPop{50%{transform:scale(1.18)}}
+@keyframes hlLogo{to{transform:scale(.62) translateY(-8%)}}
+@keyframes hlAway{to{opacity:0;transform:translateY(-6px);height:0;margin:0}}
+@keyframes hlShrink{to{transform:scale(.35);opacity:0}}
 @keyframes hlIn{from{opacity:0;transform:translateY(18px) scale(.96);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
 @keyframes hlFlow{to{background-position:300% 0}}
-@keyframes helloOut{to{opacity:0;transform:scale(1.06)}}
-@media (prefers-reduced-motion:reduce){.hl-a,.hl-n,.hl-s,#hello.go{animation:none!important}}
+@keyframes helloOut{60%{opacity:1}to{opacity:0}}
+@media (prefers-reduced-motion:reduce){.hl-a,.hl-n,.hl-s,.hl-bw,.hl-logo,.hl-logo rect,.hl-logo path,#hello.go,#hello.go .hl-w{animation:none!important}.hl-logo path{stroke-dashoffset:0}.hl-bw{display:none}}
 /* Übergänge */
 @keyframes slideIn{from{transform:translateX(100%)}to{transform:none}}
 @keyframes slideOut{from{transform:none}to{transform:translateX(100%)}}
@@ -182,6 +195,21 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
 
 @media (max-width:380px){.tile{padding:14px;min-height:176px}.tile .ico{width:48px;height:48px}.tile b{font-size:1.05rem}}
 @media (prefers-reduced-motion:reduce){.tile,.bar i{transition:none}}
+
+/* Lernkalender */
+.cal-st{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:4px 0 14px}.cal-st div{background:#fff4e6;border-radius:14px;padding:10px;text-align:center}.cal-st b{display:block;font-size:1.35rem;font-family:var(--f-display);color:#b34700}.cal-st span{font-size:.78rem;color:var(--muted);font-weight:700}
+.cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}.cal-h b{font-family:var(--f-display);font-size:1.1rem}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}.cal-g .wd{font-size:.72rem;font-weight:800;color:var(--muted);padding-bottom:2px}
+.cal-g .d{aspect-ratio:1;border-radius:12px;display:grid;place-items:center;font-weight:800;font-size:.9rem;background:var(--bg2);color:var(--muted);position:relative}
+.cal-g .d.on{background:linear-gradient(160deg,#ffb15c,#ee7418);color:#fff}.cal-g .d.miss{background:#fde4e4;color:#dc2626}.cal-g .d.fut{background:transparent;color:#c3cad6}
+.cal-g .d.today{box-shadow:0 0 0 2.5px var(--ink) inset}.cal-g .d.on.today{box-shadow:0 0 0 2.5px #7a2e00 inset}
+.cal-lg{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:.82rem;color:var(--muted);font-weight:700}.cal-lg i{display:inline-block;width:12px;height:12px;border-radius:4px;vertical-align:-1px;margin-right:5px}
+/* Semester */
+.hello .semb{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font:inherit;font-weight:800;color:var(--muted);cursor:pointer;margin-top:6px}
+.hello .semb svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.sem-l{list-style:none;margin:0;padding:0;display:grid;gap:8px}.sem-l li{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:14px;padding:11px 14px}
+.sem-l li.cur{border-color:#3b5bdb;background:#eef2ff}.sem-l li.soon{opacity:.6;background:var(--bg2)}.sem-l li b{flex:1}.sem-l small{font-weight:800;font-size:.78rem;color:var(--muted)}.sem-l li.cur small{color:#3b5bdb}
+.sem-l .fx{display:block;font-weight:600;font-size:.8rem;color:var(--muted)}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -197,11 +225,11 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
 <div class="wrap">
   <div class="top">
     <div class="logo"><svg class="mk" viewBox="76 76 360 360" aria-hidden="true"><rect x="76" y="76" width="166" height="166" rx="40" fill="#3b5bdb"/><rect x="270" y="76" width="166" height="166" rx="40" fill="#ee7418"/><rect x="76" y="270" width="166" height="166" rx="40" fill="#139a58"/><rect x="270" y="270" width="166" height="166" rx="40" fill="#7048e8"/><path d="M310 356l38 36 62-74" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg>BWIssen</div>
-    <div class="topr"><button type="button" class="me" id="me" hidden aria-label="Profil"><span class="av" id="me-av">?</span><span id="me-n"></span></button><div class="streak" id="streak" title="Tage in Folge gelernt"><svg class="i"><use href="#i-flame"/></svg><span id="streak-n">1 Tag</span></div><button type="button" class="gear" id="set-open" aria-label="Einstellungen"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></div>
+    <div class="topr"><button type="button" class="me" id="me" hidden aria-label="Profil"><span class="av" id="me-av">?</span><span id="me-n"></span></button><button type="button" class="streak" id="streak" title="Lernkalender öffnen" aria-label="Lernserie, Kalender öffnen"><svg class="i"><use href="#i-flame"/></svg><span id="streak-n">1 Tag</span></button><button type="button" class="gear" id="set-open" aria-label="Einstellungen"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></div>
   </div>
   <div class="hello">
     <h1>Deine Fächer</h1>
-    <p>Wintersemester 2026/27</p>
+    <button type="button" class="semb" id="sem-open">Wintersemester 2026/27<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
   </div>
   <div class="grid" id="grid"></div>
   <button type="button" class="fbk" id="fb-open"><span class="ic"><svg class="i"><use href="#i-msg"/></svg></span><span><b>Fehler gefunden oder eine Idee?</b><small>Sag kurz Bescheid, damit BWIssen besser wird.</small></span></button>
@@ -209,6 +237,18 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
   <p class="sync" id="sync">Dein Fortschritt wird auf diesem Gerät gespeichert.</p>
 </div>
 
+<div id="cal" hidden role="dialog" aria-modal="true" aria-labelledby="cal-h">
+  <div class="sheet">
+    <div class="sheet-h"><h2 id="cal-h">Deine Lerntage</h2><button type="button" class="gear" id="cal-close" aria-label="Schließen"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div id="cal-box"></div>
+  </div>
+</div>
+<div id="sem" hidden role="dialog" aria-modal="true" aria-labelledby="sem-h">
+  <div class="sheet">
+    <div class="sheet-h"><h2 id="sem-h">Semester</h2><button type="button" class="gear" id="sem-close" aria-label="Schließen"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <ul class="sem-l" id="sem-l"></ul>
+  </div>
+</div>
 <div id="set" hidden role="dialog" aria-modal="true" aria-labelledby="set-h">
   <div class="sheet">
     <div class="sheet-h"><h2 id="set-h">Einstellungen</h2><button type="button" class="gear" id="set-close" aria-label="Schließen"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
@@ -239,7 +279,7 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
     </div>
   </div>
 </div>
-<div id="hello" hidden aria-live="polite"><div class="hl-w"><span class="hl-a" id="hl-a">Hallo</span><span class="hl-n" id="hl-n"></span><span class="hl-s" id="hl-s">Schön, dass du da bist.</span></div></div>
+<div id="hello" hidden aria-live="polite"><div class="hl-w"><svg class="hl-logo" viewBox="76 76 360 360" aria-hidden="true"><rect x="76" y="76" width="166" height="166" rx="40" fill="#3b5bdb"/><rect x="270" y="76" width="166" height="166" rx="40" fill="#ee7418"/><rect x="76" y="270" width="166" height="166" rx="40" fill="#139a58"/><rect x="270" y="270" width="166" height="166" rx="40" fill="#7048e8"/><path d="M310 356l38 36 62-74" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="hl-bw">BWIssen</span><span class="hl-t"><span class="hl-a" id="hl-a">Hallo</span><span class="hl-n" id="hl-n"></span><span class="hl-s" id="hl-s">Schön, dass du da bist.</span></span></div></div>
 <div id="gate" hidden role="dialog" aria-modal="true" aria-labelledby="gt-h">
   <div class="lg-card">
     <div class="lg-logo" id="gt-logo"></div>
@@ -289,7 +329,7 @@ const MODULES=[
    waitText:"Für VWL fehlt noch die Datei vwl-lernpaket.html. Sobald sie hochgeladen ist, wird das Modul gebaut."},
   {id:"bauphysik",prefix:"bp-",name:"Bauphysik",sub:"Wärme- und Feuchtelehre",color:"#139a58",icon:"i-thermo",file:null,exam:"2027-01-25",
    waitText:"Für Bauphysik fehlen noch drei Dateien: lernwerkstatt-inhalte.json, lernwerkstatt-referenz.html und Lernpaket_Bauphysik.pdf. Sobald sie hochgeladen sind, wird das Modul gebaut."},
-  {id:"modul-4",name:"Fach 4",sub:"kommt bald",soon:true}
+  {id:"baustoffkunde",name:"Baustoffkunde",sub:"kommt bald",soon:true}
 ];
 
 const $=s=>document.querySelector(s);
@@ -298,7 +338,7 @@ function tile(m){
   b.style.setProperty("--c",m.color||"#9aa3b5");
   b.innerHTML=`<span class="ico"><svg class="i"><use href="#${m.icon||"i-plus"}"/></svg></span>
     <span><b>${m.name}</b><small>${m.sub||""}</small>${m.exam?`<span class="exam">Klausur am ${fmtDate(m.exam)}</span>`:""}</span>
-    <span class="foot">${m.file?`<span class="chip go">Öffnen</span>`:`<span class="chip">${m.soon?"Platz frei":"Inhalte folgen"}</span>`}</span>`;
+    <span class="foot">${m.file?`<span class="chip go">Öffnen</span>`:`<span class="chip">${m.soon?"kommt bald":"Inhalte folgen"}</span>`}</span>`;
   if(m.soon){b.setAttribute("aria-disabled","true");b.tabIndex=-1}
   else b.onclick=()=>{location.hash=m.id};
   return b;
@@ -331,7 +371,7 @@ window.addEventListener("hashchange",()=>ready.then(()=>{if(ME)route()}));
 /* Lernserie: Tage in Folge, an denen die App geöffnet wurde */
 function streak(){
   const d=new Date(),key=x=>x.toISOString().slice(0,10),today=key(d);
-  let days=store.get("app-days",[]);if(!days.includes(today)){days.push(today);days=days.slice(-60);store.set("app-days",days)}
+  let days=store.get("app-days",[]);if(!days.includes(today)){days.push(today);days=days.slice(-800);store.set("app-days",days)}
   let n=0;const c=new Date(d);while(days.includes(key(c))){n++;c.setDate(c.getDate()-1)}
   $("#streak-n").textContent=n+(n===1?" Tag":" Tage");
 }
@@ -382,6 +422,32 @@ function setRender(){
       all.querySelector("[data-n]").onclick=setRender;
       $("#set-all-3").onclick=()=>{const t=store.get("app-theme","light");wipe(LIVE_RX);store.set("app-theme",t);
         try{localStorage.setItem("app-days",JSON.stringify([new Date().toISOString().slice(0,10)]))}catch(e){}streak();profSave();push();all.innerHTML=`<div class="sdone">Alles ist zurückgesetzt. Du startest wieder bei null.</div>`}}}}
+
+/* Lernkalender: Tage mit Lernen (app-days), verpasste Tage seit dem ersten Lerntag */
+let CALM=null;
+function calRender(){const days=new Set(store.get("app-days",[])),key=x=>x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0"),iso=x=>x.toISOString().slice(0,10);
+  const now=new Date(),today=iso(now),sorted=[...days].sort(),first=sorted[0]||today;
+  if(!CALM)CALM=new Date(now.getFullYear(),now.getMonth(),1);
+  let cur=0;const c=new Date(now);while(days.has(iso(c))){cur++;c.setDate(c.getDate()-1)}
+  let best=0,run=0,prev=null;sorted.forEach(d=>{const t=new Date(d+"T12:00:00Z");run=prev&&(t-prev)/864e5<1.5?run+1:1;best=Math.max(best,run);prev=t});
+  const y=CALM.getFullYear(),m=CALM.getMonth(),n=new Date(y,m+1,0).getDate(),off=(new Date(y,m,1).getDay()+6)%7;
+  let cells=["Mo","Di","Mi","Do","Fr","Sa","So"].map(w=>`<span class="wd">${w}</span>`).join("")+"<span></span>".repeat(off);
+  for(let d=1;d<=n;d++){const k=key(new Date(y,m,d)),on=days.has(k),fut=k>today,miss=!on&&!fut&&k>=first&&k<today;
+    cells+=`<span class="d${on?" on":""}${miss?" miss":""}${fut?" fut":""}${k===today?" today":""}" title="${on?"gelernt":miss?"nicht gelernt":""}">${d}</span>`}
+  const ml=CALM.toLocaleDateString("de-DE",{month:"long",year:"numeric"}),canNext=new Date(y,m+1,1)<=now,canPrev=new Date(y,m,1)>new Date(first.slice(0,7)+"-01T00:00:00");
+  $("#cal-box").innerHTML=`<div class="cal-st"><div><b>${cur}</b><span>Tage in Folge</span></div><div><b>${best}</b><span>längste Serie</span></div><div><b>${days.size}</b><span>Lerntage</span></div></div>
+  <div class="cal-h"><button type="button" class="sbtn" id="cal-p" ${canPrev?"":"disabled"} aria-label="Voriger Monat">←</button><b>${ml}</b><button type="button" class="sbtn" id="cal-n" ${canNext?"":"disabled"} aria-label="Nächster Monat">→</button></div>
+  <div class="cal-g">${cells}</div>
+  <div class="cal-lg"><span><i style="background:#ee7418"></i>gelernt</span><span><i style="background:#fde4e4;border:1px solid #f3b4b4"></i>nicht gelernt</span><span><i style="box-shadow:0 0 0 2px #1b2333 inset"></i>heute</span></div>`;
+  $("#cal-p").onclick=()=>{CALM=new Date(y,m-1,1);calRender()};$("#cal-n").onclick=()=>{CALM=new Date(y,m+1,1);calRender()}}
+$("#streak").onclick=()=>{CALM=null;calRender();$("#cal").hidden=false};
+$("#cal-close").onclick=()=>{$("#cal").hidden=true};$("#cal").addEventListener("click",e=>{if(e.target.id==="cal")$("#cal").hidden=true});
+/* Semester: aktuelles plus die nächsten vier Jahre, künftige noch gesperrt */
+const SEMS=(()=>{const o=[];for(let y=2026;y<2030;y++){o.push({t:`Wintersemester ${y}/${String(y+1).slice(2)}`,cur:y===2026});o.push({t:`Sommersemester ${y+1}`})}return o})();
+$("#sem-open").onclick=()=>{const act=MODULES.filter(m=>!m.soon).map(m=>m.name).join(", ");
+  $("#sem-l").innerHTML=SEMS.map(x=>`<li class="${x.cur?"cur":"soon"}"><b>${x.t}${x.cur?`<span class="fx">${act}</span>`:`<span class="fx">Fächer kommen bald</span>`}</b><small>${x.cur?"aktuell":"kommt bald"}</small></li>`).join("");$("#sem").hidden=false};
+$("#sem-close").onclick=()=>{$("#sem").hidden=true};$("#sem").addEventListener("click",e=>{if(e.target.id==="sem")$("#sem").hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#cal").hidden=true;$("#sem").hidden=true}});
 $("#set-open").onclick=()=>{setRender();admRender();applyTheme();$("#set").hidden=false};
 $("#me").onclick=()=>$("#set-open").click();
 $("#set-close").onclick=()=>{$("#set").hidden=true};
@@ -416,9 +482,9 @@ async function pwHash(k,pw,salt){try{const enc=new TextEncoder(),key=await crypt
   const bits=await crypto.subtle.deriveBits({name:"PBKDF2",salt:enc.encode(salt+"|"+k),iterations:150000,hash:"SHA-256"},key,256);return "p2:"+[...new Uint8Array(bits)].map(b=>b.toString(16).padStart(2,"0")).join("")}
   catch(e){let h=5381;for(const c of salt+"|"+k+"|"+pw)h=((h*33)^c.charCodeAt(0))>>>0;return "s1:"+h.toString(16)}}
 function hello(name,first){const h=$("#hello");$("#hl-a").textContent=first?"Willkommen":"Hallo";$("#hl-n").textContent=name;
-  $("#hl-s").textContent=first?"Dein Profil ist angelegt. Los geht's!":["Schön, dass du da bist.","Bereit für die nächste Runde?","Weiter geht's mit dem Lernen."][Math.floor(Math.random()*3)];
-  h.classList.remove("go");h.hidden=false;let done=false;const close=()=>{if(done)return;done=true;h.classList.add("go");setTimeout(()=>{h.hidden=true;h.classList.remove("go")},RM?0:600)};
-  h.onclick=close;setTimeout(close,RM?1200:2600)}
+  const sTxt=first?"Dein Profil ist angelegt. Los geht's!":["Schön, dass du da bist.","Bereit für die nächste Runde?","Weiter geht's mit dem Lernen."][Math.floor(Math.random()*3)];$("#hl-s").textContent=sTxt;
+  h.classList.remove("go");h.hidden=false;{const w=h.querySelector(".hl-w"),c=w.cloneNode(true);w.replaceWith(c);$("#hl-a").textContent=first?"Willkommen":"Hallo";$("#hl-n").textContent=name;$("#hl-s").textContent=sTxt}let done=false;const close=()=>{if(done)return;done=true;h.classList.add("go");setTimeout(()=>{h.hidden=true;h.classList.remove("go")},RM?0:600)};
+  h.onclick=close;setTimeout(close,RM?1400:3900)}
 function enter(k,keep,greet,first,inherit){const live=store.get("prof-live",null);
   if(live&&live!==k)store.set("prof-data:"+live,liveSnap());
   if(live!==k&&!inherit)liveLoad(store.get("prof-data:"+k,{}));
