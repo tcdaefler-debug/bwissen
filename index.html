@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>BWIssen</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800&display=swap">
+<style>
+/* Layout: eine ruhige Startseite mit vier großen Modul-Kacheln (2×2). Ein Tipp öffnet das Modul bildschirmfüllend.
+   Gleiches Design wie das Buchführungs-Modul: bewusst nur hell, weißer Grund, jede Kachel eine eigene Farbe. */
+:root{
+  color-scheme:light;
+  --bg:#ffffff; --bg2:#f4f7fc; --ink:#1b2333; --muted:#5d6779; --line:#e2e8f1;
+  --brand:#3b5bdb; --flame:#f76707;
+  --f-display:"Lexend","Segoe UI",system-ui,sans-serif;
+  --f-body:"Nunito Sans","Segoe UI",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:var(--f-body);font-size:17px;line-height:1.5;margin:0}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(1.7rem,5vw,2.3rem);line-height:1.15;margin:0;text-wrap:balance;letter-spacing:-.01em}
+svg.i{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+:focus-visible{outline:3px solid var(--brand);outline-offset:3px}
+
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:600;font-size:1rem}
+.logo span{width:36px;height:36px;border-radius:11px;background:var(--brand);color:#fff;display:grid;place-items:center}
+.logo svg{width:20px;height:20px}
+.streak{display:flex;align-items:center;gap:6px;background:#fff4e6;color:#b34700;border-radius:999px;padding:6px 12px 6px 9px;font-weight:800;font-size:.9rem;white-space:nowrap}
+.streak svg{width:18px;height:18px;color:var(--flame)}
+.hello{margin-bottom:16px}
+.chip.go{background:var(--c);color:#fff;border-color:var(--c)}
+.sync{margin-top:8px;color:var(--muted);font-size:.82rem;text-align:center}
+.exam{display:block;font-size:.78rem;font-weight:800;color:color-mix(in srgb,var(--c) 70%,#000);margin-top:6px}
+.hello p{color:var(--muted);margin:.4rem 0 0}
+
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.tile{--c:var(--brand);position:relative;display:flex;flex-direction:column;gap:12px;text-align:left;border:0;cursor:pointer;font:inherit;color:inherit;
+  background:color-mix(in srgb,var(--c) 9%,#fff);border-radius:24px;padding:18px;min-height:190px;
+  box-shadow:0 2px 0 color-mix(in srgb,var(--c) 22%,#fff);transition:transform .15s ease,box-shadow .15s ease}
+.tile:hover{transform:translateY(-2px);box-shadow:0 6px 18px -8px color-mix(in srgb,var(--c) 60%,#fff)}
+.tile:active{transform:translateY(0)}
+.tile .ico{width:56px;height:56px;border-radius:17px;background:var(--c);color:#fff;display:grid;place-items:center;box-shadow:0 6px 14px -8px var(--c)}
+.tile .ico svg{width:30px;height:30px}
+.tile b{font-family:var(--f-display);font-weight:600;font-size:1.2rem;line-height:1.2;display:block}
+.tile small{display:block;color:var(--muted);font-size:.85rem;margin-top:2px}
+.tile .foot{margin-top:auto}
+.tile .foot,.bar{display:block}
+.bar{height:8px;border-radius:99px;background:color-mix(in srgb,var(--c) 18%,#fff);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:99px;background:var(--c);transition:width .6s ease}
+.pct{display:flex;justify-content:space-between;font-size:.8rem;font-weight:800;color:color-mix(in srgb,var(--c) 70%,#000);margin-top:6px}
+.chip{display:inline-block;font-size:.78rem;font-weight:800;border-radius:999px;padding:3px 10px;background:#fff;color:var(--muted);border:1.5px solid var(--line)}
+.tile.soon{background:var(--bg2);box-shadow:none;border:2px dashed var(--line);cursor:default}
+.tile.soon:hover{transform:none;box-shadow:none}
+.tile.soon .ico{background:#fff;color:#9aa3b5;box-shadow:none;border:2px dashed var(--line)}
+.tile.wait .ico{opacity:.9}
+
+.note{margin-top:22px;color:var(--muted);font-size:.9rem;text-align:center}
+
+/* Modul-Ansicht */
+#frame{position:fixed;inset:0;z-index:20;background:var(--bg);padding-top:env(safe-area-inset-top,0px)}
+/* Einstellungen */
+.topr{display:flex;align-items:center;gap:8px}
+.gear{width:38px;height:38px;border-radius:12px;border:1.5px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;color:var(--ink);flex:none}
+.gear svg{width:20px;height:20px}
+#set{position:fixed;inset:0;z-index:30;background:rgba(27,35,51,.4);display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:#fff;width:100%;max-width:560px;max-height:88%;overflow:auto;border-radius:26px 26px 0 0;padding:18px 20px calc(24px + env(safe-area-inset-bottom,0px))}
+@media (min-width:640px){#set{align-items:center}.sheet{border-radius:26px}}
+.sheet-h{display:flex;align-items:center;justify-content:space-between}
+.sheet h2{font-family:var(--f-display);font-size:1.3rem;margin:0}
+.sheet h3{font-family:var(--f-display);font-size:1rem;margin:20px 0 6px}
+.hint{color:var(--muted);font-size:.88rem;margin:0 0 10px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--bg2);border-radius:14px;padding:4px}
+.seg button{border:0;background:none;font:inherit;font-weight:800;border-radius:11px;padding:9px;cursor:pointer;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(27,35,51,.15)}
+.srow{display:flex;align-items:center;gap:10px;background:var(--bg2);border-radius:14px;padding:10px 12px;margin-bottom:8px}
+.srow b{flex:1;min-width:0}
+.sbtn{border:1.5px solid var(--line);background:#fff;border-radius:11px;font:inherit;font-weight:800;font-size:.9rem;padding:7px 12px;cursor:pointer;color:var(--ink)}
+.sbtn.red{background:#dc2626;border-color:#dc2626;color:#fff}
+.sbtn.redo{color:#dc2626;border-color:#dc2626;background:#fff5f5}
+.sbtn.wide{width:100%;padding:11px}
+.sconf{background:#fde4e4;border-radius:14px;padding:12px;margin-bottom:8px;animation:rise .25s ease}
+.sconf p{margin:0 0 10px;font-weight:700}
+.sconf .row{display:flex;gap:8px;flex-wrap:wrap}
+.sdone{background:#dcf5e4;border-radius:14px;padding:10px 12px;font-weight:700;margin-bottom:8px;animation:rise .25s ease}
+@keyframes sheetUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+#set:not([hidden]){animation:rise .2s ease}
+#set:not([hidden]) .sheet{animation:sheetUp .32s cubic-bezier(.2,.8,.2,1)}
+/* Dunkel: die ganze App (auch das geöffnete Fach) wird umgekehrt, Farbtöne bleiben erhalten */
+html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
+/* Übergänge */
+@keyframes slideIn{from{transform:translateX(100%)}to{transform:none}}
+@keyframes slideOut{from{transform:none}to{transform:translateX(100%)}}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+#frame{box-shadow:-20px 0 40px -20px rgba(27,35,51,.35)}
+#frame.in{animation:slideIn .38s cubic-bezier(.2,.8,.2,1)}
+#frame.out{animation:slideOut .3s cubic-bezier(.4,0,.8,.4) forwards}
+.wrap.behind{transition:transform .38s cubic-bezier(.2,.8,.2,1),opacity .38s;transform:translateX(-12%);opacity:.6}
+.wrap{transition:transform .3s ease,opacity .3s}
+.grid .tile{animation:rise .45s cubic-bezier(.2,.8,.2,1) both}
+.grid .tile:nth-child(2){animation-delay:.05s}.grid .tile:nth-child(3){animation-delay:.1s}.grid .tile:nth-child(4){animation-delay:.15s}
+.tile:active{transform:scale(.97)!important}
+#wait:not([hidden]){animation:rise .2s ease}
+#wait:not([hidden]) .card{animation:pop .28s cubic-bezier(.2,.8,.2,1)}
+@media (prefers-reduced-motion:reduce){#frame.in,#frame.out,.grid .tile,#wait .card{animation:none!important}.wrap.behind{transform:none}}
+#frame iframe{border:0;width:100%;height:100%;display:block;background:var(--bg)}
+#wait{position:fixed;inset:0;z-index:21;background:rgba(27,35,51,.35);display:grid;place-items:center;padding:16px}
+#wait .card{background:#fff;border-radius:24px;padding:22px;max-width:380px;width:100%;box-shadow:0 20px 40px -20px rgba(0,0,0,.4)}
+#wait .card h2{font-family:var(--f-display);font-size:1.25rem;margin:0 0 6px}
+#wait .card p{margin:0 0 16px;color:var(--muted)}
+#wait button{border:0;border-radius:14px;background:var(--brand);color:#fff;font:inherit;font-weight:800;padding:10px 18px;cursor:pointer}
+
+@media (max-width:380px){.tile{padding:14px;min-height:176px}.tile .ico{width:48px;height:48px}.tile b{font-size:1.05rem}}
+@media (prefers-reduced-motion:reduce){.tile,.bar i{transition:none}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></symbol>
+  <symbol id="i-konto" viewBox="0 0 24 24"><path d="M3 6h18M12 6v14"/><path d="M5 10h4M5 13.5h3M15 10h4M15 13.5h3"/></symbol>
+  <symbol id="i-markt" viewBox="0 0 24 24"><path d="M4 3v18h17"/><path d="M7 6l11 11M7 17L18 6"/><circle cx="12.5" cy="11.5" r="1.3"/></symbol>
+  <symbol id="i-thermo" viewBox="0 0 24 24"><path d="M10 13.5V5a2 2 0 0 1 4 0v8.5a4 4 0 1 1-4 0z"/><path d="M12 9v6"/><path d="M18 6h3M18 10h3"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-5 1-8.5z"/></symbol>
+</svg>
+
+<div class="wrap">
+  <div class="top">
+    <div class="logo"><span><svg class="i"><use href="#i-cap"/></svg></span>BWIssen</div>
+    <div class="topr"><div class="streak" id="streak" title="Tage in Folge gelernt"><svg class="i"><use href="#i-flame"/></svg><span id="streak-n">1 Tag</span></div><button type="button" class="gear" id="set-open" aria-label="Einstellungen"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></div>
+  </div>
+  <div class="hello">
+    <h1>Deine Fächer</h1>
+    <p>Wintersemester 2026/27</p>
+  </div>
+  <div class="grid" id="grid"></div>
+  <p class="note">Weitere Fächer kommen dazu, sobald die Unterlagen da sind.</p>
+  <p class="sync" id="sync">Dein Fortschritt wird auf diesem Gerät gespeichert.</p>
+</div>
+
+<div id="set" hidden role="dialog" aria-modal="true" aria-labelledby="set-h">
+  <div class="sheet">
+    <div class="sheet-h"><h2 id="set-h">Einstellungen</h2><button type="button" class="gear" id="set-close" aria-label="Schließen"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <h3>Darstellung</h3>
+    <div class="seg" role="group" aria-label="Darstellung"><button type="button" data-theme-set="light">Hell</button><button type="button" data-theme-set="dark">Dunkel</button></div>
+    <h3>Fach zurücksetzen</h3>
+    <p class="hint">Löscht Haken, Probeprüfungen und Verlauf von einem Fach.</p>
+    <div id="set-mods"></div>
+    <h3>Alles zurücksetzen</h3>
+    <p class="hint">Löscht den Fortschritt in allen Fächern und deine Lernserie.</p>
+    <div id="set-all"></div>
+  </div>
+</div>
+<div id="frame" hidden><iframe id="mod" title="Modul"></iframe></div>
+<div id="wait" hidden role="dialog" aria-modal="true" aria-labelledby="wait-h">
+  <div class="card"><h2 id="wait-h">Fast da</h2><p id="wait-p"></p><button type="button" id="wait-ok">Alles klar</button></div>
+</div>
+
+<script>
+/* ===== Module: hier neue Module eintragen =====
+   file: Seite des Moduls (liegt neben dieser Datei). Ohne file zeigt die Kachel "Inhalte folgen".
+   progress(): liest den Lernstand des Moduls aus dem Browser-Speicher und gibt 0 bis 1 zurück. */
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const MODULES=[
+  {id:"buchfuehrung",prefix:"bf-",name:"Buchführung",sub:"und Jahresabschluss",color:"#3b5bdb",icon:"i-konto",file:"modul-buchfuehrung.html",
+   exam:null,
+   progress(){return Math.min(1,(+store.get("bf-total",0)||0)/100)}},
+  {id:"vwl",prefix:"vwl-",name:"VWL",sub:"Volkswirtschaftslehre",color:"#ee7418",icon:"i-markt",file:null,exam:null,
+   waitText:"Für VWL fehlt noch die Datei vwl-lernpaket.html. Sobald sie hochgeladen ist, wird das Modul gebaut."},
+  {id:"bauphysik",prefix:"bp-",name:"Bauphysik",sub:"Wärme- und Feuchtelehre",color:"#139a58",icon:"i-thermo",file:null,exam:"2027-01-25",
+   waitText:"Für Bauphysik fehlen noch drei Dateien: lernwerkstatt-inhalte.json, lernwerkstatt-referenz.html und Lernpaket_Bauphysik.pdf. Sobald sie hochgeladen sind, wird das Modul gebaut."},
+  {id:"modul-4",name:"Fach 4",sub:"kommt bald",soon:true}
+];
+
+const $=s=>document.querySelector(s);
+function tile(m){
+  const b=document.createElement("button");b.type="button";b.className="tile"+(m.soon?" soon":"")+(!m.file&&!m.soon?" wait":"");
+  b.style.setProperty("--c",m.color||"#9aa3b5");
+  b.innerHTML=`<span class="ico"><svg class="i"><use href="#${m.icon||"i-plus"}"/></svg></span>
+    <span><b>${m.name}</b><small>${m.sub||""}</small>${m.exam?`<span class="exam">Klausur am ${fmtDate(m.exam)}</span>`:""}</span>
+    <span class="foot">${m.file?`<span class="chip go">Öffnen</span>`:`<span class="chip">${m.soon?"Platz frei":"Inhalte folgen"}</span>`}</span>`;
+  if(m.soon){b.setAttribute("aria-disabled","true");b.tabIndex=-1}
+  else b.onclick=()=>{location.hash=m.id};
+  return b;
+}
+function daysTo(d){const t=new Date();t.setHours(0,0,0,0);return Math.max(0,Math.round((new Date(d+"T00:00:00")-t)/864e5))}
+function fmtDate(d){return new Date(d+"T00:00:00").toLocaleDateString("de-DE",{day:"numeric",month:"short"})}
+function renderHome(){const g=$("#grid");g.innerHTML="";MODULES.forEach(m=>g.appendChild(tile(m)))}
+
+function openModule(m){
+  if(!m.file){$("#wait-p").textContent=m.waitText||"Dieses Modul ist noch leer.";$("#wait").hidden=false;$("#wait-ok").focus();return}
+  const f=$("#mod");if(f.dataset.src!==m.file){f.src=m.file;f.dataset.src=m.file;f.title=m.name}
+  const fr=$("#frame");if(fr.hidden||fr.classList.contains("out")){fr.classList.remove("out");fr.hidden=false;fr.classList.remove("in");void fr.offsetWidth;fr.classList.add("in");$(".wrap").classList.add("behind")}
+  document.title=m.name+" · BWIssen";
+}
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+function closeModule(){const fr=$("#frame");document.title="BWIssen";
+  if(fr.hidden){renderHome();return}
+  $(".wrap").classList.remove("behind");renderHome();
+  if(RM){fr.hidden=true;return}
+  fr.classList.remove("in");fr.classList.add("out");
+  setTimeout(()=>{if(fr.classList.contains("out")){fr.hidden=true;fr.classList.remove("out")}},320)}
+function route(){
+  const id=location.hash.slice(1),m=MODULES.find(x=>x.id===id&&!x.soon);
+  if(m)openModule(m);else closeModule();
+}
+$("#wait-ok").onclick=()=>{$("#wait").hidden=true;history.replaceState(null,"",location.pathname+location.search);route()};
+window.addEventListener("message",e=>{if(e.data&&e.data.lernapp==="home"){location.hash="start"}});
+window.addEventListener("hashchange",()=>ready.then(route));
+
+/* Lernserie: Tage in Folge, an denen die App geöffnet wurde */
+function streak(){
+  const d=new Date(),key=x=>x.toISOString().slice(0,10),today=key(d);
+  let days=store.get("app-days",[]);if(!days.includes(today)){days.push(today);days=days.slice(-60);store.set("app-days",days)}
+  let n=0;const c=new Date(d);while(days.includes(key(c))){n++;c.setDate(c.getDate()-1)}
+  $("#streak-n").textContent=n+(n===1?" Tag":" Tage");
+}
+streak();
+
+/* Fortschritt im Konto sichern (für angemeldete Nutzer mit Schreibrecht), sonst nur auf diesem Gerät */
+const SYNC_RX=/^(bf-|app-|vwl-|bp-)/;
+function snap(){const o={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(SYNC_RX.test(k))o[k]=localStorage.getItem(k)}}catch(e){}return o}
+let SDOC=null,lastJSON="",pushing=false;
+async function push(){if(!SDOC||pushing)return;const d=snap(),j=JSON.stringify(d);if(j===lastJSON)return;pushing=true;
+  try{const at=Date.now();await SDOC.set({at,data:d});lastJSON=j;store.set("sync-at",at);$("#sync").textContent="Dein Fortschritt ist in deinem Konto gesichert, auch für iPhone und iPad."}
+  catch(e){SDOC=null;$("#sync").textContent="Dein Fortschritt wird auf diesem Gerät gespeichert."}pushing=false}
+async function syncInit(){
+  if(!window.claude||!window.claude.use)return;
+  const [db,user]=await Promise.all([window.claude.use("db"),window.claude.use("user")]);if(!db||!user)return;
+  const id=await user.id();if(!id)return;
+  const doc=db.doc("data/users/"+id+"/progress"),r=await doc.get();
+  if(r.exists){const d=r.data()||{};if((d.at||0)>(+store.get("sync-at",0)||0)&&d.data){try{Object.keys(snap()).forEach(k=>{if(!(k in d.data))localStorage.removeItem(k)});Object.entries(d.data).forEach(([k,v])=>localStorage.setItem(k,v))}catch(e){}store.set("sync-at",d.at);lastJSON=JSON.stringify(snap())}}
+  SDOC=doc;await push();if(SDOC)$("#sync").textContent="Dein Fortschritt ist in deinem Konto gesichert, auch für iPhone und iPad.";
+  setInterval(push,20000);document.addEventListener("visibilitychange",()=>{if(document.hidden)push()});
+}
+const ready=Promise.race([syncInit().catch(()=>{}),new Promise(r=>setTimeout(r,5000))]);
+window.addEventListener("message",e=>{if(e.data&&e.data.lernapp==="home")push()});
+/* Einstellungen: Darstellung und Zurücksetzen (immer mit Nachfrage, alles komplett mit doppelter Nachfrage) */
+function applyTheme(){const t=store.get("app-theme","light");document.documentElement.classList.toggle("dark",t==="dark");
+  document.querySelectorAll("[data-theme-set]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.themeSet===t))}
+document.querySelectorAll("[data-theme-set]").forEach(b=>b.onclick=()=>{store.set("app-theme",b.dataset.themeSet);applyTheme();push()});
+function wipe(rx){try{const ks=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(rx.test(k))ks.push(k)}ks.forEach(k=>localStorage.removeItem(k))}catch(e){}
+  const f=$("#mod");f.removeAttribute("src");delete f.dataset.src;push();streak();renderHome()}
+function setRender(){
+  const mods=MODULES.filter(m=>m.file&&m.prefix),box=$("#set-mods");
+  box.innerHTML=mods.map(m=>`<div data-m="${m.id}"><div class="srow"><b>${m.name}</b><button type="button" class="sbtn redo" data-reset="${m.id}">Zurücksetzen</button></div></div>`).join("")||'<p class="hint">Noch kein Fach mit Fortschritt.</p>';
+  box.querySelectorAll("[data-reset]").forEach(b=>b.onclick=()=>{const m=mods.find(x=>x.id===b.dataset.reset),w=box.querySelector(`[data-m="${m.id}"]`);
+    w.innerHTML=`<div class="sconf"><p>${m.name} wirklich zurücksetzen? Alle Haken, Probeprüfungen und der Verlauf dieses Fachs werden gelöscht.</p><div class="row"><button type="button" class="sbtn red" data-y>Ja, zurücksetzen</button><button type="button" class="sbtn" data-n>Abbrechen</button></div></div>`;
+    w.querySelector("[data-y]").onclick=()=>{wipe(new RegExp("^"+m.prefix));w.innerHTML=`<div class="sdone">${m.name} ist zurückgesetzt.</div>`};
+    w.querySelector("[data-n]").onclick=setRender});
+  const all=$("#set-all");all.innerHTML=`<button type="button" class="sbtn wide red" id="set-all-1">App komplett zurücksetzen</button>`;
+  $("#set-all-1").onclick=()=>{all.innerHTML=`<div class="sconf"><p>Möchtest du wirklich alles zurücksetzen? Der Fortschritt in allen Fächern und deine Lernserie gehen verloren.</p><div class="row"><button type="button" class="sbtn red" id="set-all-2">Ja, weiter</button><button type="button" class="sbtn" data-n>Abbrechen</button></div></div>`;
+    all.querySelector("[data-n]").onclick=setRender;
+    $("#set-all-2").onclick=()=>{all.innerHTML=`<div class="sconf"><p>Ganz sicher? Das lässt sich nicht rückgängig machen.</p><div class="row"><button type="button" class="sbtn" data-n>Nein, behalten</button><button type="button" class="sbtn red" id="set-all-3">Endgültig löschen</button></div></div>`;
+      all.querySelector("[data-n]").onclick=setRender;
+      $("#set-all-3").onclick=()=>{const t=store.get("app-theme","light");wipe(SYNC_RX);store.set("app-theme",t);
+        try{localStorage.setItem("app-days",JSON.stringify([new Date().toISOString().slice(0,10)]))}catch(e){}streak();push();all.innerHTML=`<div class="sdone">Alles ist zurückgesetzt. Du startest wieder bei null.</div>`}}}}
+$("#set-open").onclick=()=>{setRender();applyTheme();$("#set").hidden=false};
+$("#set-close").onclick=()=>{$("#set").hidden=true};
+$("#set").addEventListener("click",e=>{if(e.target.id==="set")$("#set").hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#set").hidden=true});
+applyTheme();
+renderHome();ready.then(()=>{applyTheme();streak();renderHome();route()});
+</script>
+
+</html>
