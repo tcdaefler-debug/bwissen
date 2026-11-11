@@ -321,12 +321,12 @@ html.dark #frame{filter:invert(.92) hue-rotate(180deg)}html.dark #frame,html.dar
 /* ================= Glas-Design (Liquid Glass) =================
    Echter Hell- und Dunkelmodus über Farb-Variablen, Foto im Hintergrund, Glasflächen darüber. */
 :root,html[data-th="light"]{color-scheme:light;
-  --ink:#0f1422;--muted:#4b5468;--line:rgba(15,20,34,.1);--bg:#dfe8f4;--bg2:rgba(15,20,34,.05);
+  --ink:#0f1422;--muted:#4b5468;--line:rgba(15,20,34,.1);--bg:#5087ca;--bg2:rgba(15,20,34,.05);
   --glass:rgba(255,255,255,.52);--glass-hi:rgba(255,255,255,.78);--glass-strong:rgba(248,250,255,.88);--field:rgba(255,255,255,.75);
   --shadow:0 12px 32px -16px rgba(20,30,60,.35);--accent:#0066d6;--hello:#eef2f8;--bgimg:url(bg-day.jpg);
   --veil:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.05) 40%,rgba(230,236,246,.35));}
 html[data-th="dark"]{color-scheme:dark;
-  --ink:#f4f6fb;--muted:rgba(228,233,247,.7);--line:rgba(255,255,255,.12);--bg:#0b0d1c;--bg2:rgba(255,255,255,.07);
+  --ink:#f4f6fb;--muted:rgba(228,233,247,.7);--line:rgba(255,255,255,.12);--bg:#070c22;--bg2:rgba(255,255,255,.07);
   --glass:rgba(20,22,40,.44);--glass-hi:rgba(255,255,255,.16);--glass-strong:rgba(24,26,44,.86);--field:rgba(255,255,255,.09);
   --shadow:0 14px 36px -16px rgba(0,0,0,.7);--accent:#4da3ff;--hello:#0b0d1c;--bgimg:url(bg-dusk.jpg);
   --veil:linear-gradient(180deg,rgba(6,8,22,.35),rgba(6,8,22,.1) 35%,rgba(6,8,22,.55));}
@@ -335,7 +335,8 @@ html[data-th="dark"]{color-scheme:dark;
 @media (prefers-reduced-transparency:reduce){:root,html[data-th="light"]{--glass:rgba(246,248,252,.95)}html[data-th="dark"]{--glass:rgba(22,24,40,.95)}}
 html{background:var(--bg);color:var(--ink)}body{background:transparent;color:var(--ink)}
 body{-webkit-font-smoothing:antialiased;letter-spacing:-.005em}
-#bgimg{position:fixed;inset:0;z-index:-1;background:var(--veil),var(--bgimg) center 62%/cover no-repeat,var(--bg);transition:opacity .4s}
+#bgimg{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,var(--bg) 0,var(--bg) env(safe-area-inset-top,0px),transparent calc(env(safe-area-inset-top,0px) + 120px)),var(--veil),var(--bgimg) center 62%/cover no-repeat,var(--bg)}
+html[data-th="light"] #frame,html[data-th="light"] #frame iframe{background:#fff}
 .wrap{max-width:820px;padding-top:14px;padding-bottom:calc(118px + env(safe-area-inset-bottom,0px))}
 
 /* Glasfläche */
@@ -465,7 +466,7 @@ html[data-th="dark"] .lg-f input:focus{box-shadow:0 0 0 3px rgba(77,163,255,.35)
 html[data-th="dark"] .bb-f{border-top-color:var(--line)}
 
 /* Anmeldung, Begrüßung, Hinweise */
-#gate,#login{background:var(--veil),var(--bgimg) center 62%/cover no-repeat,var(--bg)}
+#gate,#login{background:linear-gradient(180deg,var(--bg) 0,transparent 120px),var(--veil),var(--bgimg) center 62%/cover no-repeat,var(--bg)}
 .lg-card,#wait .card{background:var(--glass-strong);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);border:1px solid var(--glass-hi);color:var(--ink);border-radius:30px}
 #hello{background:var(--hello)}
 #frame{background:var(--bg)}
@@ -847,7 +848,7 @@ window.addEventListener("message",e=>{if(e.data&&e.data.lernapp==="home")push()}
 /* Einstellungen: Darstellung und Zurücksetzen (immer mit Nachfrage, alles komplett mit doppelter Nachfrage) */
 const MQ_DARK=matchMedia("(prefers-color-scheme: dark)");
 function applyTheme(){const t=store.get("app-theme","auto"),d=t==="dark"||(t==="auto"&&MQ_DARK.matches);document.documentElement.classList.toggle("dark",d);document.documentElement.dataset.th=d?"dark":"light";
-  const mc=document.querySelector('meta[name="theme-color"]');if(mc)mc.content=d?"#0b0d1c":"#dfe8f4";
+  const mc=document.querySelector('meta[name="theme-color"]');if(mc)mc.content=d?"#070c22":"#5087ca";
   document.querySelectorAll("[data-theme-set]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.themeSet===t))}
 document.querySelectorAll("[data-theme-set]").forEach(b=>b.onclick=()=>{store.set("app-theme",b.dataset.themeSet);applyTheme();profSave();push()});
 try{MQ_DARK.addEventListener("change",applyTheme)}catch(e){}
