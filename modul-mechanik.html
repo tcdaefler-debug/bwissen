@@ -636,19 +636,20 @@ li.ok .rt-n{background:var(--good);color:#fff}
 .cand .opt.ok{border-color:var(--good);background:var(--good-soft)}.cand .opt.no{border-color:#e03131;background:#fff0f0}
 /* Rechner */
 .calc[hidden],.calc-fab[hidden],.calc-use[hidden]{display:none!important}
-.calc-fab{position:fixed;right:max(14px,calc(50% - 470px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;align-items:center;gap:7px;border:0;border-radius:999px;padding:11px 16px 11px 13px;background:#5f3dc4;color:#fff;font-weight:800;font-size:.95rem;box-shadow:0 10px 24px -8px rgba(60,30,140,.6);cursor:pointer}
-.calc-fab svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.calc-fab[aria-expanded="true"]{background:#1b2333}
-.calc{position:fixed;z-index:31;left:0;right:0;bottom:0;background:rgba(250,251,255,.97);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-radius:24px 24px 0 0;box-shadow:0 -14px 40px -16px rgba(0,0,0,.45);padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));max-width:520px;margin:0 auto}
+.calc-fab{position:fixed;right:max(16px,calc(50% - 470px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:30;width:52px;height:52px;display:grid;place-items:center;border:1.5px solid var(--line);border-radius:16px;padding:0;background:#fff;color:#5f3dc4;box-shadow:0 2px 6px rgba(20,30,60,.12);cursor:pointer}
+.calc-fab svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.calc-fab[aria-expanded="true"]{background:#5f3dc4;color:#fff;border-color:#5f3dc4}
+.calc-hint{margin:0 2px 6px;font-size:.88rem;color:var(--muted)}.calc-hint b{color:var(--ink)}
+.calc{position:fixed;z-index:31;left:0;right:0;bottom:0;background:rgba(250,251,255,.97);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-radius:24px 24px 0 0;box-shadow:0 -2px 12px rgba(20,30,60,.12);border:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));max-width:520px;margin:0 auto}
 .calc-h{display:flex;align-items:center;gap:8px;margin-bottom:6px}.calc-h b{font-family:var(--f-display);font-size:1.05rem}.calc-h .pill{font-size:.75rem}
 .calc-x{margin-left:auto;border:0;background:var(--bg2);border-radius:50%;width:34px;height:34px;font-size:1rem;cursor:pointer;color:var(--ink)}
 .calc-d{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:6px 12px;text-align:right;min-height:58px}
 .calc-e{font-size:.88rem;color:var(--muted);white-space:nowrap;overflow-x:auto;min-height:1.2em}
 .calc-r{font-family:var(--f-display);font-size:1.6rem;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;overflow-x:auto}
-.calc-use{width:100%;margin-top:7px;--c:#5f3dc4;padding:8px}
+.calc-use{width:100%;margin-top:7px;--c:#5f3dc4;padding:8px;box-shadow:none}
 .calc-k{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px}
 .calc-k button{height:42px;border-radius:12px;border:1.5px solid var(--line);background:#fff;font-size:1.05rem;font-weight:700;cursor:pointer;color:var(--ink);font-family:var(--f-display);-webkit-user-select:none;user-select:none;touch-action:manipulation}
-.calc-k button.f{background:#f3f0ff;color:#5f3dc4;font-size:.92rem}.calc-k button.del{background:#fff0f0;color:#c92a2a}.calc-k button.eq{background:#5f3dc4;color:#fff;border-color:#5f3dc4}
+.calc-k button.f{background:#f3f0ff;color:#5f3dc4;font-size:.92rem}.calc-k button.del{background:#fff0f0;color:#c92a2a}.calc-k button.eq{background:#5f3dc4;color:#fff;border-color:#5f3dc4;box-shadow:none}
 .calc-k button:active{transform:scale(.96)}
 body.calc-open main{padding-bottom:440px}
 @media (min-width:1000px){.calc{left:auto;right:24px;bottom:84px;width:340px;border-radius:24px}body.calc-open main{padding-bottom:0}}
@@ -800,7 +801,7 @@ ul.rs .st{color:#f59f00;font-size:1.05rem;letter-spacing:1px;white-space:nowrap}
 <!-- ================= RECHENTRAINER ================= -->
 <section id="v-rechnen" data-view="rechnen" hidden style="--c:var(--c-trainer)">
   <div class="vhero"><span class="ico"><svg><use href="#i-rechnen"/></svg></span><div><div class="eyebrow">Spielerisch üben</div><h2>Übungsrunde</h2></div></div>
-  <p class="muted">Jede Aufgabe ist in kleine Schritte zerlegt: mal zeichnest du, mal rechnest du. Rechnen geht mit dem <b>Rechner</b> unten rechts oder direkt im Feld, zum Beispiel <b>8·cos(30)</b>. Auf Anhieb richtig gibt drei Sterne. Danach siehst du deine Stärken.</p>
+  <p class="muted">Jede Aufgabe ist in kleine Schritte zerlegt: mal zeichnest du, mal rechnest du. Zum Rechnen tippst du unten rechts auf das <b>Rechner-Symbol</b>. Auf Anhieb richtig gibt drei Sterne. Danach siehst du deine Stärken.</p>
   <details class="sec sk-det"><summary><span class="n">★</span><span class="t">Deine Stärken</span></summary><div class="in" id="rt-skill"></div></details>
   <div class="chapnav" id="rt-nav"></div>
   <div id="rt-box"></div>
@@ -2002,11 +2003,12 @@ function calcInit(){if($("#calc"))return;
     ["4","4"],["5","5"],["6","6"],["×","×"],["AC","AC"],
     ["1","1"],["2","2"],["3","3"],["−","−"],["Ans","Ans"],
     ["0","0"],[",",","],["π","π"],["+","+"],["=","="]];
-  const fab=document.createElement("button");fab.type="button";fab.id="calc-fab";fab.className="calc-fab";fab.innerHTML='<svg><use href="#i-rechnen"/></svg><span>Rechner</span>';fab.setAttribute("aria-label","Rechner öffnen");
+  const fab=document.createElement("button");fab.type="button";fab.id="calc-fab";fab.className="calc-fab";fab.innerHTML='<svg><use href="#i-rechnen"/></svg>';fab.title="Taschenrechner";fab.setAttribute("aria-label","Rechner öffnen");
   const el=document.createElement("div");el.id="calc";el.className="calc";el.hidden=true;el.setAttribute("role","dialog");el.setAttribute("aria-label","Rechner");
-  el.innerHTML=`<div class="calc-h"><b>Rechner</b><span class="pill">Winkel in Grad</span><button type="button" class="calc-x" id="calc-x" aria-label="Rechner schließen">✕</button></div>
+  el.innerHTML=`<div class="calc-h"><b>Taschenrechner</b><span class="pill">Winkel in Grad</span><button type="button" class="calc-x" id="calc-x" aria-label="Rechner schließen">✕</button></div>
+  <p class="calc-hint">Rechnung eintippen, zum Beispiel <b>4 × sin 30</b>, dann <b>=</b>.</p>
   <div class="calc-d"><div class="calc-e" id="calc-e">&nbsp;</div><div class="calc-r" id="calc-r">0</div></div>
-  <button type="button" class="btn calc-use" id="calc-use" hidden>Ergebnis ins Antwortfeld</button>
+  <button type="button" class="btn calc-use" id="calc-use" hidden>Ergebnis in die Aufgabe eintragen</button>
   <div class="calc-k">${K.map(([l,v])=>`<button type="button" data-v="${v}" class="${/^[0-9,π]$/.test(l)?"n":l==="="?"eq":/^(AC|⌫)$/.test(l)?"del":"f"}">${l}</button>`).join("")}</div>`;
   document.body.appendChild(fab);document.body.appendChild(el);
   const E=$("#calc-e"),R=$("#calc-r"),use=$("#calc-use");
@@ -2016,7 +2018,7 @@ function calcInit(){if($("#calc"))return;
     else if(v==="="){if(!CALC.e)return;try{const r=calcEval(CALC.e,CALC.ans);CALC.last=CALC.e+" =";CALC.ans=r;CALC.e=""}catch(x){R.textContent="Fehler";return}}
     else{if(!CALC.e&&CALC.last&&/^[+\-−×÷²]/.test(v))CALC.e="Ans";CALC.e+=v}show()};
   el.querySelector(".calc-k").addEventListener("click",e=>{const b=e.target.closest("button");if(b)press(b.dataset.v)});
-  const setOpen=o=>{CALC.open=o;el.hidden=!o;document.body.classList.toggle("calc-open",o);fab.setAttribute("aria-expanded",o);show();
+  const setOpen=o=>{if(o&&!(CALC.target&&document.body.contains(CALC.target)&&CALC.target.offsetParent))CALC.target=document.querySelector('main section:not([hidden]) #rt-v')||document.querySelector('main section:not([hidden]) input[inputmode="decimal"]');CALC.open=o;el.hidden=!o;document.body.classList.toggle("calc-open",o);fab.setAttribute("aria-expanded",o);show();
     if(o&&CALC.target&&document.body.contains(CALC.target)){CALC.target.blur();setTimeout(()=>CALC.target.scrollIntoView({block:"center",behavior:"smooth"}),60)}};
   fab.onclick=()=>setOpen(!CALC.open);$("#calc-x").onclick=()=>setOpen(false);
   use.onclick=()=>{const t=CALC.target;if(!t)return;let v=CALC.ans;if(CALC.e){try{v=calcEval(CALC.e,CALC.ans);CALC.ans=v;CALC.last=CALC.e+" =";CALC.e=""}catch(x){return}}
@@ -2068,7 +2070,7 @@ function rtShow(foc){const T=RT.task,box=$("#rt-box"),done=RT.i>=T.steps.length,
     if(s.draw&&(i<=RT.i)){h+=`<div class="fg"><svg viewBox="${s.draw.vb}" class="tmfig${i===RT.i?" drag":""}" data-dsvg="${i}" aria-label="Zeichenfläche"></svg></div>`;
       if(i===RT.i)h+=`<p class="tmw-note" id="rt-dn">${s.draw.note?s.draw.note(s.draw.st):""}</p>`}
     if(i<RT.i)h+=`<div class="rt-how">${s.draw?s.how:`${s.how} = <b>${NF(s.v)} ${s.u}</b>`}</div>`;
-    else if(i===RT.i){h+=s.draw?`<div class="rt-act"><button class="btn" type="button" id="rt-ck">Prüfen</button>`:`<div class="rt-in"><button type="button" class="pm" id="rt-pm" aria-label="Vorzeichen wechseln">±</button><input type="text" inputmode="decimal" autocomplete="off" placeholder="Zahl oder Rechnung" id="rt-v" aria-label="Ergebnis"><em>${s.u}</em><button class="btn" type="button" id="rt-ck">Prüfen</button></div><div class="rt-act"><button class="btn ghost" type="button" id="rt-calc">Rechner</button>`;
+    else if(i===RT.i){h+=s.draw?`<div class="rt-act"><button class="btn" type="button" id="rt-ck">Prüfen</button>`:`<div class="rt-in"><button type="button" class="pm" id="rt-pm" aria-label="Vorzeichen wechseln">±</button><input type="text" inputmode="decimal" autocomplete="off" placeholder="Zahl oder Rechnung" id="rt-v" aria-label="Ergebnis"><em>${s.u}</em><button class="btn" type="button" id="rt-ck">Prüfen</button></div><div class="rt-act">`;
       h+=`<button class="btn ghost" type="button" id="rt-tip">Tipp</button>${RT.wrong>=2?'<button class="btn ghost" type="button" id="rt-show">Lösung zeigen</button>':""}</div><div id="rt-fb">${RT.tip?`<div class="fb tip">💡 ${s.hint}</div>`:""}</div>`}
     return h+"</li>"};
   const sc=RT.pts.reduce((a,b)=>a+b,0);
@@ -2096,7 +2098,7 @@ function rtShow(foc){const T=RT.task,box=$("#rt-box"),done=RT.i>=T.steps.length,
       if(Math.abs(v-s.v)<=tol+1e-9)ok();else{const sameAbs=Math.abs(Math.abs(v)-Math.abs(s.v))<=tol;no(sameAbs?"Der Betrag stimmt, aber das Vorzeichen nicht.":"Noch nicht.")}};
     $("#rt-ck").onclick=check;inp.onkeydown=e=>{if(e.key==="Enter")check()};
     $("#rt-pm").onclick=()=>{inp.value=inp.value.trim().startsWith("-")?inp.value.trim().slice(1):"-"+inp.value.trim();inp.focus()};
-    $("#rt-calc").onclick=()=>window.calcOpen&&window.calcOpen(inp)}
+  }
   $("#rt-tip").onclick=()=>{RT.tip=true;$("#rt-fb").innerHTML=`<div class="fb tip">💡 ${s.hint}</div>`};
   const sh=$("#rt-show");if(sh)sh.onclick=show;
   if(foc){const li=box.querySelector("li.cur")||box.querySelector(".rt-win");if(li)li.scrollIntoView({block:"nearest",behavior:"smooth"})}}
