@@ -510,6 +510,20 @@ html[data-th="dark"] .hs-n{color:color-mix(in srgb,var(--hc) 55%,#fff)}
 .hs-dots i.on{width:20px;background:var(--hc)}
 .hs-foot button{border-radius:16px}
 html[data-th="dark"] .hs-foot .go{background:var(--hc);border-color:var(--hc);color:#fff}
+
+/* Semester oben antippen */
+.semr{display:none!important}
+.ksem{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--glass-hi);background:var(--glass);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-radius:999px;padding:5px 10px 5px 12px;margin-top:12px;font:inherit;font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);cursor:pointer}
+.ksem svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.ksem:active{transform:scale(.97)}
+/* Flüssiges Scrollen: Hintergrund als eigene Ebene, Unschärfe nur wo nötig */
+#bgimg{transform:translateZ(0);will-change:transform}
+.hero,.quick .q-ic,#me,.streak{-webkit-backdrop-filter:none;backdrop-filter:none}
+.quick .q-ic{background:var(--glass-strong)}
+html[data-th="dark"] #me,html[data-th="dark"] .streak{background:rgba(30,32,52,.8)}
+html[data-th="light"] #me,html[data-th="light"] .streak{background:rgba(255,255,255,.8)}
+.glass,.tile,.stat,.rowc,.fbk{-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%)}
+html,body{overscroll-behavior-y:none}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -534,7 +548,7 @@ html[data-th="dark"] .hs-foot .go{background:var(--hc);border-color:var(--hc);co
     <div id="today"></div>
   </section>
   <section class="view" data-v="faecher" hidden aria-labelledby="h-faecher">
-    <p class="kicker">Wintersemester 2026/27</p>
+    <button type="button" class="kicker ksem" data-sem>Wintersemester 2026/27<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
     <h1 id="h-faecher">Fächer</h1>
     <div class="grid" id="grid"></div>
     <div class="semr"><button type="button" class="semb" id="sem-open">Wintersemester 2026/27<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><button type="button" class="semb ptb" id="pt-open"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h3"/></svg>Prüfungstermine</button></div>
@@ -542,7 +556,7 @@ html[data-th="dark"] .hs-foot .go{background:var(--hc);border-color:var(--hc);co
     <p class="sync" id="sync">Dein Fortschritt wird auf diesem Gerät gespeichert.</p>
   </section>
   <section class="view" data-v="termine" hidden aria-labelledby="h-termine">
-    <p class="kicker">Wintersemester 2026/27</p>
+    <button type="button" class="kicker ksem" data-sem>Wintersemester 2026/27<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
     <h1 id="h-termine">Prüfungen</h1>
     <div class="glass pad"><section class="pp" id="pp"></section></div>
   </section>
@@ -965,6 +979,7 @@ $("#bibo-tip").onclick=()=>$("#bibo-btn").click();
 setTimeout(biboTip,4500);window.addEventListener("hashchange",()=>{if(!location.hash.slice(1)||location.hash==="#start")setTimeout(biboTip,800)});
 $("#set-open").onclick=()=>{setRender();admRender();applyTheme();$("#set").hidden=false};
 $("#me").onclick=()=>$("#set-open").click();
+document.querySelectorAll("[data-sem]").forEach(b=>b.onclick=()=>$("#sem-open").click());
 showTab(TAB);
 try{if(!history.state||!history.state.bw){history.replaceState({bw:"base"},"");history.pushState({bw:"top"},"")}}catch(e){}
 window.addEventListener("popstate",e=>{if(e.state&&e.state.bw==="base"){try{history.pushState({bw:"top"},"",location.pathname+location.search+"#start")}catch(x){}ready.then(()=>{if(ME)route()})}});
