@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -127,7 +127,7 @@ button.streak{border:0;font:inherit;cursor:pointer}.streak{display:flex;align-it
 .note{margin-top:22px;color:var(--muted);font-size:.9rem;text-align:center}
 
 /* Modul-Ansicht */
-#frame{position:fixed;inset:0;z-index:20;background:var(--bg);padding-top:env(safe-area-inset-top,0px)}
+#frame{position:fixed;inset:0;z-index:20;background:var(--bg);padding-top:0}
 /* Einstellungen */
 .topr{display:flex;align-items:center;gap:8px}
 .gear{width:38px;height:38px;border-radius:12px;border:1.5px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;color:var(--ink);flex:none}
@@ -523,6 +523,7 @@ html[data-th="dark"] #me,html[data-th="dark"] .streak{background:rgba(30,32,52,.
 html[data-th="light"] #me,html[data-th="light"] .streak{background:rgba(255,255,255,.8)}
 .glass,.tile,.stat,.rowc,.fbk{-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%)}
 html,body{overscroll-behavior-y:none}
+html{touch-action:manipulation;-webkit-text-size-adjust:100%}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -979,6 +980,9 @@ setTimeout(biboTip,4500);window.addEventListener("hashchange",()=>{if(!location.
 $("#set-open").onclick=()=>{setRender();admRender();applyTheme();$("#set").hidden=false};
 $("#me").onclick=()=>$("#set-open").click();
 document.querySelectorAll("[data-sem]").forEach(b=>b.onclick=()=>$("#sem-open").click());
+function satPx(){const d=document.createElement("div");d.style.cssText="position:fixed;top:0;left:0;width:1px;height:env(safe-area-inset-top,0px);visibility:hidden;pointer-events:none";document.body.appendChild(d);const h=d.offsetHeight;d.remove();return h}
+function satSend(){try{$("#mod").contentWindow.postMessage({bwSat:satPx()},"*")}catch(e){}}
+$("#mod").addEventListener("load",satSend);["gesturestart","gesturechange"].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));document.addEventListener("touchmove",e=>{if(e.touches&&e.touches.length>1)e.preventDefault()},{passive:false});addEventListener("resize",()=>setTimeout(satSend,200));
 showTab(TAB);
 try{if(!history.state||!history.state.bw){history.replaceState({bw:"base"},"");history.pushState({bw:"top"},"")}}catch(e){}
 window.addEventListener("popstate",e=>{if(e.state&&e.state.bw==="base"){try{history.pushState({bw:"top"},"",location.pathname+location.search+"#start")}catch(x){}ready.then(()=>{if(ME)route()})}});
