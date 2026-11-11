@@ -545,6 +545,20 @@ html[data-th="dark"] #upd .uh span,html[data-th="dark"] #upd .ux{color:rgba(235,
 @keyframes updIn{from{opacity:0;transform:translateY(-120%) scale(.96)}to{opacity:1;transform:none}}
 @keyframes updOut{to{opacity:0;transform:translateY(-130%)}}
 @media (prefers-reduced-motion:reduce){#upd,#upd.bye{animation:none}}
+
+/* Logo oben: Kacheln springen herein, Bibo hüpft und zwinkert ab und zu */
+.top .logo{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.top .logo .mk{overflow:visible;width:34px;height:34px}
+.top .logo .mk rect{transform-box:fill-box;transform-origin:center;animation:mkIn .7s cubic-bezier(.3,1.5,.5,1) both}
+.top .logo .mk rect:nth-of-type(2){animation-delay:.08s}.top .logo .mk rect:nth-of-type(3){animation-delay:.16s}
+.top .logo .mk rect:nth-of-type(4){animation:mkIn .7s .24s cubic-bezier(.3,1.5,.5,1) both,mkHop 7s 2s ease-in-out infinite}
+.top .logo .mk path{animation:mkHop 7s 2s ease-in-out infinite}
+.top .logo .mk circle{transform-box:fill-box;transform-origin:center;animation:mkHopB 7s 2s ease-in-out infinite}
+.top .logo:active .mk{transform:scale(.9);transition:transform .15s}
+@keyframes mkIn{from{transform:scale(0) rotate(-30deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes mkHop{0%,84%,100%{transform:none}88%{transform:translateY(-70px)}92%{transform:translateY(0)}95%{transform:translateY(-22px)}98%{transform:none}}
+@keyframes mkHopB{0%,38%,42%,84%,100%{transform:none}40%{transform:scaleY(.1)}88%{transform:translateY(-70px)}92%{transform:translateY(0)}95%{transform:translateY(-22px)}98%{transform:none}}
+@media (prefers-reduced-motion:reduce){.top .logo .mk *{animation:none!important}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -738,8 +752,8 @@ const MODULES=[
    progress(){return Math.min(1,(+store.get("bf-total",0)||0)/100)}},
   {id:"vwl",prefix:"vwl-",name:"VWL",sub:"Volkswirtschaftslehre",color:"#ee7418",icon:"i-markt",file:"modul-vwl.html",exam:"2027-01-20",time:"11:00",
    progress(){return Math.min(1,(+store.get("vwl-total",0)||0)/100)}},
-  {id:"bauphysik",prefix:"bp-",name:"Bauphysik",sub:"Wärme- und Feuchtelehre",color:"#139a58",icon:"i-thermo",file:null,exam:"2027-01-21",time:"08:00",
-   waitTitle:"In Arbeit",waitText:"Bauphysik wird gerade gebaut. Sobald es fertig ist, kannst du hier lernen."},
+  {id:"bauphysik",prefix:"bp-",name:"Bauphysik",sub:"Wärme- und Feuchtelehre",color:"#139a58",icon:"i-thermo",file:"modul-bauphysik.html",exam:"2027-01-21",time:"08:00",
+   progress(){return Math.min(1,(+store.get("bp-total",0)||0)/100)}},
   {id:"baustoffkunde",prefix:"bk-",name:"Baustoffkunde",sub:"Baustoffe und ihre Kenngrößen",color:"#b4442f",file:"modul-baustoffkunde.html",exam:"2027-01-21",time:"08:00",
    progress(){return Math.min(1,(+store.get("bk-total",0)||0)/100)}},
   {id:"mechanik",prefix:"tm-",name:"Technische Mechanik",sub:"Statik",color:"#7048e8",file:"modul-mechanik.html",exam:"2027-01-29",time:"08:00",
@@ -849,7 +863,7 @@ function tdClose(){$("#td").hidden=true}
 $("#td").addEventListener("click",e=>{if(e.target.id==="td")tdClose()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")tdClose()});
 
-const BWV="1794418227";function fLoad(f,u){try{f.contentWindow.location.replace(new URL(u,location.href).href)}catch(e){f.src=u}}
+const BWV="20261112a";function fLoad(f,u){try{f.contentWindow.location.replace(new URL(u,location.href).href)}catch(e){f.src=u}}
 function openModule(m,sub){
   if(!m.file){$("#wait-h").textContent=m.waitTitle||"Fast da";$("#wait-p").textContent=m.waitText||"Dieses Modul ist noch leer.";$("#wait").hidden=false;$("#wait-ok").focus();return}
   const f=$("#mod");let cur=f.dataset.src;try{const h=f.contentWindow.location.href;cur=h.startsWith("about:")?"":h.split("#")[0].split("?")[0].split("/").pop()}catch(e){}if(cur!==m.file){fLoad(f,m.file+"?v="+BWV+(sub?"#"+sub:""));f.dataset.src=m.file;f.title=m.name}else if(sub){fLoad(f,m.file+"#"+sub)}
@@ -867,6 +881,7 @@ function route(){
   const [id,sub]=location.hash.slice(1).split("/"),m=MODULES.find(x=>x.id===id&&!x.soon);
   if(m){if($("#frame").hidden&&m.file)NAV_IN=true;openModule(m,sub);if(m.file)store.set("app-last",m.id)}else{NAV_IN=false;closeModule();showTab(TABS.includes(id)?id:TAB)}$("#bibo-btn").hidden=!!m;if(m)$("#bibo-tip").hidden=true;
 }
+{const lg=document.querySelector(".top .logo");if(lg)lg.addEventListener("click",()=>{try{const p=ME&&profGet(ME);if(p&&$("#hello").hidden)hello(p.name,false)}catch(e){}})}
 $("#wait-ok").onclick=()=>{$("#wait").hidden=true;history.replaceState(null,"",location.pathname+location.search);route()};
 let NAV_IN=false;window.addEventListener("message",e=>{if(e.data&&e.data.lernapp==="home"){if(NAV_IN&&history.length>1){NAV_IN=false;history.back()}else location.hash="start"}});
 window.addEventListener("hashchange",()=>ready.then(()=>{if(ME)route()}));
@@ -1019,7 +1034,9 @@ $("#set-open").onclick=()=>{setRender();admRender();applyTheme();$("#set").hidde
 $("#me").onclick=()=>$("#set-open").click();
 document.querySelectorAll("[data-sem]").forEach(b=>b.onclick=()=>$("#sem-open").click());
 function satPx(){const d=document.createElement("div");d.style.cssText="position:fixed;top:0;left:0;width:1px;height:env(safe-area-inset-top,0px);visibility:hidden;pointer-events:none";document.body.appendChild(d);const h=d.offsetHeight;d.remove();return h}
-function satSend(){try{$("#mod").contentWindow.postMessage({bwSat:satPx()},"*")}catch(e){}}
+function sabPx(){const d=document.createElement("div");d.style.cssText="position:fixed;top:0;left:0;width:1px;height:env(safe-area-inset-bottom,0px);visibility:hidden;pointer-events:none";document.body.appendChild(d);const h=d.offsetHeight;d.remove();return h}
+function satSend(){try{$("#mod").contentWindow.postMessage({bwSat:satPx(),bwSab:sabPx()},"*")}catch(e){}}
+window.addEventListener("message",e=>{if(e.data&&e.data.bwAsk==="insets")satSend()});
 $("#mod").addEventListener("load",satSend);["gesturestart","gesturechange"].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));document.addEventListener("touchmove",e=>{if(e.touches&&e.touches.length>1)e.preventDefault()},{passive:false});addEventListener("resize",()=>setTimeout(satSend,200));
 showTab(TAB);
 try{if(!history.state||!history.state.bw){history.replaceState({bw:"base"},"");history.pushState({bw:"top"},"")}}catch(e){}
