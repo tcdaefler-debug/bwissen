@@ -635,12 +635,12 @@ li.ok .rt-n{background:var(--good);color:#fff}
 .trb{cursor:pointer}.cand{display:flex;flex-direction:column;gap:10px;margin-top:10px}.cand .opt{padding:6px 8px}
 .cand .opt.ok{border-color:var(--good);background:var(--good-soft)}.cand .opt.no{border-color:#e03131;background:#fff0f0}
 /* Rechner */
-.calc[hidden],.calc-fab[hidden],.calc-use[hidden]{display:none!important}
+.tmcalc[hidden],.calc-fab[hidden],.calc-use[hidden]{display:none!important}
 .calc-fab{position:fixed;right:max(16px,calc(50% - 470px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:30;width:52px;height:52px;display:grid;place-items:center;border:1.5px solid var(--line);border-radius:16px;padding:0;background:#fff;color:#5f3dc4;box-shadow:0 2px 6px rgba(20,30,60,.12);cursor:pointer}
 .calc-fab svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .calc-fab[aria-expanded="true"]{background:#5f3dc4;color:#fff;border-color:#5f3dc4}
 .calc-hint{margin:0 2px 6px;font-size:.88rem;color:var(--muted)}.calc-hint b{color:var(--ink)}
-.calc{position:fixed;z-index:31;left:0;right:0;bottom:0;background:rgba(250,251,255,.97);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-radius:24px 24px 0 0;box-shadow:0 -2px 12px rgba(20,30,60,.12);border:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));max-width:520px;margin:0 auto}
+.tmcalc{position:fixed;z-index:31;left:0;right:0;bottom:0;background:rgba(250,251,255,.97);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-radius:24px 24px 0 0;box-shadow:0 -2px 12px rgba(20,30,60,.12);border:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));max-width:520px;margin:0 auto}
 .calc-h{display:flex;align-items:center;gap:8px;margin-bottom:6px}.calc-h b{font-family:var(--f-display);font-size:1.05rem}.calc-h .pill{font-size:.75rem}
 .calc-x{margin-left:auto;border:0;background:var(--bg2);border-radius:50%;width:34px;height:34px;font-size:1rem;cursor:pointer;color:var(--ink)}
 .calc-d{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:6px 12px;text-align:right;min-height:58px}
@@ -652,7 +652,7 @@ li.ok .rt-n{background:var(--good);color:#fff}
 .calc-k button.f{background:#f3f0ff;color:#5f3dc4;font-size:.92rem}.calc-k button.del{background:#fff0f0;color:#c92a2a}.calc-k button.eq{background:#5f3dc4;color:#fff;border-color:#5f3dc4;box-shadow:none}
 .calc-k button:active{transform:scale(.96)}
 body.calc-open main{padding-bottom:440px}
-@media (min-width:1000px){.calc{left:auto;right:24px;bottom:84px;width:340px;border-radius:24px}body.calc-open main{padding-bottom:0}}
+@media (min-width:1000px){.tmcalc{left:auto;right:24px;bottom:84px;width:340px;border-radius:24px}body.calc-open main{padding-bottom:0}}
 input.calc-filled{box-shadow:0 0 0 4px rgba(95,61,196,.35)!important;transition:box-shadow .3s}
 /* Übungsrunde */
 .rt-round{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:-2px 0 10px;font-weight:800;font-size:.9rem;color:var(--muted)}
@@ -685,6 +685,7 @@ ul.rs .st{color:#f59f00;font-size:1.05rem;letter-spacing:1px;white-space:nowrap}
 .tmw[data-w=hand] .ro b{white-space:normal;font-size:1.05rem}
 .abz{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.abz .stp{padding:6px 4px}.abz .stp span{gap:3px}.abz .stp button{width:32px;height:34px}.abz .stp small{font-size:.74rem;text-align:center}
 [data-view="rechnen"],[data-view="aufgaben"],[data-view="kapitel"]{padding-bottom:70px}
+.rt-ch .opt{text-align:center;font-weight:700}.rt-ch .opt.wrong{border-color:#e03131;background:#fff0f0}
 /* Spiele */
 .game .gh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}.game .gh b{font-family:var(--f-display);font-size:1.1rem;margin-right:auto}
 .tgl{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.tgl .opt{text-align:center;padding:12px 8px;font-weight:700}
@@ -801,7 +802,7 @@ ul.rs .st{color:#f59f00;font-size:1.05rem;letter-spacing:1px;white-space:nowrap}
 <!-- ================= RECHENTRAINER ================= -->
 <section id="v-rechnen" data-view="rechnen" hidden style="--c:var(--c-trainer)">
   <div class="vhero"><span class="ico"><svg><use href="#i-rechnen"/></svg></span><div><div class="eyebrow">Spielerisch üben</div><h2>Übungsrunde</h2></div></div>
-  <p class="muted">Jede Aufgabe ist in kleine Schritte zerlegt: mal zeichnest du, mal rechnest du. Zum Rechnen tippst du unten rechts auf das <b>Rechner-Symbol</b>. Auf Anhieb richtig gibt drei Sterne. Danach siehst du deine Stärken.</p>
+  <p class="muted">Die Aufgaben stammen aus dem Hefter. Jede ist in kleine Schritte zerlegt: mal zeichnest du, mal rechnest du. Zum Rechnen tippst du unten rechts auf das <b>Rechner-Symbol</b>. Auf Anhieb richtig gibt drei Sterne. Danach siehst du deine Stärken.</p>
   <details class="sec sk-det"><summary><span class="n">★</span><span class="t">Deine Stärken</span></summary><div class="in" id="rt-skill"></div></details>
   <div class="chapnav" id="rt-nav"></div>
   <div id="rt-box"></div>
@@ -1068,7 +1069,7 @@ ul.rs .st{color:#f59f00;font-size:1.05rem;letter-spacing:1px;white-space:nowrap}
 <!-- ================= ÜBUNGSAUFGABEN ================= -->
 <section id="v-aufgaben" data-view="aufgaben" hidden>
   <div class="vhero"><span class="ico"><svg><use href="#i-uebungen"/></svg></span><div><div class="eyebrow">Mit Lösungsweg</div><h2>Übungsaufgaben</h2></div></div>
-  <p class="muted">Erst selbst rechnen, Ergebnis eintragen und prüfen. Danach den Lösungsweg aufklappen. Die Aufgaben aus der Vorlesung kommen dazu, sobald sie vorliegen.</p>
+  <p class="muted">Erst selbst rechnen, Ergebnis eintragen und prüfen. Danach den Lösungsweg aufklappen. Alle Aufgaben stammen aus dem Hefter (Mitschrift). Weitere Kapitel kommen dazu, sobald die Mitschrift dafür da ist.</p>
   <div class="chapnav" id="ax-nav"></div>
   <div id="ax-list"></div>
 </section>
@@ -2004,7 +2005,7 @@ function calcInit(){if($("#calc"))return;
     ["1","1"],["2","2"],["3","3"],["−","−"],["Ans","Ans"],
     ["0","0"],[",",","],["π","π"],["+","+"],["=","="]];
   const fab=document.createElement("button");fab.type="button";fab.id="calc-fab";fab.className="calc-fab";fab.innerHTML='<svg><use href="#i-rechnen"/></svg>';fab.title="Taschenrechner";fab.setAttribute("aria-label","Rechner öffnen");
-  const el=document.createElement("div");el.id="calc";el.className="calc";el.hidden=true;el.setAttribute("role","dialog");el.setAttribute("aria-label","Rechner");
+  const el=document.createElement("div");el.id="calc";el.className="tmcalc";el.hidden=true;el.setAttribute("role","dialog");el.setAttribute("aria-label","Rechner");
   el.innerHTML=`<div class="calc-h"><b>Taschenrechner</b><span class="pill">Winkel in Grad</span><button type="button" class="calc-x" id="calc-x" aria-label="Rechner schließen">✕</button></div>
   <p class="calc-hint">Rechnung eintippen, zum Beispiel <b>4 × sin 30</b>, dann <b>=</b>.</p>
   <div class="calc-d"><div class="calc-e" id="calc-e">&nbsp;</div><div class="calc-r" id="calc-r">0</div></div>
@@ -2043,7 +2044,7 @@ function skillBind(root){root.querySelectorAll("[data-skch]").forEach(a=>a.addEv
 
 /* ---------- Rechentrainer und Übungsrunde ---------- */
 let RT={f:"runde",task:null,i:0,wrong:0,tip:false,pts:[],round:null};
-function rtInit(){chipRow($("#rt-nav"),[["runde","Übungsrunde"],["all","Alle gemischt"]].concat(Object.keys(CH).map(k=>[k,CHS[k]])),RT.f,k=>{RT.f=k;RT.round=null;rtNew()});
+function rtInit(){chipRow($("#rt-nav"),[["runde","Übungsrunde"],["all","Alle Hefter-Aufgaben"]].concat(Object.keys(CH).filter(k=>TR.some(t=>t.ch===k)).map(k=>[k,CHS[k]])),RT.f,k=>{RT.f=k;RT.round=null;rtNew()});
   const sb=$("#rt-skill");if(sb){sb.innerHTML=skillHTML(true);skillBind(sb)}rtNew()}
 function rtPick(list){let T,n=0;do{T=list[Math.floor(Math.random()*list.length)];n++}while(n<30&&list.length>1&&RT.task&&T.t===RT.task.t);return T}
 function rtRoundPick(){const used=RT.round.used;const ks=Object.keys(CH).filter(k=>TR.some(t=>t.ch===k));
@@ -2051,7 +2052,7 @@ function rtRoundPick(){const used=RT.round.used;const ks=Object.keys(CH).filter(
   let list=TR.filter(t=>t.ch===ch&&!used.includes(t.t));if(!list.length)list=TR.filter(t=>!used.includes(t.t));if(!list.length)list=TR;const T=rtPick(list);used.push(T.t);return T}
 function rtNew(){let T;if(RT.f==="runde"){if(!RT.round||RT.round.k>=RT.round.n)RT.round={n:6,k:0,used:[],res:[]};T=rtRoundPick()}
   else{const list=TR.filter(t=>RT.f==="all"||t.ch===RT.f);T=rtPick(list.length?list:TR)}
-  RT.task=Object.assign({ch:T.ch,t:T.t},T.mk());RT.i=0;RT.wrong=0;RT.tip=false;RT.pts=[];RT.task.steps.forEach(s=>{if(s.draw)s.draw.st=JSON.parse(JSON.stringify(s.draw.st0||{}))});rtShow()}
+  RT.task=Object.assign({ch:T.ch,t:T.t,hn:T.hn},T.mk());RT.i=0;RT.wrong=0;RT.tip=false;RT.pts=[];RT.task.steps.forEach(s=>{if(s.draw)s.draw.st=JSON.parse(JSON.stringify(s.draw.st0||{}))});rtShow()}
 function stars(r){return r>=0.99?"★★★":r>=0.6?"★★☆":r>0?"★☆☆":"☆☆☆"}
 function rtDone(){const T=RT.task,r=RT.pts.reduce((a,b)=>a+b,0)/(2*T.steps.length);T.r=r;skillAdd(T.ch,r,T.t);const c=store.get("tm-rt",{n:0});c.n++;store.set("tm-rt",c);
   if(RT.round){RT.round.res.push({t:T.t,ch:T.ch,r});RT.round.k++}const sb=$("#rt-skill");if(sb){sb.innerHTML=skillHTML(true);skillBind(sb)}}
@@ -2069,12 +2070,13 @@ function rtShow(foc){const T=RT.task,box=$("#rt-box"),done=RT.i>=T.steps.length,
   const stepHTML=(s,i)=>{const st=i<RT.i?"ok":i===RT.i?"cur":"todo";let h=`<li class="${st}${s.draw?" dr":""}"><div class="rt-l"><span class="rt-n">${i<RT.i?"✓":i+1}</span><span>${s.l}</span>${i<RT.i?`<span class="rt-st">${stars(RT.pts[i]/2)}</span>`:""}</div>`;
     if(s.draw&&(i<=RT.i)){h+=`<div class="fg"><svg viewBox="${s.draw.vb}" class="tmfig${i===RT.i?" drag":""}" data-dsvg="${i}" aria-label="Zeichenfläche"></svg></div>`;
       if(i===RT.i)h+=`<p class="tmw-note" id="rt-dn">${s.draw.note?s.draw.note(s.draw.st):""}</p>`}
-    if(i<RT.i)h+=`<div class="rt-how">${s.draw?s.how:`${s.how} = <b>${NF(s.v)} ${s.u}</b>`}</div>`;
+    if(i<RT.i)h+=`<div class="rt-how">${s.draw||s.choice?s.how:`${s.how} = <b>${NF(s.v)} ${s.u}</b>`}</div>`;
+    else if(i===RT.i&&s.choice){h+=`<div class="tgl rt-ch" style="grid-template-columns:repeat(${Math.min(3,s.choice.length)},1fr)">${s.choice.map((c,k)=>`<button type="button" class="opt" data-c="${k}">${c}</button>`).join("")}</div><div class="rt-act"><button class="btn ghost" type="button" id="rt-tip">Tipp</button></div><div id="rt-fb"></div>`}
     else if(i===RT.i){h+=s.draw?`<div class="rt-act"><button class="btn" type="button" id="rt-ck">Prüfen</button>`:`<div class="rt-in"><button type="button" class="pm" id="rt-pm" aria-label="Vorzeichen wechseln">±</button><input type="text" inputmode="decimal" autocomplete="off" placeholder="Zahl oder Rechnung" id="rt-v" aria-label="Ergebnis"><em>${s.u}</em><button class="btn" type="button" id="rt-ck">Prüfen</button></div><div class="rt-act">`;
       h+=`<button class="btn ghost" type="button" id="rt-tip">Tipp</button>${RT.wrong>=2?'<button class="btn ghost" type="button" id="rt-show">Lösung zeigen</button>':""}</div><div id="rt-fb">${RT.tip?`<div class="fb tip">💡 ${s.hint}</div>`:""}</div>`}
     return h+"</li>"};
   const sc=RT.pts.reduce((a,b)=>a+b,0);
-  box.innerHTML=`<div class="task rt" style="--c:var(--c-${T.ch})">${head}<span class="tag">Kapitel ${T.ch} · ${CHS[T.ch]}</span><h3>${T.t}</h3><p>${T.giv}</p>${T.fig?`<div class="fg">${T.fig}</div>`:""}
+  box.innerHTML=`<div class="task rt" style="--c:var(--c-${T.ch})">${head}<span class="tag">${T.hn?"Hefter · Aufgabe "+T.hn:"Kapitel "+T.ch+" · "+CHS[T.ch]}</span><h3>${T.t}</h3><p>${T.giv}</p>${T.fig?`<div class="fg">${T.fig}</div>`:""}
   ${T.fkb?`<details class="loes"><summary>Freikörperbild zeigen</summary><div class="in"><div class="fg">${T.fkb}</div><p class="small muted">Lager weg, ihre Kräfte dran. Unbekannte zeigen erst einmal nach oben bzw. links.</p></div></details>`:""}
   <ol class="rt-steps">${T.steps.map(stepHTML).join("")}</ol>
   ${done?`<div class="fb ok rt-win"><span class="big">${stars(T.r)}</span><b>${T.r>=0.99?"Perfekt, alles auf Anhieb!":T.r>=0.6?"Geschafft!":"Geschafft, mit Hilfe."}</b> ${R?"":"Mit neuen Zahlen gleich nochmal?"}</div>`:""}
@@ -2088,7 +2090,8 @@ function rtShow(foc){const T=RT.task,box=$("#rt-box"),done=RT.i>=T.steps.length,
   const no=msg=>{RT.wrong++;$("#rt-fb").innerHTML=`<div class="fb no">${msg} ${RT.wrong>=1?s.hint:""}</div>`;
     if(RT.wrong===2&&!$("#rt-show")){box.querySelector(".rt-act").insertAdjacentHTML("beforeend",'<button class="btn ghost" type="button" id="rt-show">Lösung zeigen</button>');$("#rt-show").onclick=show}};
   const show=()=>{if(s.draw){if(s.draw.solve)s.draw.solve(s.draw.st)}RT.pts[RT.i]=0;RT.i++;RT.wrong=0;RT.tip=false;if(RT.i>=T.steps.length)rtDone();rtShow(true)};
-  if(s.draw){const sv=box.querySelector(`svg[data-dsvg="${RT.i}"]`),d=s.draw,nt=$("#rt-dn");
+  if(s.choice){if(!s.hint)s.hint="Überleg, was die Rechnung davor ergeben hat.";box.querySelectorAll(".rt-ch .opt").forEach(b=>b.onclick=()=>{if(+b.dataset.c===s.ans)ok();else{b.classList.add("wrong");no("Nicht ganz.")}})}
+  else if(s.draw){const sv=box.querySelector(`svg[data-dsvg="${RT.i}"]`),d=s.draw,nt=$("#rt-dn");
     const upd=()=>{drawRender(sv,d,false);if(nt&&d.note)nt.innerHTML=d.note(d.st)};
     if(d.move)dragOn(sv,p=>{d.move(d.st,p);upd()});
     if(d.tap)sv.addEventListener("click",e=>{const t=e.target.closest("[data-k]");if(t){d.tap(d.st,t.dataset.k);upd()}});
@@ -2106,22 +2109,22 @@ function rtShow(foc){const T=RT.task,box=$("#rt-box"),done=RT.i>=T.steps.length,
 /* ---------- Zeichenaufgaben ---------- */
 const dirWord=a=>{a=((a%360)+360)%360;return a<5||a>355?"nach rechts":a<85?"nach rechts oben":a<95?"nach oben":a<175?"nach links oben":a<185?"nach links":a<265?"nach links unten":a<275?"nach unten":"nach rechts unten"};
 /* 1 Kraft einzeichnen */
-function drawForceStep(F,ang){const O=[170,135],S=Math.min(14,110/F);
-  return{l:"Zieh die Pfeilspitze, bis der Pfeil F darstellt",vb:"0 0 340 270",st0:{p:[O[0]+2*S,O[1]]},
+function drawForceStep(F,ang){const O=[170,135],U=[1,2,5,10,20].find(u=>F/u*14<=112)||50,S=14/U;
+  return{l:"Zieh die Pfeilspitze, bis der Pfeil F darstellt",vb:"0 0 340 270",st0:{p:[O[0]+28,O[1]]},
     hint:"Erst die Richtung (oben/unten, links/rechts), dann den Winkel gegen die Waagerechte, dann die Länge über die Kästchen.",
     how:`Richtig eingezeichnet: ${NF(F)} kN ${dirWord(ang)}.`,
     val(st){const dx=(st.p[0]-O[0])/S,dy=(O[1]-st.p[1])/S;return{F:Math.hypot(dx,dy),a:deg(Math.atan2(dy,dx))}},
     note(st){const v=this.val(st);if(v.F<0.3)return"Zieh an der Spitze.";const a=((v.a%360)+360)%360,b=a<=90?a:a<=180?180-a:a<=270?a-180:360-a;return`Dein Pfeil: <b>${NF(v.F,1)} kN</b>, <b>${Math.round(b)}°</b> gegen die Waagerechte, ${dirWord(a)}`},
     render(st,sol){let g="";for(let x=O[0]%S;x<340;x+=S)g+=`<line x1="${f1(x)}" y1="0" x2="${f1(x)}" y2="270" stroke="#eef0f6" stroke-width="1"/>`;for(let y=O[1]%S;y<270;y+=S)g+=`<line x1="0" y1="${f1(y)}" x2="340" y2="${f1(y)}" stroke="#eef0f6" stroke-width="1"/>`;
       g+=`<line x1="10" y1="${O[1]}" x2="330" y2="${O[1]}" stroke="#b8c0d0" stroke-width="1.4"/><line x1="${O[0]}" y1="10" x2="${O[0]}" y2="260" stroke="#b8c0d0" stroke-width="1.4"/>`+tx(326,O[1]-6,"x",{c:TC.mut,a:"end",fs:12})+tx(O[0]+8,20,"y",{c:TC.mut,a:"start",fs:12});
-      g+=tx(16,262,`1 Kästchen = ${NF(1)} kN`,{a:"start",fs:11,c:TC.mut});
+      g+=tx(16,262,`1 Kästchen = ${U} kN`,{a:"start",fs:11,c:TC.mut});
       const ex=O[0]+F*S*Math.cos(rad(ang)),ey=O[1]-F*S*Math.sin(rad(ang));
       if(sol){g+=`<line x1="${O[0]}" y1="${O[1]}" x2="${f1(ex)}" y2="${O[1]}" stroke="${TC.x}" stroke-width="2.4" stroke-dasharray="6 4"/><line x1="${f1(ex)}" y1="${O[1]}" x2="${f1(ex)}" y2="${f1(ey)}" stroke="${TC.y}" stroke-width="2.4" stroke-dasharray="6 4"/>`;
         g+=arw(O[0],O[1],ex,ey,TC.R,4)+tx(ex+(ex>O[0]?8:-8),ey+(ey<O[1]?-6:16),"F",{c:TC.R,a:ex>O[0]?"start":"end"});return g}
       const p=st.p;g+=arw(O[0],O[1],p[0],p[1],TC.F,4)+`<circle cx="${f1(p[0])}" cy="${f1(p[1])}" r="13" fill="${TC.F}" fill-opacity=".16" stroke="${TC.F}" stroke-width="1.5"/>`+`<circle cx="${O[0]}" cy="${O[1]}" r="4" fill="${TC.ink}"/>`;return g},
     move(st,p){st.p=[clamp(p[0],8,332),clamp(p[1],8,262)]},
     solve(st){st.p=[O[0]+F*S*Math.cos(rad(ang)),O[1]-F*S*Math.sin(rad(ang))]},
-    check(st){const v=this.val(st);let da=Math.abs(((v.a-ang)%360+540)%360-180);if(da>90)return"Die Richtung stimmt noch nicht. Zeigt der Pfeil in den richtigen Quadranten?";if(da>4)return`Fast. Der Winkel ist um ${Math.round(da)}° daneben.`;if(Math.abs(v.F-F)>0.5)return`Die Richtung passt. Die Länge noch: ${NF(F)} kN sind ${NF(F)} Kästchen.`;return true}}}
+    check(st){const v=this.val(st);let da=Math.abs(((v.a-ang)%360+540)%360-180);if(da>90)return"Die Richtung stimmt noch nicht. Zeigt der Pfeil in den richtigen Quadranten?";if(da>4)return`Fast. Der Winkel ist um ${Math.round(da)}° daneben.`;if(Math.abs(v.F-F)>Math.max(0.5,U*0.3))return`Die Richtung passt. Die Länge noch: ${NF(F,1)} kN sind ${NF(F/U,1)} Kästchen.`;return true}}}
 /* 2 Lagerkräfte antippen */
 function fkbStep(o){const X0=44,X1=300,Y=o.q&&o.q.length?84:70,fig=beamFig(Object.assign({},o,{dims:[]})),inner=fig.replace(/^<svg[^>]*>/,"").replace(/<\/svg>$/,"");
   const sup=[{x:X0,t:o.A,n:"A"}];if(o.B)sup.push({x:X1,t:o.B,n:"B"});
@@ -2224,7 +2227,7 @@ TR.push(
    steps:[{l:"A<sub>v</sub>",v:A,u:"kN",hint:"Symmetrisch, beide Lager tragen die Hälfte.",how:`A<sub>v</sub> = ${F} / 2`},{l:"Länge der Diagonale AC",v:L,u:"m",hint:"Pythagoras: √(Breite² + Höhe²) mit der halben Spannweite.",how:`L = √(${NF(dx)}² + ${NF(dy)}²)`},
      {l:"Stabkraft S<sub>AC</sub> (Zug +, Druck −)",v:S1,u:"kN",hint:`Knoten A, ΣF<sub>V</sub>: A<sub>v</sub> + S<sub>AC</sub> · ${NF(dy)}/L = 0`,how:`S<sub>AC</sub> = −${NF(A)} · ${NF(L)} / ${NF(dy)}`},{l:"Stabkraft S<sub>AB</sub>",v:S2,u:"kN",hint:`Knoten A, ΣF<sub>H</sub>: S<sub>AC</sub> · ${NF(dx)}/L + S<sub>AB</sub> = 0`,how:`S<sub>AB</sub> = −(${NF(S1)}) · ${NF(dx)} / ${NF(L)}`}]}}}
 );
-function fixDraw(s){if(s.draw){const d=s.draw;s.l=d.l;s.hint=d.hint;s.how=d.how}return s}
+function fixDraw(s){if(s.draw){const d=s.draw;s.l=s.l||d.l;s.hint=d.hint;s.how=d.how}return s}
 
 /* ---------- Widgets: Daumenregel, Abzählen, Linien ---------- */
 WG.hand=el=>{let sense=0,last=null,acc=0;const C=[92,118],r=62;
@@ -2335,6 +2338,113 @@ function tmHome(){const n=(store.get("tm-rt",{n:0}).n)||0,g=store.get("tm-games"
 calcInit();
 Object.assign(window,{calcEval,readNum,TR,RT,rtShow,rtNew,SYS});
 initWidgets(document);
+
+/* ---------- Aufgaben aus dem Hefter (Mitschrift Kapitel 1) ---------- */
+function vecFig(vs,opt){opt=opt||{};const W=340,H=opt.h||230;let x0=0,x1=0,y0=0,y1=0;vs.forEach(v=>{const f=v.from||[0,0];[[f[0],f[1]],[f[0]+v.x,f[1]+v.y]].forEach(([a,b])=>{x0=Math.min(x0,a);x1=Math.max(x1,a);y0=Math.min(y0,b);y1=Math.max(y1,b)})});
+  const s=Math.min((W-90)/((x1-x0)||1),(H-60)/((y1-y0)||1)),ox=(W-(x1-x0)*s)/2-x0*s,oy=30+y1*s,P=(a,b)=>[ox+a*s,oy-b*s];let g="";
+  const st=opt.grid||0;if(st){for(let a=Math.ceil((x0-st)/st)*st;a<=x1+st;a+=st){const X=ox+a*s;if(X>4&&X<W-4)g+=`<line x1="${f1(X)}" y1="6" x2="${f1(X)}" y2="${H-6}" stroke="#eef0f6"/>`}for(let b=Math.ceil((y0-st)/st)*st;b<=y1+st;b+=st){const Y=oy-b*s;if(Y>4&&Y<H-4)g+=`<line x1="6" y1="${f1(Y)}" x2="${W-6}" y2="${f1(Y)}" stroke="#eef0f6"/>`}}
+  g+=`<line x1="8" y1="${f1(oy)}" x2="${W-8}" y2="${f1(oy)}" stroke="#b8c0d0" stroke-width="1.3"/><line x1="${f1(ox)}" y1="8" x2="${f1(ox)}" y2="${H-8}" stroke="#b8c0d0" stroke-width="1.3"/>`+tx(W-12,oy-6,opt.ax?opt.ax[0]:"x",{c:TC.mut,fs:12,a:"end"})+tx(ox+8,18,opt.ax?opt.ax[1]:"y",{c:TC.mut,fs:12,a:"start"});
+  (opt.lines||[]).forEach(a=>{const c=Math.cos(rad(a)),d=Math.sin(rad(a));g+=`<line x1="${f1(ox-400*c)}" y1="${f1(oy+400*d)}" x2="${f1(ox+400*c)}" y2="${f1(oy-400*d)}" stroke="#f08c00" stroke-width="1.5" stroke-dasharray="6 5"/>`});
+  vs.forEach(v=>{const f=v.from||[0,0],[ax,ay]=P(f[0],f[1]),[bx,by]=P(f[0]+v.x,f[1]+v.y),c=v.c||TC.F;g+=arw(ax,ay,bx,by,c,v.w||3,v.dash);if(v.lab)g+=tx(bx+(v.x>=0?7:-7),by+(v.y>0?-5:14),v.lab,{c,a:v.x>=0?"start":"end",fs:12.5})});
+  if(opt.gl)g+=tx(10,H-10,opt.gl,{a:"start",fs:11,c:TC.mut});
+  g+=`<circle cx="${f1(ox)}" cy="${f1(oy)}" r="3.6" fill="${TC.ink}"/>`;return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Kräfte" class="tmfig" style="overflow:hidden">${g}</svg>`}
+function hfLampe(){let g=hatch(50,40,330,-1);const L=[74,40],R=[314,40],M=[170,112];
+  g+=`<line x1="${L[0]}" y1="${L[1]}" x2="${M[0]}" y2="${M[1]}" stroke="${TC.ink}" stroke-width="2.2"/><line x1="${R[0]}" y1="${R[1]}" x2="${M[0]}" y2="${M[1]}" stroke="${TC.ink}" stroke-width="2.2"/>`;
+  g+=tx(118,64,"S₁",{c:TC.x,a:"end"})+tx(246,64,"S₂",{c:TC.x,a:"start"});
+  g+=`<line x1="${L[0]}" y1="196" x2="${M[0]}" y2="196" stroke="${TC.mut}"/><line x1="${M[0]}" y1="196" x2="${R[0]}" y2="196" stroke="${TC.mut}"/>`+[L[0],M[0],R[0]].map(x=>`<line x1="${x}" y1="191" x2="${x}" y2="201" stroke="${TC.mut}"/>`).join("")+tx(122,212,"4 m",{fw:600,c:"#5d6779"})+tx(242,212,"6 m",{fw:600,c:"#5d6779"});
+  g+=`<line x1="330" y1="40" x2="330" y2="112" stroke="${TC.mut}"/>`+tx(326,82,"3 m",{a:"end",fw:600,c:"#5d6779"});
+  g+=`<path d="M${M[0]-15} ${M[1]+22} Q${M[0]} ${M[1]+2} ${M[0]+15} ${M[1]+22} Z" fill="#ffe066" stroke="${TC.ink}" stroke-width="2"/>`+arw(M[0],M[1]+26,M[0],M[1]+56,TC.F,3)+tx(M[0]+10,M[1]+52,"100 kg",{c:TC.F,a:"start"});
+  return svgw(340,222,g,"Lampe an zwei Seilen")}
+function hfKette(){const A=[110,34],L=140,B=[A[0]+L*Math.sin(rad(30)),A[1]+L*Math.cos(rad(30))];let g=hatch(70,A[1],150,-1);
+  g+=`<line x1="${A[0]}" y1="${A[1]}" x2="${f1(B[0])}" y2="${f1(B[1])}" stroke="${TC.ink}" stroke-width="2.4" stroke-dasharray="7 3"/><line x1="${A[0]}" y1="${A[1]}" x2="${A[0]}" y2="${A[1]+70}" stroke="${TC.mut}" stroke-dasharray="4 4"/>`;
+  g+=`<path d="M${A[0]} ${A[1]+40} A40 40 0 0 0 ${f1(A[0]+40*Math.sin(rad(30)))} ${f1(A[1]+40*Math.cos(rad(30)))}" fill="none" stroke="${TC.mut}" stroke-width="1.5"/>`+tx(A[0]+12,A[1]+56,"30°",{fs:12,c:"#5d6779",a:"start"})+tx(A[0]+40,A[1]+80,"Kette",{fs:12,c:TC.mut,a:"start"});
+  g+=`<rect x="${f1(B[0]-14)}" y="${f1(B[1])}" width="28" height="24" rx="3" fill="${TC.beam}" stroke="${TC.ink}" stroke-width="2"/>`+tx(B[0],B[1]+16,"70 kg",{fs:10})+arw(B[0],B[1]+26,B[0],B[1]+66,TC.F,3)+tx(B[0]+8,B[1]+60,"G",{c:TC.F,a:"start"});
+  g+=arw(B[0]-80,B[1]+12,B[0]-16,B[1]+12,TC.x,3)+tx(B[0]-80,B[1]+4,"F₂",{c:TC.x,a:"start",fs:12});
+  return svgw(340,B[1]+80,g,"Gewicht an einer Kette")}
+function hfMom11(){const Y=120,X=300,x1=96,x2=60;let g=`<circle cx="${X}" cy="${Y}" r="5" fill="#fff" stroke="${TC.ink}" stroke-width="2.4"/>`+tx(X+10,Y+4,"x",{a:"start"});
+  g+=`<line x1="${x1}" y1="20" x2="${x1}" y2="${Y+10}" stroke="#f08c00" stroke-dasharray="5 4"/><line x1="${x2}" y1="20" x2="${x2}" y2="${Y+10}" stroke="${TC.F}" stroke-dasharray="5 4"/>`;
+  g+=arw(x1,92,x1,30,"#f08c00",3)+tx(x1+6,40,"F₁ = 15 kN",{c:"#d9480f",a:"start",fs:12})+arw(x2,50,x2,110,TC.F,3)+tx(x2-4,70,"F₂ = 15 kN",{c:TC.F,a:"end",fs:11.5});
+  const yy=Y+26;g+=`<line x1="${x2}" y1="${yy}" x2="${X}" y2="${yy}" stroke="${TC.mut}"/>`+[x2,x1,X].map(x=>`<line x1="${x}" y1="${yy-5}" x2="${x}" y2="${yy+5}" stroke="${TC.mut}"/>`).join("")+tx((x1+x2)/2,yy+16,"2,5 m",{fs:11.5,fw:600,c:"#5d6779"})+tx((x1+X)/2,yy+16,"26,3 m",{fw:600,c:"#5d6779"});
+  return svgw(340,Y+50,g,"Zwei Kräfte und Drehpunkt")}
+function hfMom12(){const X=210,Y=100,s=20;let g=`<line x1="20" y1="${Y}" x2="320" y2="${Y}" stroke="#d6336c" stroke-dasharray="5 4"/><line x1="20" y1="${Y+2*s}" x2="320" y2="${Y+2*s}" stroke="${TC.F}" stroke-dasharray="5 4"/><line x1="${X}" y1="16" x2="${X}" y2="180" stroke="${TC.x}" stroke-dasharray="5 4"/><line x1="${X-2*s}" y1="16" x2="${X-2*s}" y2="180" stroke="#f08c00" stroke-dasharray="5 4"/>`;
+  g+=arw(X,Y-4,X,Y-62,TC.x,3)+tx(X+6,Y-54,"F₁ = 5 kN",{c:TC.x,a:"start",fs:12})+arw(X-2*s,Y+2*s,X-2*s,Y+2*s+50,"#e8590c",3)+tx(X-2*s-6,Y+2*s+46,"F₂ = 5 kN",{c:"#e8590c",a:"end",fs:12});
+  g+=arw(250,Y,300,Y,"#d6336c",3)+tx(304,Y-6,"F₃",{c:"#d6336c",a:"start"})+arw(110,Y+2*s,60,Y+2*s,TC.F,3)+tx(56,Y+2*s-6,"F₄",{c:TC.F,a:"end"});
+  g+=`<circle cx="${X}" cy="${Y}" r="5" fill="#fff" stroke="${TC.ink}" stroke-width="2.4"/>`+tx(X+8,Y+16,"x",{a:"start"});
+  g+=`<line x1="${X-2*s}" y1="190" x2="${X}" y2="190" stroke="${TC.mut}"/>`+tx(X-s,204,"2 m",{fs:11.5,fw:600,c:"#5d6779"})+`<line x1="330" y1="${Y}" x2="330" y2="${Y+2*s}" stroke="${TC.mut}"/>`+tx(326,Y+s+4,"2 m",{fs:11.5,fw:600,c:"#5d6779",a:"end"});
+  return svgw(340,212,g,"Vier Kräfte und Drehpunkt")}
+function hfWippe(){const X0=34,s=21,S=X0+10*s,Y=70;let g=`<rect x="${X0}" y="${Y-5}" width="${13*s}" height="10" rx="2" fill="${TC.beam}" stroke="${TC.ink}" stroke-width="2"/>`+fest(S,Y+5);
+  g+=arw(X0,Y-48,X0,Y-6,TC.F,3)+tx(X0+4,Y-52,"Kind 1: 25 kg",{c:TC.F,a:"start",fs:11.5})+arw(X0+3*s,Y-28,X0+3*s,Y-6,TC.F,3)+tx(X0+3*s+4,Y-30,"Kind 2: 27 kg",{c:TC.F,a:"start",fs:11.5});
+  g+=arw(S+3*s,Y-48,S+3*s,Y-6,TC.x,3)+tx(S+3*s,Y-52,"F = ?",{c:TC.x});
+  const yy=Y+44;g+=`<line x1="${X0}" y1="${yy}" x2="${S+3*s}" y2="${yy}" stroke="${TC.mut}"/>`+[X0,X0+3*s,S,S+3*s].map(x=>`<line x1="${x}" y1="${yy-5}" x2="${x}" y2="${yy+5}" stroke="${TC.mut}"/>`).join("")+tx(X0+1.5*s,yy+16,"3 m",{fs:11.5,fw:600,c:"#5d6779"})+tx(X0+6.5*s,yy+16,"7 m",{fs:11.5,fw:600,c:"#5d6779"})+tx(S+1.5*s,yy+16,"3 m",{fs:11.5,fw:600,c:"#5d6779"});
+  return svgw(340,yy+26,g,"Wippe")}
+function hfHalter(){const W0=80,T=70,B=130,s=5.5;let g=wall(W0,T-24,B+24,-1);
+  g+=`<polyline points="${W0},${B} ${W0},${T} ${W0+40*s},${T}" fill="none" stroke="${TC.ink}" stroke-width="4" stroke-linejoin="round"/>`;
+  g+=arw(W0+20*s,T-44,W0+20*s,T-6,TC.F,3)+tx(W0+20*s+6,T-36,"5 kg",{c:TC.F,a:"start"});
+  g+=`<circle cx="${W0}" cy="${T}" r="4" fill="#fff" stroke="${TC.ink}" stroke-width="2"/><circle cx="${W0}" cy="${B}" r="4" fill="#fff" stroke="${TC.ink}" stroke-width="2"/>`+tx(W0+8,T+18,"oben",{a:"start",fs:11.5,c:TC.mut})+tx(W0+8,B+4,"unten",{a:"start",fs:11.5,c:TC.mut});
+  const yy=B+30;g+=`<line x1="${W0}" y1="${yy}" x2="${W0+40*s}" y2="${yy}" stroke="${TC.mut}"/>`+[W0,W0+20*s,W0+40*s].map(x=>`<line x1="${x}" y1="${yy-5}" x2="${x}" y2="${yy+5}" stroke="${TC.mut}"/>`).join("")+tx(W0+10*s,yy+16,"20 cm",{fs:11.5,fw:600,c:"#5d6779"})+tx(W0+30*s,yy+16,"20 cm",{fs:11.5,fw:600,c:"#5d6779"});
+  g+=`<line x1="${W0+40*s+16}" y1="${T}" x2="${W0+40*s+16}" y2="${B}" stroke="${TC.mut}"/>`+tx(W0+40*s+12,(T+B)/2+4,"10 cm",{fs:11.5,fw:600,c:"#5d6779",a:"end"});
+  return svgw(340,yy+26,g,"Wandhalter")}
+
+const HN=(n,ch,t,giv,fig,steps)=>({n,ch,t,giv,fig,steps});
+const HEFT=[
+ HN("1.1","1","Resultierende zweier Kräfte","Am selben Punkt greifen F<sub>1</sub> = 30 kN nach rechts und F<sub>2</sub> = 20 kN nach oben an. Bestimme die Resultierende F<sub>R</sub> und die Kraft F<sub>3</sub>, die beide im Gleichgewicht hält.",
+   ()=>vecFig([{x:30,y:0,lab:"30 kN"},{x:0,y:20,lab:"20 kN"}],{grid:10}),
+   ()=>[{draw:drawForceStep(Math.hypot(30,20),deg(Math.atan2(20,30))),l:"F<sub>R</sub> einzeichnen"},{l:"Betrag F<sub>R</sub>",v:Math.hypot(30,20),u:"kN",hint:"Pythagoras: F<sub>R</sub> = √(30² + 20²)",how:"F<sub>R</sub> = √(30² + 20²)"},
+     {l:"Winkel α von F<sub>R</sub> gegen die Waagerechte",v:deg(Math.atan(20/30)),u:"°",tol:0.2,hint:"tan α = 20 / 30, also α = tan⁻¹(20 / 30)",how:"α = tan⁻¹(20 / 30)"},
+     {draw:drawForceStep(Math.hypot(30,20),180+deg(Math.atan2(20,30))),l:"Gleichgewichtskraft F<sub>3</sub> einzeichnen"}]),
+ HN("1.2","1","Resultierende mit schräger Kraft","F<sub>1</sub> = 3 kN zeigt waagerecht nach rechts. F<sub>2</sub> = 4 kN zeigt unter 70° gegen die Waagerechte nach rechts oben. Bestimme die Resultierende und die Gleichgewichtskraft.",
+   ()=>vecFig([{x:3,y:0,lab:"3 kN"},{x:4*Math.cos(rad(70)),y:4*Math.sin(rad(70)),lab:"4 kN"}],{grid:1}),
+   ()=>{const Rx=3+4*Math.cos(rad(70)),Ry=4*Math.sin(rad(70));return[{l:"R<sub>x</sub>",v:Rx,u:"kN",hint:"R<sub>x</sub> = 3 + 4 · cos 70°",how:"R<sub>x</sub> = 3 + 4 · cos 70°"},{l:"R<sub>y</sub>",v:Ry,u:"kN",hint:"R<sub>y</sub> = 4 · sin 70°",how:"R<sub>y</sub> = 4 · sin 70°"},
+     {l:"Betrag R",v:Math.hypot(Rx,Ry),u:"kN",hint:"R = √(R<sub>x</sub>² + R<sub>y</sub>²). Im Hefter grafisch: etwa 5,8 kN.",how:`R = √(${NF(Rx)}² + ${NF(Ry)}²)`},{l:"Winkel von R gegen die Waagerechte",v:deg(Math.atan2(Ry,Rx)),u:"°",tol:0.3,hint:"tan α = R<sub>y</sub> / R<sub>x</sub>. Im Hefter etwa 40°.",how:`α = tan⁻¹(${NF(Ry)} / ${NF(Rx)})`},
+     {l:"Gleichgewichtskraft zeigt nach …",choice:["rechts oben","links unten","links oben"],ans:1,how:"Gleiche Größe, genau entgegengesetzt: nach links unten."}]}),
+ HN("1.4","1","Kraft in zwei Richtungen zerlegen","F = 30 kN wirkt unter 15° gegen die Waagerechte nach rechts oben. Zerlege F in eine waagerechte Kraft und eine Kraft entlang der orangen Linie (60° gegen die Waagerechte, nach links oben).",
+   ()=>vecFig([{x:30*Math.cos(rad(15)),y:30*Math.sin(rad(15)),lab:"30 kN"}],{lines:[0,120],h:180}),
+   ()=>{const b=30*Math.sin(rad(15))/Math.sin(rad(60)),a=30*Math.cos(rad(15))+b*Math.cos(rad(60));return[{l:"Kraft entlang der schrägen Linie",v:b,u:"kN",tol:0.15,hint:"Nur die schräge Kraft hat einen senkrechten Anteil: F<sub>s</sub> · sin 60° = 30 · sin 15°. Im Hefter grafisch: 9 kN.",how:"F<sub>s</sub> = 30 · sin 15° / sin 60°"},
+     {l:"Waagerechte Kraft",v:a,u:"kN",tol:0.3,hint:"Waagerecht: F<sub>w</sub> − F<sub>s</sub> · cos 60° = 30 · cos 15°. Im Hefter grafisch: 33 kN.",how:`F<sub>w</sub> = 30 · cos 15° + ${NF(b)} · cos 60°`}]}),
+ HN("1.5","1","Drei Kräfte in Komponenten","Gegeben sind F<sub>1</sub> = (5 | 2,5) kN, F<sub>2</sub> = (−1 | −3) kN und F<sub>3</sub> = (3 | −2) kN. a) Beträge, b) Resultierende.",
+   ()=>vecFig([{x:5,y:2.5,lab:"F₁"},{x:-1,y:-3,lab:"F₂",c:"#e8590c"},{x:3,y:-2,lab:"F₃",c:"#c79a00"}],{grid:1}),
+   ()=>[{l:"|F<sub>1</sub>|",v:Math.hypot(5,2.5),u:"kN",hint:"√(5² + 2,5²)",how:"|F<sub>1</sub>| = √(5² + 2,5²)"},{l:"|F<sub>2</sub>|",v:Math.hypot(1,3),u:"kN",hint:"√((−1)² + (−3)²)",how:"|F<sub>2</sub>| = √((−1)² + (−3)²)"},{l:"|F<sub>3</sub>|",v:Math.hypot(3,2),u:"kN",hint:"√(3² + (−2)²)",how:"|F<sub>3</sub>| = √(3² + (−2)²)"},
+     {l:"F<sub>Rx</sub>",v:7,u:"kN",hint:"Alle x-Werte addieren: 5 + (−1) + 3",how:"F<sub>Rx</sub> = 5 − 1 + 3"},{l:"F<sub>Ry</sub>",v:-2.5,u:"kN",hint:"Alle y-Werte addieren: 2,5 + (−3) + (−2)",how:"F<sub>Ry</sub> = 2,5 − 3 − 2"},{l:"|F<sub>R</sub>|",v:Math.hypot(7,2.5),u:"kN",hint:"√(7² + (−2,5)²)",how:"|F<sub>R</sub>| = √(7² + (−2,5)²)"}]),
+ HN("1.6","1","Fünf Kräfte im Koordinatensystem","F<sub>1</sub> = (30 | 15), F<sub>2</sub> = (10 | 50), F<sub>3</sub> = (−20 | 10), F<sub>4</sub> = (−25 | −30), F<sub>5</sub> = (0 | −25), alles in kN. Herrscht Gleichgewicht? Wie groß ist F<sub>R</sub>?",
+   ()=>vecFig([{x:30,y:15,lab:"F₁"},{x:10,y:50,lab:"F₂"},{x:-20,y:10,lab:"F₃"},{x:-25,y:-30,lab:"F₄"},{x:0,y:-25,lab:"F₅"}],{grid:10,h:250}),
+   ()=>[{l:"ΣF<sub>x</sub>",v:-5,u:"kN",hint:"30 + 10 + (−20) + (−25) + 0",how:"ΣF<sub>x</sub> = 30 + 10 − 20 − 25 + 0"},{l:"ΣF<sub>y</sub>",v:20,u:"kN",hint:"15 + 50 + 10 + (−30) + (−25)",how:"ΣF<sub>y</sub> = 15 + 50 + 10 − 30 − 25"},
+     {l:"Herrscht Gleichgewicht?",choice:["ja","nein"],ans:1,how:"Nein, die Summen der Kräfte sind nicht null."},{l:"|F<sub>R</sub>|",v:Math.hypot(5,20),u:"kN",hint:"√((−5)² + 20²)",how:"|F<sub>R</sub>| = √((−5)² + 20²)"}]),
+ HN("1.7","1","Kraft zerlegen und ausgleichen","F<sub>3</sub> = 10 kN zeigt nach links unten, 30° gegen die Senkrechte. a) zeichnen, b) rechnerisch zerlegen, c) welche Kräfte halten F<sub>3</sub> im Gleichgewicht?",
+   ()=>vecFig([{x:-10*Math.sin(rad(30)),y:-10*Math.cos(rad(30)),lab:"F₃ = 10 kN"}],{grid:1,h:200}),
+   ()=>[{draw:drawForceStep(10,240),l:"F<sub>3</sub> einzeichnen"},{l:"Senkrechter Anteil (Betrag)",v:10*Math.cos(rad(30)),u:"kN",hint:"Der Winkel liegt an der Senkrechten: Ankathete = 10 · cos 30°",how:"10 · cos 30°"},{l:"Waagerechter Anteil (Betrag)",v:5,u:"kN",hint:"Gegenkathete = 10 · sin 30°",how:"10 · sin 30°"},
+     {l:"Gegenkraft senkrecht nach oben",v:10*Math.cos(rad(30)),u:"kN",hint:"ΣF = 0: genauso groß wie der senkrechte Anteil, nur nach oben.",how:"F = 8,66"},{l:"Gegenkraft waagerecht nach rechts",v:5,u:"kN",hint:"ΣF = 0: genauso groß wie der waagerechte Anteil.",how:"F = 5,0"}]),
+ HN("1.8","1","Kräfte an einer Ecke","An einer Ecke greifen an: 50 kN unter 45° nach rechts oben, 50 kN waagerecht nach rechts, 6 kN nach links und 35,355 kN nach unten. Welche Kraft F nach links sorgt für Gleichgewicht?",
+   ()=>vecFig([{x:50*Math.cos(rad(45)),y:50*Math.sin(rad(45)),lab:"50 kN"},{x:50,y:0,lab:"50 kN"},{x:-6,y:0,lab:"6 kN",from:[0,0]},{x:0,y:-35.355,lab:"35,355 kN"},{x:-40,y:0,lab:"F = ?",c:TC.x,dash:"6 4",from:[-6,0]}],{h:220}),
+   ()=>[{l:"waagerechter Anteil der schrägen 50 kN",v:50*Math.cos(rad(45)),u:"kN",hint:"50 · cos 45°",how:"50 · cos 45°"},{l:"senkrechter Anteil der schrägen 50 kN",v:50*Math.sin(rad(45)),u:"kN",hint:"50 · sin 45°",how:"50 · sin 45°"},
+     {l:"a) ΣF<sub>y</sub>",v:0,u:"kN",tol:0.02,hint:"35,36 nach oben, 35,355 nach unten",how:"35,36 − 35,355 ≈ 0"},{l:"b) F aus ΣF<sub>x</sub> = 0",v:50+50*Math.cos(rad(45))-6,u:"kN",tol:0.05,hint:"50 + 35,36 − 6 − F = 0",how:"F = 50 + 35,36 − 6"}]),
+ HN("1.9","1","Lampe an zwei Seilen","Eine Lampe mit 100 kg hängt an zwei Seilen. Seil 1 geht 4 m nach links und 3 m nach oben, Seil 2 geht 6 m nach rechts und 3 m nach oben. Rechne mit g = 10 m/s².",
+   ()=>hfLampe(),
+   ()=>{const a1=deg(Math.atan(3/4)),a2=deg(Math.atan(3/6)),c1=Math.cos(rad(a1)),s1=Math.sin(rad(a1)),c2=Math.cos(rad(a2)),s2=Math.sin(rad(a2)),S2=1/(s2+s1*c2/c1),S1=S2*c2/c1;
+     return[{l:"F<sub>Lampe</sub>",v:1,u:"kN",hint:"100 kg · 10 m/s² = 1000 N",how:"100 · 10 = 1000 N"},{l:"α<sub>1</sub> von Seil 1",v:a1,u:"°",tol:0.1,hint:"tan α<sub>1</sub> = 3 / 4",how:"α<sub>1</sub> = tan⁻¹(3/4)"},{l:"α<sub>2</sub> von Seil 2",v:a2,u:"°",tol:0.1,hint:"tan α<sub>2</sub> = 3 / 6",how:"α<sub>2</sub> = tan⁻¹(3/6)"},
+     {l:"Seilkraft S<sub>2</sub>",v:S2,u:"kN",tol:0.01,hint:"ΣF<sub>x</sub>: 0,8 · S<sub>1</sub> = 0,89 · S<sub>2</sub>. ΣF<sub>y</sub>: 0,6 · S<sub>1</sub> + 0,45 · S<sub>2</sub> = 1. Einsetzen.",how:"S<sub>2</sub> = 1 / 1,12"},{l:"Seilkraft S<sub>1</sub>",v:S1,u:"kN",tol:0.01,hint:"S<sub>1</sub> = 1,1125 · S<sub>2</sub>",how:`S<sub>1</sub> = 1,1125 · ${NF(S2)}`}]}),
+ HN("1.10","1","Gewicht an einer Kette","Ein Gewicht mit 70 kg hängt an einer Kette. Eine waagerechte Kraft F<sub>2</sub> drückt es so zur Seite, dass die Kette 30° gegen die Senkrechte steht (g = 10 m/s²).",
+   ()=>hfKette(),
+   ()=>[{l:"F<sub>G</sub>",v:0.7,u:"kN",hint:"70 kg · 10 m/s² = 700 N",how:"70 · 10 = 700 N"},{l:"a) F<sub>2</sub>",v:0.7*Math.tan(rad(30)),u:"kN",tol:0.005,hint:"tan 30° = F<sub>2</sub> / F<sub>G</sub>",how:"F<sub>2</sub> = 0,7 · tan 30°"},{l:"b) F<sub>Kette</sub>",v:Math.hypot(0.7,0.7*Math.tan(rad(30))),u:"kN",tol:0.005,hint:"√(F<sub>2</sub>² + F<sub>G</sub>²)",how:"F<sub>Kette</sub> = √(0,4² + 0,7²)"}]),
+ HN("1.11","2","Momente um einen Punkt","F<sub>1</sub> = 15 kN zeigt nach oben, 26,3 m links vom Punkt x. F<sub>2</sub> = 15 kN zeigt nach unten, 2,5 m weiter links. Gegen den Uhrzeiger ist positiv.",
+   ()=>hfMom11(),
+   ()=>[{l:"M<sub>1</sub> mit Vorzeichen",v:-15*26.3,u:"kNm",hint:"F<sub>1</sub> dreht um x im Uhrzeigersinn: Minus. M = F · a",how:"M<sub>1</sub> = −15 · 26,3"},{l:"M<sub>2</sub> mit Vorzeichen",v:15*28.8,u:"kNm",hint:"a<sub>2</sub> = 26,3 + 2,5 = 28,8 m, dreht gegen den Uhrzeiger: Plus",how:"M<sub>2</sub> = +15 · 28,8"},
+     {l:"ΣM<sub>x</sub>",v:37.5,u:"kNm",hint:"M<sub>1</sub> + M<sub>2</sub>",how:"ΣM = −394,5 + 432"},{l:"b) ΣM um den Fußpunkt von F<sub>1</sub>",v:37.5,u:"kNm",hint:"F<sub>1</sub> hat dort keinen Hebelarm, F<sub>2</sub> hat 2,5 m.",how:"ΣM = 15 · 0 + 15 · 2,5"},{l:"Ist das System im Gleichgewicht?",choice:["ja","nein, es dreht sich"],ans:1,how:"Nein: 37,5 ≠ 0, das System dreht sich. Ein Kräftepaar dreht um jeden Punkt gleich."}]),
+ HN("1.12","2","Vier Kräfte im Gleichgewicht","F<sub>1</sub> = 5 kN nach oben geht durch x. F<sub>2</sub> = 5 kN nach unten liegt 2 m links davon. F<sub>3</sub> nach rechts geht durch x, F<sub>4</sub> nach links liegt 2 m tiefer. Wie groß müssen F<sub>3</sub> und F<sub>4</sub> sein?",
+   ()=>hfMom12(),
+   ()=>[{l:"F<sub>4</sub> aus ΣM<sub>x</sub> = 0",v:5,u:"kN",hint:"F<sub>1</sub> und F<sub>3</sub> gehen durch x. Bleibt: 5 · 2 − F<sub>4</sub> · 2 = 0",how:"F<sub>4</sub> = 5 · 2 / 2"},{l:"Kontrolle ΣF<sub>y</sub>",v:0,u:"kN",tol:0.01,hint:"F<sub>1</sub> − F<sub>2</sub>",how:"5 − 5"},{l:"F<sub>3</sub> aus ΣF<sub>x</sub> = 0",v:5,u:"kN",hint:"−F<sub>4</sub> + F<sub>3</sub> = 0",how:"F<sub>3</sub> = F<sub>4</sub>"}]),
+ HN("1.13","2","Wippe mit zwei Kindern","Auf einer Wippe sitzt Kind 1 (25 kg) 10 m links vom Drehpunkt und Kind 2 (27 kg) 7 m links davon. Welche Kraft braucht es 3 m rechts vom Drehpunkt (g = 10 m/s²)?",
+   ()=>hfWippe(),
+   ()=>[{l:"F<sub>1</sub> von Kind 1",v:250,u:"N",hint:"25 · 10",how:"F<sub>1</sub> = 25 · 10"},{l:"F<sub>2</sub> von Kind 2",v:270,u:"N",hint:"27 · 10",how:"F<sub>2</sub> = 27 · 10"},{l:"F rechts aus ΣM = 0",v:(2500+1890)/3,u:"N",tol:0.5,hint:"250 · 10 + 270 · 7 − F · 3 = 0",how:"F = (2500 + 1890) / 3"},{l:"Das entspricht einer Masse von",v:(2500+1890)/30,u:"kg",tol:0.1,hint:"F / g",how:"m = 1463 / 10"}]),
+ HN("1.14","2","Wandhalter","Ein Wandhalter ist oben und unten an der Wand befestigt (10 cm Abstand). Am Arm hängt 20 cm von der Wand eine Last von 5 kg (g = 10 m/s²).",
+   ()=>hfHalter(),
+   ()=>[{l:"Gewichtskraft",v:50,u:"N",hint:"5 kg · 10 m/s²",how:"5 · 10"},{l:"a) senkrechte Schubkraft an der Wand",v:50,u:"N",hint:"ΣF<sub>y</sub> = 0",how:"F<sub>Schub</sub> = 50"},{l:"b) Zugkraft oben aus ΣM um den unteren Punkt",v:100,u:"N",hint:"F<sub>Zug</sub> · 10 − 50 · 20 = 0",how:"F<sub>Zug</sub> = 50 · 20 / 10"},{l:"Druckkraft unten",v:100,u:"N",hint:"ΣF<sub>x</sub> = 0: gleich groß wie die Zugkraft",how:"F<sub>Druck</sub> = F<sub>Zug</sub>"}])
+];
+/* Rechentrainer und Übungsaufgaben nur noch aus dem Hefter */
+const TR_EXTRA=TR.splice(0,TR.length);
+HEFT.forEach(h=>TR.push({ch:h.ch,t:h.t,hn:h.n,mk(){return{giv:h.giv,fig:h.fig(),steps:h.steps().map(fixDraw)}}}));
+AX.length=0;HEFT.forEach((h,i)=>{const st=h.steps().map(fixDraw),num=st.filter(s=>!s.draw&&!s.choice);
+  AX.push({n:101+i,ch:h.ch,t:`Aufgabe ${h.n}: ${h.t}`,q:`<p>${h.giv}</p><div class="fg">${h.fig()}</div>`,calc:num.map(s=>[s.l.replace(/<[^>]+>/g,""),Math.round(s.v*1000)/1000,s.tol!=null?Math.max(s.tol,0.02):Math.max(0.02,Math.abs(s.v)*0.01),s.u]),
+    sol:`<ol class="steps">${st.map(s=>`<li>${s.l}: ${s.draw?s.how:s.choice?s.how:`${s.how} = <b>${NF(s.v)} ${s.u}</b>`}</li>`).join("")}</ol>`})});
 
 /* ---------- Start ---------- */
 if(store.get(RUNKEY,null)){try{history.replaceState(null,"","#pruefung")}catch(e){}}
