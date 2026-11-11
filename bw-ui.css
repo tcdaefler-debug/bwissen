@@ -244,7 +244,10 @@ nav.tabs.open .tabs-h{background:rgba(250,251,254,.98)!important}
 #utab button[aria-current="true"] svg{transform:translateY(-1px) scale(1.08)}
 #utab .ind{position:absolute;top:5px;bottom:5px;left:5px;width:20%;border-radius:999px;background:color-mix(in srgb,var(--brand) 13%,rgba(255,255,255,.9));box-shadow:0 1px 3px rgba(16,24,40,.1);transition:transform .45s var(--u-ease),width .45s var(--u-ease);z-index:0}
 body.exlock #utab{transform:translate(-50%,calc(100% + 40px));opacity:0;pointer-events:none}
-.tmcalc,#calc-fab,.calcfab{bottom:calc(84px + var(--sab))!important}
+#calc-fab{bottom:calc(84px + var(--sab))!important;transition:opacity .25s,transform .25s}
+body:has(nav.tabs.open) #utab{transform:translate(-50%,calc(100% + 40px));opacity:0;pointer-events:none}
+body:has(nav.tabs.open) #calc-fab{opacity:0;pointer-events:none}
+.tmcalc{z-index:40!important}
 
 /* ---------- Bewegung ---------- */
 section[data-view]:not([hidden]),#chapters article:not([hidden]),.lesson:not([hidden]){animation:uIn .5s var(--u-ease)}
@@ -261,3 +264,9 @@ section[data-view]:not([hidden]),#chapters article:not([hidden]),.lesson:not([hi
 /* ---------- Kleine Geräte ---------- */
 @media (max-width:380px){body{font-size:16px}.wrap{padding-left:max(13px,env(safe-area-inset-left,0px))!important;padding-right:max(13px,env(safe-area-inset-right,0px))!important}.chapnav{margin-inline:-13px;padding-inline:13px}.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.tile{padding:12px}.hero{padding:18px 15px 16px!important}}
 @media (min-width:700px){#utab{bottom:18px}}
+
+/* ---------- Lange Wörter brechen sauber um ---------- */
+.tile .meta,.tile b,.opt,.way .wt small,.continue small,.lp-b small,.excard small,.gpick small,.kurz li,.fcard,.dcard,.bucket,.sitem,.chip{overflow-wrap:anywhere}
+.tile .meta,.tile b,.opt,.bucket,.kurz li,td,th{-webkit-hyphens:auto;hyphens:auto}
+.opt{min-width:0}
+.opts>*{min-width:0}

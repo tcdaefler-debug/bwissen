@@ -29,6 +29,7 @@ function buildTab(){
   if(u)items.push(["ueben","Üben",u]);
   if(has("pruefung"))items.push(["pruefung","Prüfung","pruefung"]);
   if(window.BW_TAFEL&&window.BW_TAFEL.list&&window.BW_TAFEL.list.length)items.push(["tafel","Tafel",null]);
+  if(window.BW_TAFEL&&window.BW_TAFEL.list&&window.BW_TAFEL.list.length&&!$('#tabs a[data-tafel]')){var la=$('#tabs a[href="#lernen"]');if(la){var ta=el("a",null,'<span class="ti"><svg viewBox="0 0 24 24">'+ICON.tafel+'</svg></span>An der Tafel');ta.href="#tafel";ta.setAttribute("data-tafel","");ta.style.setProperty("--tc","#2b6a4f");la.parentNode.insertBefore(ta,la.nextSibling)}}
   var n=el("nav");n.id="utab";n.setAttribute("aria-label","Schnellzugriff");
   n.appendChild(el("i","ind"));
   items.forEach(function(it){var b=el("button",null,'<svg viewBox="0 0 24 24" aria-hidden="true">'+ICON[it[0]]+'</svg><span>'+it[1]+'</span>');b.type="button";b.dataset.g=it[0];
@@ -63,7 +64,7 @@ window.BW_CONFETTI=confetti;
 function watchWin(){var m=$("main");if(!m)return;var seen=new WeakSet();
   new MutationObserver(function(){var r=m.querySelector(".exres.ok");if(r&&!seen.has(r)){seen.add(r);setTimeout(confetti,250)}}).observe(m,{childList:true,subtree:true})}
 
-function init(){buildTab();headScroll();watchWin();
+function init(){if(!H.lang)H.lang="de";buildTab();headScroll();watchWin();
   try{if(window.parent!==window)window.parent.postMessage({bwAsk:"insets"},"*")}catch(e){}}
 if(D.readyState==="loading")D.addEventListener("DOMContentLoaded",init);else init();
 })();
