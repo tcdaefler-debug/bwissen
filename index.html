@@ -157,7 +157,7 @@ button.streak{border:0;font:inherit;cursor:pointer}.streak{display:flex;align-it
 #set:not([hidden]),#fb:not([hidden]),#cal:not([hidden]),#sem:not([hidden]){animation:rise .2s ease}
 #set:not([hidden]) .sheet,#fb:not([hidden]) .sheet,#cal:not([hidden]) .sheet,#sem:not([hidden]) .sheet{animation:sheetUp .32s cubic-bezier(.2,.8,.2,1)}
 /* Dunkel: die ganze App (auch das geöffnete Fach) wird umgekehrt, Farbtöne bleiben erhalten */
-html.dark #frame{filter:invert(.92) hue-rotate(180deg)}html.dark #frame,html.dark #frame iframe{background:#fff}
+/* Dunkelmodus: jedes Fach stellt sich selbst um (Glas-Schicht in modul-*.html) */
 /* Anmeldung mit Profil */
 #gate{position:fixed;inset:0;z-index:41;background:linear-gradient(160deg,#eef3ff 0%,#fff 45%,#fff4ea 100%);overflow:auto;display:flex;padding:24px 16px}
 .adm{background:var(--bg2);border-radius:16px;padding:12px 14px}.adm p{margin:0 0 8px;font-size:.92rem}.adm .st{font-weight:800}.adm .st.on{color:#15803d}.adm .st.off{color:#dc2626}
@@ -336,7 +336,6 @@ html[data-th="dark"]{color-scheme:dark;
 html{background:var(--bg);color:var(--ink)}body{background:transparent;color:var(--ink)}
 body{-webkit-font-smoothing:antialiased;letter-spacing:-.005em}
 #bgimg{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,var(--bg) 0,var(--bg) env(safe-area-inset-top,0px),transparent calc(env(safe-area-inset-top,0px) + 120px)),var(--veil),var(--bgimg) center 62%/cover no-repeat,var(--bg)}
-html[data-th="light"] #frame,html[data-th="light"] #frame iframe{background:#fff}
 .wrap{max-width:820px;padding-top:14px;padding-bottom:calc(118px + env(safe-area-inset-bottom,0px))}
 
 /* Glasfläche */
@@ -862,7 +861,7 @@ window.addEventListener("message",e=>{if(e.data&&e.data.lernapp==="home")push()}
 /* Einstellungen: Darstellung und Zurücksetzen (immer mit Nachfrage, alles komplett mit doppelter Nachfrage) */
 const MQ_DARK=matchMedia("(prefers-color-scheme: dark)");
 function applyTheme(){const t=store.get("app-theme","auto"),d=t==="dark"||(t==="auto"&&MQ_DARK.matches);document.documentElement.classList.toggle("dark",d);document.documentElement.dataset.th=d?"dark":"light";
-  const mc=document.querySelector('meta[name="theme-color"]');if(mc)mc.content=d?"#070c22":"#5087ca";
+  const mc=document.querySelector('meta[name="theme-color"]');if(mc)mc.content=d?"#070c22":"#5087ca";try{$("#mod").contentWindow.postMessage({bwTheme:1},"*")}catch(e){}
   document.querySelectorAll("[data-theme-set]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.themeSet===t))}
 document.querySelectorAll("[data-theme-set]").forEach(b=>b.onclick=()=>{store.set("app-theme",b.dataset.themeSet);applyTheme();profSave();push()});
 try{MQ_DARK.addEventListener("change",applyTheme)}catch(e){}

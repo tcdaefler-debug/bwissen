@@ -7,6 +7,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<script>/*BW-GLAS-THEMA*/(function(){var q=matchMedia("(prefers-color-scheme: dark)");function ap(){var t="auto";try{t=JSON.parse(localStorage.getItem("app-theme"))||"auto"}catch(e){}document.documentElement.classList.toggle("dark",t==="dark"||(t==="auto"&&q.matches))}ap();addEventListener("storage",function(e){if(!e.key||e.key==="app-theme")ap()});try{q.addEventListener("change",ap)}catch(e){}addEventListener("message",function(e){if(e.data&&e.data.bwTheme)ap()})})();</script>
 <style>
 /* Layout: Lern-App – helle Kacheln je Thema mit eigener Farbe, eine Lesespalte, Zeichnungen statt Textwüsten.
    Bewusst nur helles Design (Wunsch: weißer Hintergrund). Soll = Blau, Haben = Orange zieht sich durch alles. */
@@ -491,6 +492,23 @@ nav.tabs .tgh:first-child{margin-top:0}
 .appback:hover{border-color:var(--brand);color:var(--brand)}
 .appback svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 </style>
+<style>/*BW-GLAS*/
+:root{--f-display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",system-ui,sans-serif;--f-body:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;--bg:#5087ca}
+html{background:#5087ca}
+html.dark{filter:invert(.92) hue-rotate(180deg);background:#ffffff}
+body{background:transparent!important;-webkit-font-smoothing:antialiased}
+body::before{background:transparent!important}
+#mbg{position:fixed;inset:0;z-index:-1;pointer-events:none;transform:translateZ(0);
+  background:linear-gradient(180deg,#5087ca 0,rgba(80,135,202,0) 110px),linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,.42) 40%,rgba(240,244,250,.72)),url(bg-day.jpg) center 62%/cover no-repeat,#cfdcec}
+html.dark #mbg{background:linear-gradient(180deg,#ffffff 0,transparent 110px),linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,.36) 40%,rgba(255,255,255,.6)),url(bg-dusk-inv.jpg) center 62%/cover no-repeat,#ffffff}
+header.appbar{background:rgba(255,255,255,.62)!important;-webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);box-shadow:0 1px 0 rgba(255,255,255,.7),0 10px 26px -18px rgba(20,30,60,.45)!important}
+.appback{border-radius:50%!important;background:rgba(255,255,255,.75)!important;border-color:rgba(255,255,255,.9)!important;box-shadow:0 4px 12px -6px rgba(20,30,60,.35)}
+.menubtn{border-radius:999px!important;background:rgba(255,255,255,.75)!important;border-color:rgba(255,255,255,.9)!important;box-shadow:0 4px 12px -6px rgba(20,30,60,.35)}
+.continue,.tile,.task,.lesson,details.sec,details.loes,.tbl,.bilanz,.gbox,.gpick,.kurz li,.lp-b,.excard,.exq,.hist,.fg,.vid,.bsp{background:rgba(255,255,255,.84);border-color:rgba(255,255,255,.9);box-shadow:0 10px 28px -18px rgba(20,30,60,.45)}
+.tile,.lesson,.task,.gbox,.excard,.hist,details.sec{border-radius:24px}
+h1,h2,h3{letter-spacing:-.015em}
+</style>
+
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></symbol>
@@ -521,6 +539,7 @@ nav.tabs .tgh:first-child{margin-top:0}
   <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
 </svg>
 
+<div id="mbg" aria-hidden="true"></div>
 <header class="appbar">
   <div class="wrap bar">
     <button type="button" class="appback" id="appback" hidden aria-label="Zurück zu allen Modulen" title="Alle Module"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
