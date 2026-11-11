@@ -15,7 +15,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800&display=swap">
-<style>
+<script>(function(){var sy=0,sx=0;function sc(t){for(;t&&t!==document.body&&t!==document.documentElement;t=t.parentElement){if(t.nodeType!==1)continue;var o=getComputedStyle(t).overflowY;if((o==="auto"||o==="scroll")&&t.scrollHeight>t.clientHeight+1)return true}return false}document.addEventListener("touchstart",function(e){if(e.touches.length===1){sy=e.touches[0].clientY;sx=e.touches[0].clientX}},{passive:true});document.addEventListener("touchmove",function(e){if(e.touches.length!==1||sc(e.target))return;var dy=e.touches[0].clientY-sy,dx=e.touches[0].clientX-sx;if(Math.abs(dx)>Math.abs(dy))return;var se=document.scrollingElement||document.documentElement,y=se.scrollTop;if((y<=0&&dy>0)||(y+innerHeight>=se.scrollHeight-1&&dy<0))e.preventDefault()},{passive:false})})();</script><style>
 /* Layout: eine ruhige Startseite mit vier großen Modul-Kacheln (2×2). Ein Tipp öffnet das Modul bildschirmfüllend.
    Gleiches Design wie das Buchführungs-Modul: bewusst nur hell, weißer Grund, jede Kachel eine eigene Farbe. */
 :root{
@@ -816,7 +816,7 @@ function tdClose(){$("#td").hidden=true}
 $("#td").addEventListener("click",e=>{if(e.target.id==="td")tdClose()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")tdClose()});
 
-const BWV="1794387549";function fLoad(f,u){try{f.contentWindow.location.replace(new URL(u,location.href).href)}catch(e){f.src=u}}
+const BWV="1794388334";function fLoad(f,u){try{f.contentWindow.location.replace(new URL(u,location.href).href)}catch(e){f.src=u}}
 function openModule(m,sub){
   if(!m.file){$("#wait-p").textContent=m.waitText||"Dieses Modul ist noch leer.";$("#wait").hidden=false;$("#wait-ok").focus();return}
   const f=$("#mod");let cur=f.dataset.src;try{const h=f.contentWindow.location.href;cur=h.startsWith("about:")?"":h.split("#")[0].split("?")[0].split("/").pop()}catch(e){}if(cur!==m.file){fLoad(f,m.file+"?v="+BWV+(sub?"#"+sub:""));f.dataset.src=m.file;f.title=m.name}else if(sub){fLoad(f,m.file+"#"+sub)}
