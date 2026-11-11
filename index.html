@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="BWIssen">
 <script>window.BW_GATE=true</script>
 <link rel="icon" href="logo.svg" type="image/svg+xml">
@@ -21,8 +22,8 @@
   color-scheme:light;
   --bg:#ffffff; --bg2:#f4f7fc; --ink:#1b2333; --muted:#5d6779; --line:#e2e8f1;
   --brand:#3b5bdb; --flame:#f76707;
-  --f-display:"Lexend","Segoe UI",system-ui,sans-serif;
-  --f-body:"Nunito Sans","Segoe UI",system-ui,sans-serif;
+  --f-display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",system-ui,sans-serif;
+  --f-body:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -156,7 +157,7 @@ button.streak{border:0;font:inherit;cursor:pointer}.streak{display:flex;align-it
 #set:not([hidden]),#fb:not([hidden]),#cal:not([hidden]),#sem:not([hidden]){animation:rise .2s ease}
 #set:not([hidden]) .sheet,#fb:not([hidden]) .sheet,#cal:not([hidden]) .sheet,#sem:not([hidden]) .sheet{animation:sheetUp .32s cubic-bezier(.2,.8,.2,1)}
 /* Dunkel: die ganze App (auch das geöffnete Fach) wird umgekehrt, Farbtöne bleiben erhalten */
-html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
+html.dark #frame{filter:invert(.92) hue-rotate(180deg)}html.dark #frame,html.dark #frame iframe{background:#fff}
 /* Anmeldung mit Profil */
 #gate{position:fixed;inset:0;z-index:41;background:linear-gradient(160deg,#eef3ff 0%,#fff 45%,#fff4ea 100%);overflow:auto;display:flex;padding:24px 16px}
 .adm{background:var(--bg2);border-radius:16px;padding:12px 14px}.adm p{margin:0 0 8px;font-size:.92rem}.adm .st{font-weight:800}.adm .st.on{color:#15803d}.adm .st.off{color:#dc2626}
@@ -316,6 +317,198 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
 .hs-foot button{font:inherit;font-weight:800;border-radius:14px;padding:11px 18px;border:1.5px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
 .hs-foot .go{background:var(--hc,var(--brand));border-color:var(--hc,var(--brand));color:#fff;flex:1;max-width:220px}
 @media(max-width:380px){.hs-guide{grid-template-columns:92px 1fr;gap:12px}.hs-ph{width:92px}}
+
+/* ================= Glas-Design (Liquid Glass) =================
+   Echter Hell- und Dunkelmodus über Farb-Variablen, Foto im Hintergrund, Glasflächen darüber. */
+:root,html[data-th="light"]{color-scheme:light;
+  --ink:#0f1422;--muted:#4b5468;--line:rgba(15,20,34,.1);--bg:#dfe8f4;--bg2:rgba(15,20,34,.05);
+  --glass:rgba(255,255,255,.52);--glass-hi:rgba(255,255,255,.78);--glass-strong:rgba(248,250,255,.88);--field:rgba(255,255,255,.75);
+  --shadow:0 12px 32px -16px rgba(20,30,60,.35);--accent:#0066d6;--hello:#eef2f8;--bgimg:url(bg-day.jpg);
+  --veil:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.05) 40%,rgba(230,236,246,.35));}
+html[data-th="dark"]{color-scheme:dark;
+  --ink:#f4f6fb;--muted:rgba(228,233,247,.7);--line:rgba(255,255,255,.12);--bg:#0b0d1c;--bg2:rgba(255,255,255,.07);
+  --glass:rgba(20,22,40,.44);--glass-hi:rgba(255,255,255,.16);--glass-strong:rgba(24,26,44,.86);--field:rgba(255,255,255,.09);
+  --shadow:0 14px 36px -16px rgba(0,0,0,.7);--accent:#4da3ff;--hello:#0b0d1c;--bgimg:url(bg-dusk.jpg);
+  --veil:linear-gradient(180deg,rgba(6,8,22,.35),rgba(6,8,22,.1) 35%,rgba(6,8,22,.55));}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  html[data-th="light"],:root{--glass:rgba(246,248,252,.92)}html[data-th="dark"]{--glass:rgba(22,24,40,.92)}}
+@media (prefers-reduced-transparency:reduce){:root,html[data-th="light"]{--glass:rgba(246,248,252,.95)}html[data-th="dark"]{--glass:rgba(22,24,40,.95)}}
+html{background:var(--bg);color:var(--ink)}body{background:transparent;color:var(--ink)}
+body{-webkit-font-smoothing:antialiased;letter-spacing:-.005em}
+#bgimg{position:fixed;inset:0;z-index:-1;background:var(--veil),var(--bgimg) center 62%/cover no-repeat,var(--bg);transition:opacity .4s}
+.wrap{max-width:820px;padding-top:14px;padding-bottom:calc(118px + env(safe-area-inset-bottom,0px))}
+
+/* Glasfläche */
+.glass,.tile,.hero,.stat,.rowc,.tabbar,.fbk,#me,.streak,.semb,.quick .q-ic{
+  background:var(--glass);-webkit-backdrop-filter:blur(26px) saturate(175%);backdrop-filter:blur(26px) saturate(175%);
+  border:1px solid var(--glass-hi);box-shadow:inset 0 1px 0 var(--glass-hi),var(--shadow)}
+.glass.pad{border-radius:28px;padding:16px}
+
+/* Kopf */
+.top{margin-bottom:6px}
+.logo{color:var(--ink);font-family:var(--f-display);font-weight:700;font-size:1.02rem;letter-spacing:-.01em}
+#set-open{display:none}
+#me{width:42px;height:42px;max-width:none;padding:0;border-radius:50%;justify-content:center;gap:0}
+#me #me-n{display:none}#me .av{width:34px;height:34px;font-size:.95rem}
+button.streak{height:42px;padding:0 14px 0 11px;border-radius:999px;color:#b34700;font-weight:700}
+html[data-th="dark"] button.streak{color:#ffb070}
+.kicker{margin:14px 0 0;font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.view h1{font-family:var(--f-display);font-size:2.15rem;font-weight:800;letter-spacing:-.025em;margin:2px 0 16px;color:var(--ink);text-shadow:0 1px 18px rgba(0,0,0,.08)}
+.view.vin{animation:rise .35s cubic-bezier(.2,.8,.2,1)}
+.sec{font-family:var(--f-display);font-size:1.2rem;font-weight:700;letter-spacing:-.01em;margin:26px 2px 10px}
+
+/* Heute */
+#today{display:grid;gap:12px}
+.hero{--c:#3b5bdb;position:relative;display:flex;flex-direction:column;justify-content:flex-end;width:100%;min-height:clamp(300px,82vw,380px);border-radius:30px;overflow:hidden;padding:0;cursor:pointer;font:inherit;color:#fff;text-align:left;
+  background:radial-gradient(120% 80% at 70% 10%,color-mix(in srgb,var(--c) 55%,#fff 0%) 0%,transparent 60%),linear-gradient(165deg,color-mix(in srgb,var(--c) 78%,transparent),color-mix(in srgb,var(--c) 92%,#000) 85%);
+  transition:transform .2s cubic-bezier(.2,.8,.2,1)}
+.hero:active{transform:scale(.98)}
+.hero-art{position:absolute;inset:0 0 34% 0;display:grid;place-items:center}
+.hero-art svg{position:relative;width:clamp(96px,30vw,132px);height:auto;border-radius:30px;box-shadow:0 22px 40px -14px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.25);transform:rotate(-6deg)}
+.orb{position:absolute;width:62%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.55),rgba(255,255,255,0) 65%);filter:blur(6px)}
+.hero-t{position:relative;display:block;padding:22px 22px 20px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.28))}
+.hero-t small{display:block;font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+.hero-t b{display:block;font-family:var(--f-display);font-size:1.85rem;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:3px 0 4px}
+.hero-t span{font-size:.95rem;font-weight:600;opacity:.9}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat{--c:#f76707;position:relative;display:block;text-align:left;font:inherit;color:var(--ink);border-radius:24px;padding:15px 16px 14px;cursor:pointer;min-width:0}
+.stat small{display:block;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.stat b{display:block;font-family:var(--f-display);font-size:2.4rem;font-weight:800;line-height:1.1;margin-top:4px;letter-spacing:-.03em;color:color-mix(in srgb,var(--c) 82%,#000)}
+html[data-th="dark"] .stat b{color:color-mix(in srgb,var(--c) 62%,#fff)}
+.stat span{display:block;font-size:.85rem;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat .st-ic{position:absolute;top:14px;right:14px;width:22px;height:22px;color:var(--c)}
+.rowc{--c:#3b5bdb;display:flex;align-items:center;gap:13px;width:100%;text-align:left;font:inherit;color:var(--ink);border-radius:22px;padding:12px 14px;cursor:pointer}
+.rc-ic{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 22%,transparent);color:var(--c);border:1px solid color-mix(in srgb,var(--c) 30%,transparent)}
+.rc-ic svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}
+.rc-ic.logo{background:none;border:0}.rc-ic.logo svg{width:46px;height:46px;stroke:none}
+.rc-t{flex:1;min-width:0}.rc-t b{display:block;font-weight:700;font-size:1.02rem}
+.rc-t small{display:block;color:var(--muted);font-size:.86rem;line-height:1.3;margin-top:1px}
+.chev{flex:none;width:18px;height:18px;fill:none;stroke:var(--muted);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.stat:active,.rowc:active,.quick button:active{transform:scale(.97)}
+.stat,.rowc,.quick button{transition:transform .15s}
+.quick{display:flex;gap:16px;overflow-x:auto;padding:4px 2px 6px;scrollbar-width:none}
+.quick::-webkit-scrollbar{display:none}
+.quick button{flex:none;display:flex;flex-direction:column;align-items:center;gap:7px;border:0;background:none;font:inherit;color:var(--ink);cursor:pointer;width:76px;padding:0}
+.quick .q-ic{width:68px;height:68px;border-radius:50%;display:grid;place-items:center}
+.quick .q-ic svg{width:40px;height:40px;border-radius:11px}
+.quick button>span:last-child{font-size:.78rem;font-weight:600;text-align:center;line-height:1.2}
+
+/* Fächer: fast quadratische Glaskacheln */
+.grid{gap:12px}
+.tile{border-radius:26px;padding:15px;min-height:0;aspect-ratio:1/1.04;justify-content:space-between;gap:8px;
+  background:linear-gradient(155deg,color-mix(in srgb,var(--c) 34%,transparent),transparent 62%),var(--glass)}
+.tile:hover{transform:translateY(-2px);box-shadow:inset 0 1px 0 var(--glass-hi),var(--shadow)}
+.tile .ico{width:52px;height:52px;border-radius:15px}
+.tile .ico.logo svg{border-radius:15px;box-shadow:0 8px 18px -10px rgba(0,0,0,.5)}
+.t-b{display:block;min-width:0}
+.tile b{font-family:var(--f-display);font-weight:700;font-size:1.12rem;letter-spacing:-.01em;color:var(--ink)}
+.tile small{color:var(--muted);font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile .chip{margin-top:6px;background:var(--field);border-color:var(--line);color:var(--muted)}
+.tile.wait{opacity:.82}
+.cd{flex-direction:row;gap:4px;align-items:baseline;min-width:0;padding:5px 10px;border-radius:999px;border:0;
+  background:color-mix(in srgb,var(--c) 20%,transparent);color:color-mix(in srgb,var(--c) 80%,#000)}
+html[data-th="dark"] .cd{color:color-mix(in srgb,var(--c) 55%,#fff);background:color-mix(in srgb,var(--c) 26%,transparent)}
+.cd b{font-size:1rem}.cd small{font-size:.66rem;letter-spacing:.02em;text-transform:none;margin:0;font-weight:700}
+.semr{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0}
+.semb{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:8px 14px;font:inherit;font-weight:700;font-size:.9rem;color:var(--ink);cursor:pointer}
+.semb svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.semr .ptb{display:none}
+.fbk{border-radius:22px;margin-top:14px}
+.fbk .ic{background:var(--field);color:var(--accent)}
+.sync{color:var(--muted)}
+
+/* Prüfungen */
+.pp-r:hover{background:var(--bg2)}
+html[data-th="dark"] .pp-next{background:linear-gradient(135deg,color-mix(in srgb,var(--c) 32%,transparent),color-mix(in srgb,var(--c) 10%,transparent))}
+html[data-th="dark"] :is(.pp-next .t small,.pp-in,.pp-tk,.exam){color:color-mix(in srgb,var(--c) 55%,#fff)}
+html[data-th="dark"] .pp-d{background:var(--field);border-color:color-mix(in srgb,var(--c) 45%,transparent)}
+html[data-th="dark"] .pp-in{background:color-mix(in srgb,var(--c) 22%,transparent)}
+html[data-th="dark"] .pp-r.past .pp-in,html[data-th="dark"] .pp-tk{background:var(--bg2)}
+
+/* Leiste unten */
+.tabbar{position:fixed;z-index:16;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));width:min(440px,calc(100% - 28px));
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;padding:6px;border-radius:999px;background:var(--glass)}
+.tabbar button{display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:none;font:inherit;color:var(--ink);cursor:pointer;padding:7px 2px 6px;border-radius:999px;transition:background .25s,color .25s}
+.tabbar svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.tabbar span{font-size:.68rem;font-weight:600;letter-spacing:.01em}
+.tabbar [aria-current="page"]{color:var(--accent);background:var(--glass-hi);box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+html[data-th="dark"] .tabbar [aria-current="page"]{background:rgba(255,255,255,.14)}
+#bibo-btn,#bibo-tip{display:none!important}
+
+/* Fenster von unten */
+#set,#fb,#cal,#sem,#pt,#hs,#bibo{background:rgba(5,8,20,.38)}
+.sheet{background:var(--glass-strong);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);color:var(--ink);border:1px solid var(--glass-hi);border-bottom:0;box-shadow:0 -10px 40px -20px rgba(0,0,0,.5);border-radius:30px 30px 0 0}
+@media (min-width:640px){.sheet{border-radius:30px;border-bottom:1px solid var(--glass-hi)}}
+.sheet-h{background:transparent;-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.sheet-h .gear{border-radius:50%;width:34px;height:34px;border:0;background:var(--bg2)}
+.sheet-h .gear svg{width:16px;height:16px}
+.seg3{grid-template-columns:repeat(3,1fr)}
+html[data-th="dark"] :is(.sbtn,.gear,.hs-foot button,.lg-who button,.bb-chips button,.bb-m .go,.chip){background:var(--field);color:var(--ink);border-color:var(--line)}
+html[data-th="dark"] .sbtn.red{background:#dc2626;border-color:#dc2626;color:#fff}
+html[data-th="dark"] .sbtn.redo{background:rgba(220,38,38,.14);color:#ff8a8a;border-color:#ff8a8a}
+html[data-th="dark"] :is(input[type=text],input[type=password],select,textarea){background:var(--field)!important;color:var(--ink)!important;border-color:var(--line)!important}
+html[data-th="dark"] :is(.seg,.srow,.sme,.adm,.cal-g .d,.hs-dev){background:var(--bg2)}
+html[data-th="dark"] .seg button[aria-pressed="true"]{background:rgba(255,255,255,.16);color:var(--ink)}
+html[data-th="dark"] :is(.adm pre,.adm .code,.ad-it,.ad-new){background:var(--field);color:var(--ink);border-color:var(--line)}
+html[data-th="dark"] .bb-m.bot{background:rgba(112,72,232,.24);color:var(--ink)}
+html[data-th="dark"] .bb-m .fa{background:rgba(255,255,255,.12);color:#c9b8ff}
+html[data-th="dark"] .bb-chips button,html[data-th="dark"] .bb-m .go{color:#c9b8ff;border-color:rgba(201,184,255,.35)}
+html[data-th="dark"] .cal-st div{background:rgba(247,103,7,.16)}html[data-th="dark"] .cal-st b{color:#ffb070}
+html[data-th="dark"] .cal-g .d.miss{background:rgba(220,38,38,.22);color:#ff9b9b}
+html[data-th="dark"] .cal-g .d.fut{background:transparent;color:rgba(255,255,255,.28)}
+html[data-th="dark"] .sem-l li{border-color:var(--line)}html[data-th="dark"] .sem-l li.cur{background:rgba(77,163,255,.18);border-color:#4da3ff}html[data-th="dark"] .sem-l li.cur small{color:#8cc4ff}
+html[data-th="dark"] .hs-dev .me{background:#1f2236}html[data-th="dark"] .hs-dev:hover{background:var(--field)}
+html[data-th="dark"] .hs-st .k{background:var(--field);border-color:var(--line)}
+html[data-th="dark"] .hs-note.warn{background:rgba(247,103,7,.16);color:#ffc89a}html[data-th="dark"] .hs-note.good{background:rgba(47,158,68,.18);color:#9be3ad}
+html[data-th="dark"] .sconf{background:rgba(220,38,38,.2)}html[data-th="dark"] .sdone{background:rgba(47,158,68,.2)}
+html[data-th="dark"] .lg-f input:focus{box-shadow:0 0 0 3px rgba(77,163,255,.35)}
+html[data-th="dark"] .bb-f{border-top-color:var(--line)}
+
+/* Anmeldung, Begrüßung, Hinweise */
+#gate,#login{background:var(--veil),var(--bgimg) center 62%/cover no-repeat,var(--bg)}
+.lg-card,#wait .card{background:var(--glass-strong);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);border:1px solid var(--glass-hi);color:var(--ink);border-radius:30px}
+#hello{background:var(--hello)}
+#frame{background:var(--bg)}
+
+/* Detail-Karte (wie im App Store) */
+#td{position:fixed;inset:0;z-index:35;background:rgba(5,8,20,.45);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);display:grid;place-items:center;padding:16px;overflow:auto}
+.td-card{--c:#3b5bdb;width:min(520px,100%);border-radius:32px;overflow:hidden;background:var(--glass-strong);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);border:1px solid var(--glass-hi);color:var(--ink);box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}
+.td-card.in{animation:tdIn .42s cubic-bezier(.2,.9,.25,1)}
+@keyframes tdIn{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:none}}
+.td-art{position:relative;height:250px;display:grid;place-items:center;background:radial-gradient(120% 80% at 70% 10%,color-mix(in srgb,var(--c) 55%,#fff 0%) 0%,transparent 60%),linear-gradient(165deg,color-mix(in srgb,var(--c) 80%,transparent),color-mix(in srgb,var(--c) 92%,#000))}
+.td-art>svg{position:relative;width:120px;height:120px;border-radius:30px;box-shadow:0 22px 40px -14px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.25);transform:rotate(-6deg)}
+.td-x{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;border:0;background:rgba(0,0,0,.28);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);display:grid;place-items:center;cursor:pointer;color:#fff}
+.td-x svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}
+.td-b{padding:20px 22px 24px}
+.td-b small{display:block;font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.td-b h2{font-family:var(--f-display);font-size:1.9rem;font-weight:800;letter-spacing:-.02em;margin:2px 0 8px}
+.td-b p{margin:0 0 18px;color:var(--muted);line-height:1.5}.td-b p b{color:var(--ink)}
+.td-acts{display:grid;gap:10px}
+.td-acts button{border:1px solid var(--line);border-radius:16px;padding:14px;font:inherit;font-weight:700;background:var(--field);color:var(--ink);cursor:pointer}
+.td-acts .go{background:var(--c);border-color:transparent;color:#fff;box-shadow:0 10px 22px -12px var(--c)}
+
+@media (min-width:700px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.duo{grid-template-columns:1fr 1fr}.hero{min-height:360px}}
+@media (min-width:700px){#today{grid-template-columns:1fr 1fr}#today>.hero{grid-row:span 3}#today>.sec,#today>.quick{grid-column:1/-1}.duo{align-self:start}}
+@media (max-width:360px){.tile{aspect-ratio:auto;min-height:150px}.view h1{font-size:1.9rem}.stat b{font-size:2rem}}
+@media (prefers-reduced-motion:reduce){.view.vin,.td-card.in{animation:none}}
+
+/* Anleitung Home-Bildschirm: drei Schritte zum Wischen */
+.hs-car{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -20px;-webkit-overflow-scrolling:touch}
+.hs-car::-webkit-scrollbar{display:none}
+.hs-sl{flex:0 0 100%;scroll-snap-align:center;padding:0 20px;text-align:center}
+.hs-art{border-radius:24px;background:linear-gradient(160deg,color-mix(in srgb,var(--hc) 22%,transparent),color-mix(in srgb,var(--hc) 6%,transparent));border:1px solid var(--glass-hi);overflow:hidden;height:190px;display:grid;place-items:end center}
+.hs-art svg{width:100%;max-width:300px;height:190px;display:block}
+.hs-n{margin:16px 0 2px;font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--hc)}
+html[data-th="dark"] .hs-n{color:color-mix(in srgb,var(--hc) 55%,#fff)}
+.hs-tx{margin:0;font-family:var(--f-display);font-size:1.2rem;font-weight:700;line-height:1.35;letter-spacing:-.01em}
+.hs-sm{margin:6px auto 0;max-width:330px;color:var(--muted);font-size:.9rem;line-height:1.45}
+.hs-tx .k{display:inline;background:var(--field);border:1px solid var(--line);border-radius:8px;padding:0 6px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.hs-sm .k{display:inline;background:var(--field);border:1px solid var(--line);border-radius:6px;padding:0 5px;font-weight:700}
+.hs-dots{display:flex;justify-content:center;gap:7px;margin:2px 0 0}
+.hs-dots i{width:7px;height:7px;border-radius:99px;background:var(--line);transition:width .25s,background .25s}
+.hs-dots i.on{width:20px;background:var(--hc)}
+.hs-foot button{border-radius:16px}
+html[data-th="dark"] .hs-foot .go{background:var(--hc);border-color:var(--hc);color:#fff}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -328,18 +521,30 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
   <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-5 1-8.5z"/></symbol>
 </svg>
 
+<div id="bgimg" aria-hidden="true"></div>
 <div class="wrap">
   <div class="top">
     <div class="logo"><svg class="mk" viewBox="76 76 360 360" aria-hidden="true"><rect x="76" y="76" width="166" height="166" rx="40" fill="#3b5bdb"/><rect x="270" y="76" width="166" height="166" rx="40" fill="#ee7418"/><rect x="76" y="270" width="166" height="166" rx="40" fill="#139a58"/><rect x="270" y="270" width="166" height="166" rx="40" fill="#7048e8"/><path d="M310 356l38 36 62-74" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg>BWIssen</div>
     <div class="topr"><button type="button" class="me" id="me" hidden aria-label="Profil"><span class="av" id="me-av">?</span><span id="me-n"></span></button><button type="button" class="streak" id="streak" title="Lernkalender öffnen" aria-label="Lernserie, Kalender öffnen"><svg class="i"><use href="#i-flame"/></svg><span id="streak-n">1 Tag</span></button><button type="button" class="gear" id="set-open" aria-label="Einstellungen"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></div>
   </div>
-  <div class="hello">
-    <h1>Deine Fächer</h1>
+  <section class="view" data-v="heute" aria-labelledby="h-heute">
+    <p class="kicker" id="today-d"></p>
+    <h1 id="h-heute">Heute</h1>
+    <div id="today"></div>
+  </section>
+  <section class="view" data-v="faecher" hidden aria-labelledby="h-faecher">
+    <p class="kicker">Wintersemester 2026/27</p>
+    <h1 id="h-faecher">Fächer</h1>
+    <div class="grid" id="grid"></div>
     <div class="semr"><button type="button" class="semb" id="sem-open">Wintersemester 2026/27<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><button type="button" class="semb ptb" id="pt-open"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h3"/></svg>Prüfungstermine</button></div>
-  </div>
-  <div class="grid" id="grid"></div>
   <button type="button" class="fbk" id="fb-open"><span class="ic"><svg class="i"><use href="#i-msg"/></svg></span><span><b>Fehler gefunden oder eine Idee?</b><small>Sag kurz Bescheid, damit BWIssen besser wird.</small></span></button>
-  <p class="sync" id="sync">Dein Fortschritt wird auf diesem Gerät gespeichert.</p>
+    <p class="sync" id="sync">Dein Fortschritt wird auf diesem Gerät gespeichert.</p>
+  </section>
+  <section class="view" data-v="termine" hidden aria-labelledby="h-termine">
+    <p class="kicker">Wintersemester 2026/27</p>
+    <h1 id="h-termine">Prüfungen</h1>
+    <div class="glass pad"><section class="pp" id="pp"></section></div>
+  </section>
 </div>
 
 <div id="cal" hidden role="dialog" aria-modal="true" aria-labelledby="cal-h">
@@ -351,50 +556,28 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
 <div id="pt" hidden role="dialog" aria-modal="true" aria-labelledby="pt-h">
   <div class="sheet">
     <div class="sheet-h"><h2 id="pt-h">Prüfungstermine</h2><button type="button" class="gear" id="pt-close" aria-label="Schließen"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-    <section class="pp" id="pp"></section>
   </div>
 </div>
 <div id="hs" hidden role="dialog" aria-modal="true" aria-labelledby="hs-h">
   <div class="sheet">
     <div class="sheet-h"><h2 id="hs-h">BWIssen als App</h2><button type="button" class="gear" id="hs-close" aria-label="Schließen"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="hs-v" data-hs="pick">
-      <p class="hs-lead">Leg BWIssen einmal auf deinen Home-Bildschirm. Dann öffnest du es mit einem Tipp wie eine App, und dein Fortschritt bleibt sicher gespeichert. Welches Gerät hast du?</p>
+      <p class="hs-lead">Leg BWIssen auf deinen Home-Bildschirm. Dann startet es wie eine App, und dein Fortschritt bleibt gespeichert. Welches Gerät hast du?</p>
       <div class="hs-pick">
-        <button type="button" class="hs-dev" data-dev="ios" style="--hc:#1b2333"><span class="hi"><svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18.5h3"/></svg></span><b>iPhone · iPad</b><small>Safari</small></button>
+        <button type="button" class="hs-dev" data-dev="ios" style="--hc:#2f6fe4"><span class="hi"><svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18.5h3"/></svg></span><b>iPhone · iPad</b><small>Safari</small></button>
         <button type="button" class="hs-dev" data-dev="and" style="--hc:#2f9e44"><span class="hi"><svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10 5h4"/><circle cx="12" cy="18.3" r=".6"/></svg></span><b>Android</b><small>Chrome · Samsung</small></button>
       </div>
       <button type="button" class="hs-skip" id="hs-skip">Jetzt nicht</button>
     </div>
-    <div class="hs-v" data-hs="ios" hidden style="--hc:#3b5bdb">
-      <div class="hs-guide"><div class="hs-ph"><svg viewBox="0 0 120 220" aria-hidden="true"><rect x="3" y="3" width="114" height="214" rx="22" fill="#fff" stroke="#1b2333" stroke-width="3"/><rect x="44" y="10" width="32" height="8" rx="4" fill="#1b2333"/>
-<rect x="14" y="30" width="92" height="12" rx="6" fill="#eef1f6"/><rect x="14" y="52" width="60" height="8" rx="4" fill="#dfe5ee"/><rect x="14" y="66" width="80" height="8" rx="4" fill="#eef1f6"/><rect x="14" y="80" width="70" height="8" rx="4" fill="#eef1f6"/>
-<rect x="14" y="98" width="42" height="42" rx="10" fill="#e8ecfb"/><rect x="64" y="98" width="42" height="42" rx="10" fill="#fdeee2"/><rect x="14" y="148" width="42" height="26" rx="8" fill="#e5f6ec"/><rect x="64" y="148" width="42" height="26" rx="8" fill="#f8e6e2"/>
-<rect x="3" y="182" width="114" height="35" rx="0" fill="#f6f7fa"/><path d="M3 182h114" stroke="#e2e8f1" stroke-width="1.5"/>
-<path d="M20 199l-5-0M18 196l-3 3 3 3" stroke="#9aa3b5" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M36 196l3 3-3 3" stroke="#c5ccd8" stroke-width="2" fill="none" stroke-linecap="round"/>
-<circle class="pulse" cx="60" cy="199" r="11" fill="var(--hc)"/><circle cx="60" cy="199" r="11" fill="var(--hc)"/><path d="M60 202v-9M56.5 196.5L60 193l3.5 3.5M55 199h-1.5v6.5h13V199H65" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M80 194v10a2 2 0 0 0 2 2h0M86 194v12" stroke="#9aa3b5" stroke-width="2" fill="none" stroke-linecap="round"/><rect x="96" y="193" width="12" height="12" rx="3" stroke="#9aa3b5" stroke-width="2" fill="none"/></svg></div>
-        <ol class="hs-st">
-          <li><span>Tippe in Safari unten auf <span class="k"><svg viewBox="0 0 24 24"><path d="M12 15V3.5M8 7.5l4-4 4 4"/><path d="M7 11H5.5v9.5h13V11H17"/></svg>Teilen</span>. Beim neuen iOS erst auf <span class="k">•••</span>.</span></li>
-          <li><span>Wähle <span class="k"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/></svg>Zum Home-Bildschirm</span>. Eventuell etwas nach unten scrollen.</span></li>
-          <li><span>Tippe auf <span class="k">Hinzufügen</span>.</span></li>
-          <li><span>Öffne BWIssen ab jetzt über das neue Symbol und gib dort einmal deinen Code ein.</span></li>
-        </ol></div>
-      <div class="hs-note warn"><svg viewBox="0 0 24 24"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4.5M12 17.5v.01"/></svg><span><b>Wichtig:</b> Safari löscht die Daten von Webseiten, die du 7 Tage lang nicht öffnest. Über das Symbol passiert das nicht.</span></div>
-      <div class="hs-foot"><button type="button" data-hs-back>Zurück</button><button type="button" class="go" data-hs-ok>Verstanden</button></div>
+    <div class="hs-v" data-hs="ios" hidden style="--hc:#2f6fe4">
+      <div class="hs-car"><div class="hs-sl" role="group" aria-label="Schritt 1 von 3"><div class="hs-art"><svg viewBox="0 0 260 190" aria-hidden="true"><defs><clipPath id="c1"><rect x="46" y="-60" width="168" height="240" rx="30"/></clipPath></defs><rect x="42" y="-64" width="176" height="248" rx="34" fill="#1b2333"/><g clip-path="url(#c1)"><rect x="46" y="-60" width="168" height="240" fill="#f3f5fa"/><rect x="62" y="30" width="120" height="7" rx="3.5" fill="#dde3ee"/><rect x="62" y="44" width="96" height="7" rx="3.5" fill="#dde3ee"/><rect x="62" y="58" width="128" height="7" rx="3.5" fill="#dde3ee"/><rect x="62" y="72" width="80" height="7" rx="3.5" fill="#dde3ee"/><rect x="46" y="120" width="168" height="80" fill="#fff"/><path d="M46 120h168" stroke="#e2e8f1"/><path d="M70 146l-6 6 6 6" stroke="#9aa3b5" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M92 146l6 6-6 6" stroke="#c5ccd8" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle class="pulse" cx="130" cy="152" r="17" fill="var(--hc)"/><circle cx="130" cy="152" r="17" fill="var(--hc)"/><path d="M130 157v-13M124.5 149.5L130 144l5.5 5.5M122.5 153h-2v10h19v-10h-2" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M160 145v12a2 2 0 0 0 2 2M168 145v14" stroke="#9aa3b5" stroke-width="2.2" fill="none" stroke-linecap="round"/><rect x="182" y="145" width="13" height="13" rx="3" stroke="#9aa3b5" stroke-width="2.2" fill="none"/></g></svg></div><p class="hs-n">Schritt 1</p><p class="hs-tx">Tippe in Safari unten auf <span class="k">Teilen</span>.</p><p class="hs-sm">Beim neuen iOS zuerst auf <span class="k">•••</span>.</p></div><div class="hs-sl" role="group" aria-label="Schritt 2 von 3"><div class="hs-art"><svg viewBox="0 0 260 190" aria-hidden="true"><defs><clipPath id="c2"><rect x="46" y="14" width="168" height="240" rx="30"/></clipPath></defs><rect x="42" y="10" width="176" height="248" rx="34" fill="#1b2333"/><g clip-path="url(#c2)"><rect x="46" y="14" width="168" height="240" fill="#f3f5fa"/><rect x="46" y="14" width="168" height="240" fill="#e9edf4"/><rect x="58" y="34" width="144" height="30" rx="9" fill="#fff"/><text x="68" y="53.5" font-size="11" font-weight="500" fill="#1b2333" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">Kopieren</text><g transform="translate(178 41)" stroke="#9aa3b5" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="0" width="11" height="13" rx="2"/><path d="M0 4v12h10"/></g><rect x="58" y="70" width="144" height="30" rx="9" fill="#fff"/><text x="68" y="89.5" font-size="11" font-weight="500" fill="#1b2333" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">Zur Leseliste</text><g transform="translate(178 77)" stroke="#9aa3b5" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="7"/></g><rect x="58" y="106" width="144" height="30" rx="9" fill="#fff" stroke="var(--hc)" stroke-width="2.5"/><text x="68" y="125.5" font-size="10" font-weight="700" fill="#1b2333" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">Zum Home-Bildschirm</text><g transform="translate(178 113)" stroke="var(--hc)" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="0" y="0" width="16" height="16" rx="4"/><path d="M8 4.5v7M4.5 8h7"/></g><rect x="58" y="142" width="144" height="30" rx="9" fill="#fff"/><text x="68" y="161.5" font-size="11" font-weight="500" fill="#1b2333" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">Markierung</text><g transform="translate(178 149)" stroke="#9aa3b5" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1h10v15l-5-4-5 4z"/></g><circle class="pulse" cx="186" cy="121" r="0.01" fill="var(--hc)"/><circle cx="186" cy="121" r="0.01" fill="var(--hc)"/></g></svg></div><p class="hs-n">Schritt 2</p><p class="hs-tx">Wähle <span class="k">Zum Home-Bildschirm</span> und tippe auf <span class="k">Hinzufügen</span>.</p><p class="hs-sm">Eventuell etwas nach unten scrollen.</p></div><div class="hs-sl" role="group" aria-label="Schritt 3 von 3"><div class="hs-art"><svg viewBox="0 0 260 190" aria-hidden="true"><defs><clipPath id="c3"><rect x="46" y="14" width="168" height="240" rx="30"/></clipPath></defs><rect x="42" y="10" width="176" height="248" rx="34" fill="#1b2333"/><g clip-path="url(#c3)"><rect x="46" y="14" width="168" height="240" fill="#f3f5fa"/><rect x="62" y="34" width="28" height="28" rx="8" fill="#c9d3e6"/><rect x="100" y="34" width="28" height="28" rx="8" fill="#e3d6f2"/><rect x="138" y="34" width="28" height="28" rx="8" fill="#cfe8da"/><rect x="176" y="34" width="28" height="28" rx="8" fill="#f3dccb"/><rect x="62" y="78" width="28" height="28" rx="8" fill="#e3d6f2"/><rect x="138" y="78" width="28" height="28" rx="8" fill="#f3dccb"/><rect x="176" y="78" width="28" height="28" rx="8" fill="#c9d3e6"/><rect x="62" y="122" width="28" height="28" rx="8" fill="#cfe8da"/><rect x="100" y="122" width="28" height="28" rx="8" fill="#f3dccb"/><rect x="138" y="122" width="28" height="28" rx="8" fill="#c9d3e6"/><rect x="176" y="122" width="28" height="28" rx="8" fill="#e3d6f2"/><circle class="pulse" cx="114" cy="92" r="20" fill="var(--hc)"/><g transform="translate(100 78) scale(0.5)"><rect width="56" height="56" rx="14" fill="#fff"/><rect x="8" y="8" width="18" height="18" rx="5" fill="#3b5bdb"/><rect x="30" y="8" width="18" height="18" rx="5" fill="#ee7418"/><rect x="8" y="30" width="18" height="18" rx="5" fill="#139a58"/><rect x="30" y="30" width="18" height="18" rx="5" fill="#7048e8"/><path d="M34.5 39l3.5 3.3 6-7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g><text x="114" y="122" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1b2333" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">BWIssen</text></g></svg></div><p class="hs-n">Schritt 3</p><p class="hs-tx">Öffne BWIssen ab jetzt über das neue Symbol.</p><p class="hs-sm">Gib dort einmal deinen Code ein. So bleibt dein Fortschritt dauerhaft, Safari löscht ihn sonst nach 7 Tagen ohne Besuch.</p></div></div>
+      <div class="hs-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="hs-foot"><button type="button" data-hs-back>Zurück</button><button type="button" class="go" data-hs-next>Weiter</button></div>
     </div>
     <div class="hs-v" data-hs="and" hidden style="--hc:#2f9e44">
-      <div class="hs-guide"><div class="hs-ph"><svg viewBox="0 0 120 220" aria-hidden="true"><rect x="3" y="3" width="114" height="214" rx="18" fill="#fff" stroke="#1b2333" stroke-width="3"/><circle cx="60" cy="13" r="3.5" fill="#1b2333"/>
-<rect x="3" y="22" width="114" height="26" fill="#f6f7fa"/><path d="M3 48h114" stroke="#e2e8f1" stroke-width="1.5"/><rect x="10" y="28" width="78" height="14" rx="7" fill="#fff" stroke="#e2e8f1"/>
-<circle class="pulse" cx="102" cy="35" r="10" fill="var(--hc)"/><circle cx="102" cy="35" r="10" fill="var(--hc)"/><circle cx="102" cy="30.5" r="1.6" fill="#fff"/><circle cx="102" cy="35" r="1.6" fill="#fff"/><circle cx="102" cy="39.5" r="1.6" fill="#fff"/>
-<rect x="14" y="60" width="60" height="8" rx="4" fill="#dfe5ee"/><rect x="14" y="74" width="86" height="8" rx="4" fill="#eef1f6"/><rect x="14" y="88" width="70" height="8" rx="4" fill="#eef1f6"/>
-<rect x="14" y="106" width="42" height="42" rx="10" fill="#e8ecfb"/><rect x="64" y="106" width="42" height="42" rx="10" fill="#fdeee2"/><rect x="14" y="156" width="42" height="42" rx="10" fill="#e5f6ec"/><rect x="64" y="156" width="42" height="42" rx="10" fill="#f8e6e2"/></svg></div>
-        <ol class="hs-st">
-          <li><span>Tippe in Chrome oben rechts auf <span class="k">⋮</span>. In Samsung Internet unten auf <span class="k">☰</span>.</span></li>
-          <li><span>Wähle <span class="k"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/></svg>Zum Startbildschirm hinzufügen</span>. Manchmal heißt es „App installieren“.</span></li>
-          <li><span>Tippe auf <span class="k">Hinzufügen</span>. Fertig, BWIssen liegt jetzt bei deinen Apps.</span></li>
-        </ol></div>
-      <div class="hs-note good"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Dein Fortschritt bleibt auf Android auch ohne Symbol gespeichert. Du musst den Code nicht nochmal eingeben.</span></div>
-      <div class="hs-foot"><button type="button" data-hs-back>Zurück</button><button type="button" class="go" data-hs-ok>Verstanden</button></div>
+      <div class="hs-car"><div class="hs-sl" role="group" aria-label="Schritt 1 von 3"><div class="hs-art"><svg viewBox="0 0 260 190" aria-hidden="true"><defs><clipPath id="c4"><rect x="46" y="14" width="168" height="240" rx="30"/></clipPath></defs><rect x="42" y="10" width="176" height="248" rx="34" fill="#1b2333"/><g clip-path="url(#c4)"><rect x="46" y="14" width="168" height="240" fill="#f3f5fa"/><rect x="46" y="14" width="168" height="40" fill="#fff"/><rect x="58" y="26" width="112" height="18" rx="9" fill="#eef1f6"/><text x="68" y="38.5" font-size="8.5" fill="#6b7489" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">bwissen ...</text><circle class="pulse" cx="192" cy="35" r="13" fill="var(--hc)"/><circle cx="192" cy="35" r="13" fill="var(--hc)"/><circle cx="192" cy="29.5" r="1.8" fill="#fff"/><circle cx="192" cy="35" r="1.8" fill="#fff"/><circle cx="192" cy="40.5" r="1.8" fill="#fff"/><rect x="62" y="70" width="120" height="7" rx="3.5" fill="#dde3ee"/><rect x="62" y="84" width="96" height="7" rx="3.5" fill="#dde3ee"/><rect x="62" y="98" width="128" height="7" rx="3.5" fill="#dde3ee"/><rect x="62" y="112" width="80" height="7" rx="3.5" fill="#dde3ee"/></g></svg></div><p class="hs-n">Schritt 1</p><p class="hs-tx">Tippe in Chrome oben rechts auf <span class="k">⋮</span>.</p><p class="hs-sm">In Samsung Internet unten auf <span class="k">☰</span>.</p></div><div class="hs-sl" role="group" aria-label="Schritt 2 von 3"><div class="hs-art"><svg viewBox="0 0 260 190" aria-hidden="true"><defs><clipPath id="c5"><rect x="46" y="14" width="168" height="240" rx="30"/></clipPath></defs><rect x="42" y="10" width="176" height="248" rx="34" fill="#1b2333"/><g clip-path="url(#c5)"><rect x="46" y="14" width="168" height="240" fill="#f3f5fa"/><rect x="46" y="14" width="168" height="240" fill="#e9edf4"/><rect x="58" y="30" width="144" height="30" rx="9" fill="#fff"/><text x="68" y="49.5" font-size="11" font-weight="500" fill="#1b2333" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">Neuer Tab</text><g transform="translate(178 37)" stroke="#9aa3b5" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v12M2 8h12"/></g><rect x="58" y="66" width="144" height="30" rx="9" fill="#fff"/><text x="68" y="85.5" font-size="11" font-weight="500" fill="#1b2333" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">Lesezeichen</text><g transform="translate(178 73)" stroke="#9aa3b5" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1h10v15l-5-4-5 4z"/></g><rect x="58" y="102" width="144" height="30" rx="9" fill="#fff" stroke="var(--hc)" stroke-width="2.5"/><text x="68" y="121.5" font-size="10" font-weight="700" fill="#1b2333" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">Zum Startbildschirm</text><g transform="translate(178 109)" stroke="var(--hc)" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="0" y="0" width="16" height="16" rx="4"/><path d="M8 4.5v7M4.5 8h7"/></g><rect x="58" y="138" width="144" height="30" rx="9" fill="#fff"/><text x="68" y="157.5" font-size="11" font-weight="500" fill="#1b2333" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">Teilen …</text><g transform="translate(178 145)" stroke="#9aa3b5" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="3" cy="8" r="2"/><circle cx="13" cy="3" r="2"/><circle cx="13" cy="13" r="2"/><path d="M5 7l6-3M5 9l6 3"/></g></g></svg></div><p class="hs-n">Schritt 2</p><p class="hs-tx">Wähle <span class="k">Zum Startbildschirm hinzufügen</span>.</p><p class="hs-sm">Manchmal heißt es „App installieren“.</p></div><div class="hs-sl" role="group" aria-label="Schritt 3 von 3"><div class="hs-art"><svg viewBox="0 0 260 190" aria-hidden="true"><defs><clipPath id="c6"><rect x="46" y="14" width="168" height="240" rx="30"/></clipPath></defs><rect x="42" y="10" width="176" height="248" rx="34" fill="#1b2333"/><g clip-path="url(#c6)"><rect x="46" y="14" width="168" height="240" fill="#f3f5fa"/><circle cx="76" cy="48" r="14" fill="#c9d3e6"/><circle cx="112" cy="48" r="14" fill="#e3d6f2"/><circle cx="148" cy="48" r="14" fill="#cfe8da"/><circle cx="184" cy="48" r="14" fill="#f3dccb"/><circle cx="76" cy="92" r="14" fill="#e3d6f2"/><circle cx="148" cy="92" r="14" fill="#f3dccb"/><circle cx="184" cy="92" r="14" fill="#c9d3e6"/><circle cx="76" cy="136" r="14" fill="#cfe8da"/><circle cx="112" cy="136" r="14" fill="#f3dccb"/><circle cx="148" cy="136" r="14" fill="#c9d3e6"/><circle cx="184" cy="136" r="14" fill="#e3d6f2"/><circle class="pulse" cx="112" cy="92" r="20" fill="var(--hc)"/><g transform="translate(98 78) scale(0.5)"><rect width="56" height="56" rx="14" fill="#fff"/><rect x="8" y="8" width="18" height="18" rx="5" fill="#3b5bdb"/><rect x="30" y="8" width="18" height="18" rx="5" fill="#ee7418"/><rect x="8" y="30" width="18" height="18" rx="5" fill="#139a58"/><rect x="30" y="30" width="18" height="18" rx="5" fill="#7048e8"/><path d="M34.5 39l3.5 3.3 6-7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g><text x="112" y="122" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1b2333" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">BWIssen</text></g></svg></div><p class="hs-n">Schritt 3</p><p class="hs-tx">Fertig, BWIssen liegt jetzt bei deinen Apps.</p><p class="hs-sm">Dein Fortschritt bleibt gespeichert. Den Code musst du nicht neu eingeben.</p></div></div>
+      <div class="hs-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="hs-foot"><button type="button" data-hs-back>Zurück</button><button type="button" class="go" data-hs-next>Weiter</button></div>
     </div>
   </div>
 </div>
@@ -410,7 +593,7 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
     <div class="sme"><span class="av" id="set-av">?</span><b id="set-who"></b><button type="button" class="sbtn" id="set-logout">Abmelden</button></div>
     <button type="button" class="sbtn wide" id="set-hs" style="margin-top:12px">BWIssen als App speichern</button>
     <h3>Darstellung</h3>
-    <div class="seg" role="group" aria-label="Darstellung"><button type="button" data-theme-set="light">Hell</button><button type="button" data-theme-set="dark">Dunkel</button></div>
+    <div class="seg seg3" role="group" aria-label="Darstellung"><button type="button" data-theme-set="light">Hell</button><button type="button" data-theme-set="dark">Dunkel</button><button type="button" data-theme-set="auto">Automatisch</button></div>
     <div id="set-admin" hidden><h3>Zugang für Freunde (Admin)</h3><div class="adm" id="adm"></div></div>
     <h3>Fach zurücksetzen</h3>
     <p class="hint">Löscht Haken, Probeprüfungen und Verlauf von einem Fach.</p>
@@ -476,6 +659,13 @@ html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}
     <form class="bb-f" id="bb-f" autocomplete="off"><input id="bb-in" type="text" placeholder="z. B. Was ist ein Buchungssatz?" maxlength="120"><button type="submit">Fragen</button></form>
   </div>
 </div>
+<nav class="tabbar" id="tabbar" aria-label="Bereiche">
+  <button type="button" data-tab="heute"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="4"/><path d="M8 8.5h8M8 12h5"/></svg><span>Heute</span></button>
+  <button type="button" data-tab="faecher"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="2.2"/><rect x="13" y="3.5" width="7.5" height="7.5" rx="2.2"/><rect x="3.5" y="13" width="7.5" height="7.5" rx="2.2"/><rect x="13" y="13" width="7.5" height="7.5" rx="2.2"/></svg><span>Fächer</span></button>
+  <button type="button" data-tab="termine"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="4"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8.5 14.5h3"/></svg><span>Prüfungen</span></button>
+  <button type="button" data-tab="bibo"><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="13" rx="5"/><path d="M9 3.5h0M12 2.5h0M15 3.5h0" stroke-width="3"/><circle cx="9.5" cy="13" r="1.3" fill="currentColor"/><circle cx="14.5" cy="13" r="1.3" fill="currentColor"/></svg><span>Bibo</span></button>
+</nav>
+<div id="td" hidden role="dialog" aria-modal="true" aria-labelledby="td-h"><div class="td-card" id="td-card"></div></div>
 <div id="frame" hidden><iframe id="mod" title="Modul"></iframe></div>
 <div id="wait" hidden role="dialog" aria-modal="true" aria-labelledby="wait-h">
   <div class="card"><h2 id="wait-h">Fast da</h2><p id="wait-p"></p><button type="button" id="wait-ok">Alles klar</button></div>
@@ -515,8 +705,8 @@ function tile(m){
   const b=document.createElement("button");b.type="button";b.className="tile"+(m.soon?" soon":"")+(!m.file&&!m.soon?" wait":"");
   b.style.setProperty("--c",m.color||"#9aa3b5");
   b.innerHTML=`<span class="t-top">${LOGOS[m.id]?`<span class="ico logo">${LOGOS[m.id]}</span>`:`<span class="ico"><svg class="i"><use href="#${m.icon||"i-plus"}"/></svg></span>`}${m.exam?cdHtml(m.exam+"T"+(m.time||"08:00")):""}</span>
-    <span><b>${m.name}</b><small>${m.sub||""}</small>${m.exam?`<span class="exam">Klausur ${fmtDate(m.exam)}, ${m.time||""} Uhr</span>`:""}</span>
-    <span class="foot">${m.file?`<span class="chip go">Öffnen</span>`:`<span class="chip">${m.soon?"kommt bald":"Inhalte folgen"}</span>`}</span>`;
+    <span class="t-b"><b>${m.name}</b><small>${m.sub||""}</small>${m.file?"":`<span class="chip">${m.soon?"kommt bald":"Inhalte folgen"}</span>`}</span>`;
+  b.setAttribute("aria-label",m.name+(m.exam?", Klausur am "+fmtDate(m.exam):""));
   if(m.soon){b.setAttribute("aria-disabled","true");b.tabIndex=-1}
   else b.onclick=()=>{location.hash=m.id};
   return b;
@@ -554,11 +744,62 @@ function ppRender(){const el=$("#pp");if(!el)return;const t0=new Date();t0.setHo
   <p class="pp-o">Die Räume werden noch bekannt gegeben.</p>`;
   el.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{location.hash=b.dataset.go});
   const x=$("#pp-x");if(x)x.onclick=()=>{ppAll=!ppAll;ppRender()}}
-function renderHome(){const g=$("#grid");g.innerHTML="";MODULES.forEach(m=>g.appendChild(tile(m)));ppRender();cdTick()}
+function renderHome(){const g=$("#grid");g.innerHTML="";MODULES.forEach(m=>g.appendChild(tile(m)));ppRender();renderToday();cdTick()}
+/* ===== Heute: wenige große Karten, Details erst nach dem Antippen ===== */
+const TABS=["heute","faecher","termine"];let TAB=(()=>{try{return sessionStorage.getItem("app-tab")||"heute"}catch(e){return "heute"}})();
+function showTab(t){if(!TABS.includes(t))t="heute";const ch=t!==TAB;TAB=t;try{sessionStorage.setItem("app-tab",t)}catch(e){}
+  document.querySelectorAll(".view").forEach(v=>{const on=v.dataset.v===t;v.hidden=!on;if(on&&ch){v.classList.remove("vin");void v.offsetWidth;v.classList.add("vin")}});
+  document.querySelectorAll("#tabbar [data-tab]").forEach(b=>b.setAttribute("aria-current",b.dataset.tab===t?"page":"false"));
+  if(ch)window.scrollTo(0,0)}
+document.querySelectorAll("#tabbar [data-tab]").forEach(b=>b.onclick=()=>{const t=b.dataset.tab;if(t==="bibo"){$("#bibo-btn").click();return}if(location.hash.slice(1)===t)showTab(t);else location.hash=t});
+const mProg=m=>{try{return m.progress?m.progress():0}catch(e){return 0}};
+const mLater=m=>{const v=store.get(m.prefix+"later",[]);return Array.isArray(v)?v.length:0};
+function todayPick(){const act=MODULES.filter(m=>m.file&&!m.soon);if(!act.length)return null;
+  return act.map(m=>({m,s:(1.1-mProg(m))/Math.sqrt(Math.max(1,calDays(m.exam+"T08:00")))})).sort((a,b)=>b.s-a.s)[0].m}
+function renderToday(){const el=$("#today");if(!el)return;
+  $("#today-d").textContent=new Date().toLocaleDateString("de-DE",{weekday:"long",day:"numeric",month:"long"});
+  const act=MODULES.filter(m=>m.file&&!m.soon),rec=todayPick();
+  const days=new Set(store.get("app-days",[]));let st=0;{const c=new Date();while(days.has(c.toISOString().slice(0,10))){st++;c.setDate(c.getDate()-1)}}
+  const t0=new Date();t0.setHours(0,0,0,0);const nx=PP.find(e=>new Date(e.d+"T00:00:00")>=t0);const nxM=nx&&MODULES.find(m=>m.id===nx.id);
+  const weak=act.map(m=>({m,n:mLater(m)})).sort((a,b)=>b.n-a.n),wSum=weak.reduce((a,x)=>a+x.n,0);
+  const last=MODULES.find(m=>m.id===store.get("app-last",null)&&m.file);
+  const D=m=>calDays(m.exam+"T08:00");
+  let h="";
+  if(rec)h+=`<button type="button" class="hero" id="t-rec" style="--c:${rec.color}"><span class="hero-art" aria-hidden="true"><span class="orb"></span>${LOGOS[rec.id]||""}</span>
+    <span class="hero-t"><small>Empfehlung für heute</small><b>${rec.name}</b><span>${D(rec)===0?"Heute ist Klausur":"Klausur in "+D(rec)+(D(rec)===1?" Tag":" Tagen")}</span></span></button>`;
+  h+=`<div class="duo"><button type="button" class="stat" id="t-streak" style="--c:#f76707"><small>Lernserie</small><b>${st}</b><span>${st===1?"Tag":"Tage"} am Stück</span><svg class="i st-ic"><use href="#i-flame"/></svg></button>`;
+  h+=nx?`<button type="button" class="stat" id="t-exam" style="--c:${nx.c}"><small>Nächste Prüfung</small><b data-cdd="${nx.d}T${nx.t}">${D({exam:nx.d})}</b><span>Tage · ${(nxM?nxM.name:nx.n).replace(/[<>&]/g,"")}</span></button>`:`<div class="stat"><small>Prüfungen</small><b>–</b><span>Keine Termine</span></div>`;
+  h+=`</div>`;
+  const wTop=weak[0];
+  h+=`<button type="button" class="rowc" id="t-weak" style="--c:#e8590c"><span class="rc-ic"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9z"/></svg></span><span class="rc-t"><b>Deine Schwächen</b><small>${wSum?wSum+(wSum===1?" Frage":" Fragen")+" zum Wiederholen":"Markiere schwere Fragen mit „Kann ich noch nicht“"}</small></span><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>`;
+  if(last&&last!==rec)h+=`<button type="button" class="rowc" id="t-last" style="--c:${last.color}"><span class="rc-ic logo">${LOGOS[last.id]||""}</span><span class="rc-t"><b>Weiterlernen</b><small>${last.name} · da, wo du aufgehört hast</small></span><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>`;
+  h+=`<h2 class="sec">Schnell rein</h2><div class="quick">${act.map(m=>`<button type="button" data-q="${m.id}" style="--c:${m.color}"><span class="q-ic">${LOGOS[m.id]||""}</span><span>${m.name}</span></button>`).join("")}</div>`;
+  el.innerHTML=h;
+  if(rec)$("#t-rec").onclick=()=>tdOpen(rec,$("#t-rec"));
+  $("#t-streak").onclick=()=>$("#streak").click();
+  const te=$("#t-exam");if(te)te.onclick=()=>{location.hash="termine"};
+  $("#t-weak").onclick=()=>{if(wSum&&wTop)location.hash=wTop.m.id+"/schwach";else if(rec)location.hash=rec.id+"/fragen"};
+  const tl=$("#t-last");if(tl)tl.onclick=()=>{location.hash=last.id};
+  el.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>{location.hash=b.dataset.q})}
+function tdOpen(m,from){const c=$("#td-card"),d=calDays(m.exam+"T08:00"),n=mLater(m);
+  c.style.setProperty("--c",m.color);
+  c.innerHTML=`<div class="td-art"><span class="orb"></span>${LOGOS[m.id]||""}<button type="button" class="td-x" id="td-x" aria-label="Schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+   <div class="td-b"><small>Empfehlung für heute</small><h2 id="td-h">${m.name}</h2>
+   <p>${d===0?"Heute ist die Klausur. Geh die Schwächen noch einmal durch.":`Bis zur Klausur sind es noch <b>${d} ${d===1?"Tag":"Tage"}</b>. Hier lohnt sich heute eine Runde am meisten.`}</p>
+   <div class="td-acts"><button type="button" class="go" data-to="">Weiterlernen</button><button type="button" data-to="pruefung">Probeprüfung</button>${n?`<button type="button" data-to="schwach">${n} ${n===1?"Schwäche":"Schwächen"} üben</button>`:""}</div></div>`;
+  const r=from&&from.getBoundingClientRect();const td=$("#td");td.hidden=false;
+  if(r&&!RM){const vw=innerWidth,vh=innerHeight;c.style.transformOrigin=`${(r.left+r.width/2)/vw*100}% ${(r.top+r.height/2)/vh*100}%`}
+  c.classList.remove("in");void c.offsetWidth;c.classList.add("in");
+  $("#td-x").onclick=tdClose;c.querySelectorAll("[data-to]").forEach(b=>b.onclick=()=>{tdClose();location.hash=m.id+(b.dataset.to?"/"+b.dataset.to:"")});
+  setTimeout(()=>$("#td-x").focus(),50)}
+function tdClose(){$("#td").hidden=true}
+$("#td").addEventListener("click",e=>{if(e.target.id==="td")tdClose()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")tdClose()});
 
+function fLoad(f,u){try{f.contentWindow.location.replace(new URL(u,location.href).href)}catch(e){f.src=u}}
 function openModule(m,sub){
   if(!m.file){$("#wait-p").textContent=m.waitText||"Dieses Modul ist noch leer.";$("#wait").hidden=false;$("#wait-ok").focus();return}
-  const f=$("#mod");if(f.dataset.src!==m.file){f.src=m.file+(sub?"#"+sub:"");f.dataset.src=m.file;f.title=m.name}else if(sub){try{f.contentWindow.location.hash=sub}catch(e){f.src=m.file+"#"+sub}}
+  const f=$("#mod");let cur=f.dataset.src;try{const h=f.contentWindow.location.href;cur=h.startsWith("about:")?"":h.split("#")[0].split("/").pop()}catch(e){}if(cur!==m.file){fLoad(f,m.file+(sub?"#"+sub:""));f.dataset.src=m.file;f.title=m.name}else if(sub){fLoad(f,m.file+"#"+sub)}
   const fr=$("#frame");if(fr.hidden||fr.classList.contains("out")){fr.classList.remove("out");fr.hidden=false;fr.classList.remove("in");void fr.offsetWidth;fr.classList.add("in");$(".wrap").classList.add("behind")}
   document.title=m.name+" · BWIssen";
 }
@@ -571,10 +812,10 @@ function closeModule(){const fr=$("#frame");document.title="BWIssen";
   setTimeout(()=>{if(fr.classList.contains("out")){fr.hidden=true;fr.classList.remove("out")}},320)}
 function route(){
   const [id,sub]=location.hash.slice(1).split("/"),m=MODULES.find(x=>x.id===id&&!x.soon);
-  if(m)openModule(m,sub);else closeModule();$("#bibo-btn").hidden=!!m;if(m)$("#bibo-tip").hidden=true;
+  if(m){if($("#frame").hidden&&m.file)NAV_IN=true;openModule(m,sub);if(m.file)store.set("app-last",m.id)}else{NAV_IN=false;closeModule();showTab(TABS.includes(id)?id:TAB)}$("#bibo-btn").hidden=!!m;if(m)$("#bibo-tip").hidden=true;
 }
 $("#wait-ok").onclick=()=>{$("#wait").hidden=true;history.replaceState(null,"",location.pathname+location.search);route()};
-window.addEventListener("message",e=>{if(e.data&&e.data.lernapp==="home"){location.hash="start"}});
+let NAV_IN=false;window.addEventListener("message",e=>{if(e.data&&e.data.lernapp==="home"){if(NAV_IN&&history.length>1){NAV_IN=false;history.back()}else location.hash="start"}});
 window.addEventListener("hashchange",()=>ready.then(()=>{if(ME)route()}));
 
 /* Lernserie: Tage in Folge, an denen die App geöffnet wurde */
@@ -604,9 +845,12 @@ async function syncInit(){
 const ready=Promise.race([syncInit().catch(()=>{}),new Promise(r=>setTimeout(r,5000))]);
 window.addEventListener("message",e=>{if(e.data&&e.data.lernapp==="home")push()});
 /* Einstellungen: Darstellung und Zurücksetzen (immer mit Nachfrage, alles komplett mit doppelter Nachfrage) */
-function applyTheme(){const t=store.get("app-theme","light");document.documentElement.classList.toggle("dark",t==="dark");
+const MQ_DARK=matchMedia("(prefers-color-scheme: dark)");
+function applyTheme(){const t=store.get("app-theme","auto"),d=t==="dark"||(t==="auto"&&MQ_DARK.matches);document.documentElement.classList.toggle("dark",d);document.documentElement.dataset.th=d?"dark":"light";
+  const mc=document.querySelector('meta[name="theme-color"]');if(mc)mc.content=d?"#0b0d1c":"#dfe8f4";
   document.querySelectorAll("[data-theme-set]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.themeSet===t))}
 document.querySelectorAll("[data-theme-set]").forEach(b=>b.onclick=()=>{store.set("app-theme",b.dataset.themeSet);applyTheme();profSave();push()});
+try{MQ_DARK.addEventListener("change",applyTheme)}catch(e){}
 function wipe(rx){try{const ks=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(rx.test(k))ks.push(k)}ks.forEach(k=>localStorage.removeItem(k))}catch(e){}
   const f=$("#mod");f.removeAttribute("src");delete f.dataset.src;profSave();push();streak();renderHome()}
 function setRender(){
@@ -630,7 +874,7 @@ function setRender(){
     all.querySelector("[data-n]").onclick=setRender;
     $("#set-all-2").onclick=()=>{all.innerHTML=`<div class="sconf"><p>Ganz sicher? Das lässt sich nicht rückgängig machen.</p><div class="row"><button type="button" class="sbtn" data-n>Nein, behalten</button><button type="button" class="sbtn red" id="set-all-3">Endgültig löschen</button></div></div>`;
       all.querySelector("[data-n]").onclick=setRender;
-      $("#set-all-3").onclick=()=>{const t=store.get("app-theme","light");wipe(LIVE_RX);store.set("app-theme",t);
+      $("#set-all-3").onclick=()=>{const t=store.get("app-theme","auto");wipe(LIVE_RX);store.set("app-theme",t);
         try{localStorage.setItem("app-days",JSON.stringify([new Date().toISOString().slice(0,10)]))}catch(e){}streak();profSave();push();all.innerHTML=`<div class="sdone">Alles ist zurückgesetzt. Du startest wieder bei null.</div>`}}}}
 
 /* Lernkalender: Tage mit Lernen (app-days), verpasste Tage seit dem ersten Lerntag */
@@ -660,7 +904,7 @@ $("#sem-open").onclick=()=>{const act=MODULES.filter(m=>!m.soon).map(m=>m.name).
 const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
 const IS_AND=/Android/i.test(navigator.userAgent);
 const IS_APP=navigator.standalone===true||(window.matchMedia&&matchMedia("(display-mode: standalone)").matches);
-function hsView(v){document.querySelectorAll("#hs .hs-v").forEach(x=>x.hidden=x.dataset.hs!==v);$("#hs-h").textContent=v==="pick"?"BWIssen als App":v==="ios"?"Auf iPhone und iPad":"Auf Android";
+function hsView(v){document.querySelectorAll("#hs .hs-v").forEach(x=>x.hidden=x.dataset.hs!==v);{const c=document.querySelector(`#hs .hs-v[data-hs="${v}"] .hs-car`);if(c){c.scrollLeft=0;setTimeout(()=>hsSync(c),0)}}$("#hs-h").textContent=v==="pick"?"BWIssen als App":v==="ios"?"Auf iPhone und iPad":"Auf Android";
   const sh=$("#hs .sheet");if(sh)sh.scrollTop=0}
 function hsOpen(){document.querySelectorAll("#hs .hs-dev .me").forEach(x=>x.remove());const mine=IS_IOS?"ios":IS_AND?"and":null;
   if(mine){const b=document.querySelector(`#hs [data-dev="${mine}"]`);if(b)b.insertAdjacentHTML("beforeend",'<span class="me">Dein Gerät</span>')}
@@ -669,10 +913,17 @@ function hsMaybe(force){if(force)return hsOpen();if(!window.BW_GATE||IS_APP||lsG
   const show=()=>{if(!$("#hello").hidden||!$("#login").hidden)return setTimeout(show,400);setTimeout(()=>{if(ME&&!lsG("hs-done"))hsOpen()},700)};show()}
 function hsClose(){$("#hs").hidden=true;lsS("hs-done","1")}
 document.querySelectorAll("#hs [data-dev]").forEach(b=>b.onclick=()=>hsView(b.dataset.dev));
-document.querySelectorAll("#hs [data-hs-back]").forEach(b=>b.onclick=()=>hsView("pick"));
+const hsCar=()=>{const v=[...document.querySelectorAll("#hs .hs-v")].find(x=>!x.hidden);return v&&v.querySelector(".hs-car")};
+const hsIdx=c=>Math.round(c.scrollLeft/Math.max(1,c.clientWidth));
+function hsSync(c){const v=c.closest(".hs-v"),i=hsIdx(c);v.querySelectorAll(".hs-dots i").forEach((d,j)=>d.classList.toggle("on",j===i));
+  const n=v.querySelector("[data-hs-next]");n.textContent=i>=2?"Fertig":"Weiter"}
+document.querySelectorAll("#hs .hs-car").forEach(c=>c.addEventListener("scroll",()=>hsSync(c),{passive:true}));
+const hsGo=(c,i)=>{c.scrollTo({left:i*c.clientWidth,behavior:RM?"auto":"smooth"});setTimeout(()=>hsSync(c),RM?0:380)};
+document.querySelectorAll("#hs [data-hs-next]").forEach(b=>b.onclick=()=>{const c=hsCar();const i=hsIdx(c);if(i>=2)hsClose();else hsGo(c,i+1)});
+document.querySelectorAll("#hs [data-hs-back]").forEach(b=>b.onclick=()=>{const c=hsCar();const i=c?hsIdx(c):0;if(i>0)hsGo(c,i-1);else hsView("pick")});
 document.querySelectorAll("#hs [data-hs-ok]").forEach(b=>b.onclick=hsClose);
 $("#hs-skip").onclick=hsClose;$("#hs-close").onclick=hsClose;$("#hs").addEventListener("click",e=>{if(e.target.id==="hs")hsClose()});
-$("#pt-open").onclick=()=>{ppRender();cdTick();$("#pt").hidden=false};$("#pt-close").onclick=()=>{$("#pt").hidden=true};$("#pt").addEventListener("click",e=>{if(e.target.id==="pt")$("#pt").hidden=true});
+$("#pt-open").onclick=()=>{location.hash="termine"};$("#pt-close").onclick=()=>{$("#pt").hidden=true};$("#pt").addEventListener("click",e=>{if(e.target.id==="pt")$("#pt").hidden=true});
 $("#sem-close").onclick=()=>{$("#sem").hidden=true};$("#sem").addEventListener("click",e=>{if(e.target.id==="sem")$("#sem").hidden=true});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#cal").hidden=true;$("#sem").hidden=true}});
 
@@ -713,6 +964,9 @@ $("#bibo-tip").onclick=()=>$("#bibo-btn").click();
 setTimeout(biboTip,4500);window.addEventListener("hashchange",()=>{if(!location.hash.slice(1)||location.hash==="#start")setTimeout(biboTip,800)});
 $("#set-open").onclick=()=>{setRender();admRender();applyTheme();$("#set").hidden=false};
 $("#me").onclick=()=>$("#set-open").click();
+showTab(TAB);
+try{if(!history.state||!history.state.bw){history.replaceState({bw:"base"},"");history.pushState({bw:"top"},"")}}catch(e){}
+window.addEventListener("popstate",e=>{if(e.state&&e.state.bw==="base"){try{history.pushState({bw:"top"},"",location.pathname+location.search+"#start")}catch(x){}ready.then(()=>{if(ME)route()})}});
 $("#set-close").onclick=()=>{$("#set").hidden=true};
 $("#set").addEventListener("click",e=>{if(e.target.id==="set")$("#set").hidden=true});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#set").hidden=true});
