@@ -529,6 +529,9 @@ html{touch-action:manipulation;-webkit-text-size-adjust:100%}
   -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 14px),transparent);mask-image:linear-gradient(180deg,#000 calc(100% - 14px),transparent)}
 html[data-th="dark"] #sbar{background:linear-gradient(180deg,rgba(6,8,22,.4),rgba(6,8,22,.15))}
 #frame,#frame iframe{background:var(--veil),var(--bgimg) center 62%/cover no-repeat,var(--bg)!important}
+#sbar{height:calc(env(safe-area-inset-top,0px) + 34px)!important;background:linear-gradient(180deg,rgba(246,248,252,.94) 0,rgba(246,248,252,.94) calc(100% - 34px),rgba(246,248,252,0))!important;
+  -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 30px),transparent)!important;mask-image:linear-gradient(180deg,#000 calc(100% - 30px),transparent)!important}
+html[data-th="dark"] #sbar{background:linear-gradient(180deg,rgba(26,27,32,.94) 0,rgba(26,27,32,.94) calc(100% - 34px),rgba(26,27,32,0))!important}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -816,7 +819,7 @@ function tdClose(){$("#td").hidden=true}
 $("#td").addEventListener("click",e=>{if(e.target.id==="td")tdClose()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")tdClose()});
 
-const BWV="1794388334";function fLoad(f,u){try{f.contentWindow.location.replace(new URL(u,location.href).href)}catch(e){f.src=u}}
+const BWV="1794389612";function fLoad(f,u){try{f.contentWindow.location.replace(new URL(u,location.href).href)}catch(e){f.src=u}}
 function openModule(m,sub){
   if(!m.file){$("#wait-p").textContent=m.waitText||"Dieses Modul ist noch leer.";$("#wait").hidden=false;$("#wait-ok").focus();return}
   const f=$("#mod");let cur=f.dataset.src;try{const h=f.contentWindow.location.href;cur=h.startsWith("about:")?"":h.split("#")[0].split("?")[0].split("/").pop()}catch(e){}if(cur!==m.file){fLoad(f,m.file+"?v="+BWV+(sub?"#"+sub:""));f.dataset.src=m.file;f.title=m.name}else if(sub){fLoad(f,m.file+"#"+sub)}
@@ -867,7 +870,7 @@ window.addEventListener("message",e=>{if(e.data&&e.data.lernapp==="home")push()}
 /* Einstellungen: Darstellung und Zurücksetzen (immer mit Nachfrage, alles komplett mit doppelter Nachfrage) */
 const MQ_DARK=matchMedia("(prefers-color-scheme: dark)");
 function applyTheme(){const t=store.get("app-theme","auto"),d=t==="dark"||(t==="auto"&&MQ_DARK.matches);document.documentElement.classList.toggle("dark",d);document.documentElement.dataset.th=d?"dark":"light";
-  const mc=document.querySelector('meta[name="theme-color"]');if(mc)mc.content=d?"#070c22":"#5087ca";try{$("#mod").contentWindow.postMessage({bwTheme:1},"*")}catch(e){}
+  const mc=document.querySelector('meta[name="theme-color"]');if(mc)mc.content=d?"#1a1b20":"#f6f8fc";try{$("#mod").contentWindow.postMessage({bwTheme:1},"*")}catch(e){}
   document.querySelectorAll("[data-theme-set]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.themeSet===t))}
 document.querySelectorAll("[data-theme-set]").forEach(b=>b.onclick=()=>{store.set("app-theme",b.dataset.themeSet);applyTheme();profSave();push()});
 try{MQ_DARK.addEventListener("change",applyTheme)}catch(e){}
