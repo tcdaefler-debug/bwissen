@@ -7,7 +7,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,400&family=JetBrains+Mono:wght@400;600&display=swap">
-<script>/*BW-GLAS-THEMA*/(function(){var q=matchMedia("(prefers-color-scheme: dark)");function ap(){var t="auto";try{t=JSON.parse(localStorage.getItem("app-theme"))||"auto"}catch(e){}document.documentElement.classList.toggle("dark",t==="dark"||(t==="auto"&&q.matches))}ap();addEventListener("storage",function(e){if(!e.key||e.key==="app-theme")ap()});try{q.addEventListener("change",ap)}catch(e){}addEventListener("message",function(e){if(e.data&&e.data.bwTheme)ap()})})();</script>
+<script>/*BW-GLAS-THEMA*/(function(){var q=matchMedia("(prefers-color-scheme: dark)");function ap(){var t="auto";try{t=JSON.parse(localStorage.getItem("app-theme"))||"auto"}catch(e){}document.documentElement.classList.toggle("dark",t==="dark"||(t==="auto"&&q.matches))}ap();addEventListener("storage",function(e){if(!e.key||e.key==="app-theme")ap()});try{q.addEventListener("change",ap)}catch(e){}addEventListener("message",function(e){if(e.data&&e.data.bwTheme)ap()})})();addEventListener("DOMContentLoaded",function(){var n=document.getElementById("tabs"),b=document.getElementById("menubtn"),h=document.querySelector("header.appbar");if(!n||!b||!h)return;var d=document.createElement("div");d.className="tabs-h";d.innerHTML='<b>Menü</b><button type="button" aria-label="Menü schließen"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>';n.insertBefore(d,n.firstChild);d.querySelector("button").onclick=function(){b.click()};var o=document.createElement("div");o.id="mov";h.appendChild(o);o.onclick=function(){b.click()};new MutationObserver(function(){var on=n.classList.contains("open");document.documentElement.style.overflow=on?"hidden":"";if(on)n.scrollTop=0}).observe(n,{attributes:true,attributeFilter:["class"]})});</script>
 <style>
 /* Layout: Lern-App – helle Kacheln je Thema mit eigener Farbe, eine Lesespalte, Zeichnungen statt Textwüsten.
    Bewusst nur helles Design (Wunsch: weißer Hintergrund). Soll = Blau, Haben = Orange zieht sich durch alles. */
@@ -561,6 +561,21 @@ header.appbar{background:rgba(255,255,255,.62)!important;-webkit-backdrop-filter
 .continue,.tile,.task,.lesson,details.sec,details.loes,.tbl,.bilanz,.gbox,.gpick,.kurz li,.lp-b,.excard,.exq,.hist,.fg,.vid,.bsp{background:rgba(255,255,255,.84);border-color:rgba(255,255,255,.9);box-shadow:0 10px 28px -18px rgba(20,30,60,.45)}
 .tile,.lesson,.task,.gbox,.excard,.hist,details.sec{border-radius:24px}
 h1,h2,h3{letter-spacing:-.015em}
+/* Menü als Fenster von unten, wie die Semesterwahl */
+header.appbar:has(nav.tabs.open){-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(255,255,255,.94)!important}
+#mov{display:none;position:fixed;inset:0;z-index:40;background:rgba(5,8,20,.42)}
+header.appbar:has(nav.tabs.open) #mov{display:block;animation:movIn .2s ease}
+nav.tabs.open{position:fixed;left:max(0px,calc(50% - 290px));right:max(0px,calc(50% - 290px));bottom:0;z-index:41;max-height:min(80vh,720px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;border-top:0;background:rgb(250,251,255);border-radius:28px 28px 0 0;box-shadow:0 -14px 40px -16px rgba(0,0,0,.5);padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));animation:navUp .34s cubic-bezier(.2,.8,.2,1)}
+nav.tabs.open .tabrow{animation:none!important;padding-top:2px!important;max-width:none!important}
+.tabs-h{display:none}
+nav.tabs.open .tabs-h{display:flex;position:sticky;top:0;z-index:2;align-items:center;justify-content:space-between;padding:16px 20px 10px;background:rgb(250,251,255);border-bottom:1px solid transparent}
+.tabs-h::before{content:"";position:absolute;top:7px;left:50%;width:38px;height:5px;margin-left:-19px;border-radius:9px;background:rgba(15,20,34,.18)}
+.tabs-h b{font-family:var(--f-display);font-size:1.3rem;font-weight:800;letter-spacing:-.015em}
+.tabs-h button{width:34px;height:34px;border-radius:50%;border:0;background:rgba(15,20,34,.07);display:grid;place-items:center;cursor:pointer;color:inherit}
+.tabs-h svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}
+@keyframes navUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes movIn{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){nav.tabs.open,#mov{animation:none!important}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
