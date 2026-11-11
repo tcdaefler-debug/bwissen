@@ -15,7 +15,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800&display=swap">
-<script>(function(){var W=window.scrollTo;window.scrollTo=function(a,b){var e=document.body;if(e&&e.scrollTo)e.scrollTo(a,b);else W.call(window,a,b)}})();</script><style>
+<style>
 /* Layout: eine ruhige Startseite mit vier großen Modul-Kacheln (2×2). Ein Tipp öffnet das Modul bildschirmfüllend.
    Gleiches Design wie das Buchführungs-Modul: bewusst nur hell, weißer Grund, jede Kachel eine eigene Farbe. */
 :root{
@@ -335,7 +335,7 @@ html[data-th="dark"]{color-scheme:dark;
 @media (prefers-reduced-transparency:reduce){:root,html[data-th="light"]{--glass:rgba(246,248,252,.95)}html[data-th="dark"]{--glass:rgba(22,24,40,.95)}}
 html{background:var(--bg);color:var(--ink)}body{background:transparent;color:var(--ink)}
 body{-webkit-font-smoothing:antialiased;letter-spacing:-.005em}
-#bgimg{position:fixed;inset:0;z-index:-1;background:var(--veil),var(--bgimg) center bottom/cover no-repeat,var(--bg)}
+#bgimg{position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,var(--bg) 0,var(--bg) env(safe-area-inset-top,0px),transparent calc(env(safe-area-inset-top,0px) + 120px)),var(--veil),var(--bgimg) center 62%/cover no-repeat,var(--bg)}
 .wrap{max-width:820px;padding-top:14px;padding-bottom:calc(118px + env(safe-area-inset-bottom,0px))}
 
 /* Glasfläche */
@@ -465,7 +465,7 @@ html[data-th="dark"] .lg-f input:focus{box-shadow:0 0 0 3px rgba(77,163,255,.35)
 html[data-th="dark"] .bb-f{border-top-color:var(--line)}
 
 /* Anmeldung, Begrüßung, Hinweise */
-#gate,#login{background:var(--veil),var(--bgimg) center bottom/cover no-repeat,var(--bg)}
+#gate,#login{background:linear-gradient(180deg,var(--bg) 0,transparent 120px),var(--veil),var(--bgimg) center 62%/cover no-repeat,var(--bg)}
 .lg-card,#wait .card{background:var(--glass-strong);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);border:1px solid var(--glass-hi);color:var(--ink);border-radius:30px}
 #hello{background:var(--hello)}
 #frame{background:var(--bg)}
@@ -524,8 +524,6 @@ html[data-th="light"] #me,html[data-th="light"] .streak{background:rgba(255,255,
 .glass,.tile,.stat,.rowc,.fbk{-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%)}
 html,body{overscroll-behavior-y:none}
 html{touch-action:manipulation;-webkit-text-size-adjust:100%}
-html{height:100%;overflow:hidden;overscroll-behavior:none}
-body{position:fixed;inset:0;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:none}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -813,7 +811,7 @@ function tdClose(){$("#td").hidden=true}
 $("#td").addEventListener("click",e=>{if(e.target.id==="td")tdClose()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")tdClose()});
 
-const BWV="1794385069";function fLoad(f,u){try{f.contentWindow.location.replace(new URL(u,location.href).href)}catch(e){f.src=u}}
+const BWV="1794380288";function fLoad(f,u){try{f.contentWindow.location.replace(new URL(u,location.href).href)}catch(e){f.src=u}}
 function openModule(m,sub){
   if(!m.file){$("#wait-p").textContent=m.waitText||"Dieses Modul ist noch leer.";$("#wait").hidden=false;$("#wait-ok").focus();return}
   const f=$("#mod");let cur=f.dataset.src;try{const h=f.contentWindow.location.href;cur=h.startsWith("about:")?"":h.split("#")[0].split("?")[0].split("/").pop()}catch(e){}if(cur!==m.file){fLoad(f,m.file+"?v="+BWV+(sub?"#"+sub:""));f.dataset.src=m.file;f.title=m.name}else if(sub){fLoad(f,m.file+"#"+sub)}
