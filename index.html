@@ -718,6 +718,7 @@ html[data-th="dark"] #upd .uh span,html[data-th="dark"] #upd .ux{color:rgba(235,
    progress(): liest den Lernstand des Moduls aus dem Browser-Speicher und gibt 0 bis 1 zurück. */
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const LOGOS={
+mechanik:'<svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="18" fill="#7048e8"/><path d="M32 12v13" stroke="#d9ccff" stroke-width="4.5" stroke-linecap="round"/><path d="M26 20l6 7 6-7" fill="none" stroke="#d9ccff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="9" y="29" width="46" height="7" rx="3.5" fill="#fff"/><path d="M15 36l-6 11h12z" fill="#fff"/><circle cx="49" cy="41.5" r="5.5" fill="#fff"/><rect x="8" y="49" width="14" height="3.5" rx="1.75" fill="#d9ccff"/><rect x="42" y="49" width="14" height="3.5" rx="1.75" fill="#d9ccff"/></svg>',
 buchfuehrung:'<svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="18" fill="#3b5bdb"/><rect x="13" y="17" width="38" height="5.5" rx="2.75" fill="#fff"/><rect x="29.25" y="17" width="5.5" height="32" rx="2.75" fill="#fff"/><rect x="14" y="29" width="11" height="4.5" rx="2.25" fill="#b9c8ff"/><rect x="14" y="37.5" width="8" height="4.5" rx="2.25" fill="#b9c8ff"/><rect x="39" y="29" width="11" height="4.5" rx="2.25" fill="#ffc796"/><rect x="42" y="37.5" width="8" height="4.5" rx="2.25" fill="#ffc796"/></svg>',
 vwl:'<svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="18" fill="#ee7418"/><path d="M14 13v37h37" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 19l25 24" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/><path d="M21 43l25-24" fill="none" stroke="#ffd9b8" stroke-width="4.5" stroke-linecap="round"/><circle cx="33.5" cy="31" r="5" fill="#fff" stroke="#ee7418" stroke-width="2.5"/></svg>',
 bauphysik:'<svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="18" fill="#139a58"/><rect x="21" y="11" width="11" height="32" rx="5.5" fill="#fff"/><circle cx="26.5" cy="44" r="9" fill="#fff"/><rect x="24.5" y="22" width="4" height="22" rx="2" fill="#ff6b6b"/><circle cx="26.5" cy="44" r="5.5" fill="#ff6b6b"/><path d="M46 18c-4.5 6.5-7 10-7 13.5a7 7 0 0 0 14 0c0-3.5-2.5-7-7-13.5z" fill="#c4ecff"/></svg>',
@@ -729,9 +730,11 @@ const MODULES=[
   {id:"vwl",prefix:"vwl-",name:"VWL",sub:"Volkswirtschaftslehre",color:"#ee7418",icon:"i-markt",file:"modul-vwl.html",exam:"2027-01-20",time:"11:00",
    progress(){return Math.min(1,(+store.get("vwl-total",0)||0)/100)}},
   {id:"bauphysik",prefix:"bp-",name:"Bauphysik",sub:"Wärme- und Feuchtelehre",color:"#139a58",icon:"i-thermo",file:null,exam:"2027-01-21",time:"08:00",
-   waitText:"Für Bauphysik fehlen noch drei Dateien: lernwerkstatt-inhalte.json, lernwerkstatt-referenz.html und Lernpaket_Bauphysik.pdf. Sobald sie hochgeladen sind, wird das Modul gebaut."},
+   waitTitle:"In Arbeit",waitText:"Bauphysik wird gerade gebaut. Sobald es fertig ist, kannst du hier lernen."},
   {id:"baustoffkunde",prefix:"bk-",name:"Baustoffkunde",sub:"Baustoffe und ihre Kenngrößen",color:"#b4442f",file:"modul-baustoffkunde.html",exam:"2027-01-21",time:"08:00",
-   progress(){return Math.min(1,(+store.get("bk-total",0)||0)/100)}}
+   progress(){return Math.min(1,(+store.get("bk-total",0)||0)/100)}},
+  {id:"mechanik",prefix:"tm-",name:"Technische Mechanik",sub:"Statik",color:"#7048e8",file:"modul-mechanik.html",exam:"2027-01-29",time:"08:00",
+   progress(){return Math.min(1,(+store.get("tm-total",0)||0)/100)}}
 ];
 
 const $=s=>document.querySelector(s);
@@ -746,7 +749,7 @@ function tile(m){
   const b=document.createElement("button");b.type="button";b.className="tile"+(m.soon?" soon":"")+(!m.file&&!m.soon?" wait":"");
   b.style.setProperty("--c",m.color||"#9aa3b5");
   b.innerHTML=`<span class="t-top">${LOGOS[m.id]?`<span class="ico logo">${LOGOS[m.id]}</span>`:`<span class="ico"><svg class="i"><use href="#${m.icon||"i-plus"}"/></svg></span>`}${m.exam?cdHtml(m.exam+"T"+(m.time||"08:00")):""}</span>
-    <span class="t-b"><b>${m.name}</b><small>${m.sub||""}</small>${m.file?"":`<span class="chip">${m.soon?"kommt bald":"Inhalte folgen"}</span>`}</span>`;
+    <span class="t-b"><b>${m.name}</b><small>${m.sub||""}</small>${m.file?"":`<span class="chip">${m.soon?"kommt bald":"In Arbeit"}</span>`}</span>`;
   b.setAttribute("aria-label",m.name+(m.exam?", Klausur am "+fmtDate(m.exam):""));
   if(m.soon){b.setAttribute("aria-disabled","true");b.tabIndex=-1}
   else b.onclick=()=>{location.hash=m.id};
@@ -760,7 +763,7 @@ const PP=[
   {d:"2027-01-20",t:"11:00",n:"Volkswirtschaftslehre",f:"Klausur (K2) oder KA",id:"vwl",c:"#ee7418"},
   {d:"2027-01-21",t:"08:00",n:"Baustoffkunde und Bauphysik",f:"K2 oder K1 und K1",id:"bauphysik",c:"#139a58"},
   {d:"2027-01-22",t:"08:00",n:"Buchführung und Jahresabschluss",f:"Klausur (K2)",id:"buchfuehrung",c:"#3b5bdb"},
-  {d:"2027-01-29",t:"08:00",n:"Technische Mechanik",f:"Klausur (K2)",c:"#64748b"}];
+  {d:"2027-01-29",t:"08:00",n:"Technische Mechanik",f:"Klausur (K2)",id:"mechanik",c:"#7048e8"}];
 let ppAll=false;
 function ppRender(){const el=$("#pp");if(!el)return;const t0=new Date();t0.setHours(0,0,0,0);
   const dd=e=>Math.round((new Date(e.d+"T00:00:00")-t0)/864e5);
@@ -837,9 +840,9 @@ function tdClose(){$("#td").hidden=true}
 $("#td").addEventListener("click",e=>{if(e.target.id==="td")tdClose()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")tdClose()});
 
-const BWV="1794409925";function fLoad(f,u){try{f.contentWindow.location.replace(new URL(u,location.href).href)}catch(e){f.src=u}}
+const BWV="1794417584";function fLoad(f,u){try{f.contentWindow.location.replace(new URL(u,location.href).href)}catch(e){f.src=u}}
 function openModule(m,sub){
-  if(!m.file){$("#wait-p").textContent=m.waitText||"Dieses Modul ist noch leer.";$("#wait").hidden=false;$("#wait-ok").focus();return}
+  if(!m.file){$("#wait-h").textContent=m.waitTitle||"Fast da";$("#wait-p").textContent=m.waitText||"Dieses Modul ist noch leer.";$("#wait").hidden=false;$("#wait-ok").focus();return}
   const f=$("#mod");let cur=f.dataset.src;try{const h=f.contentWindow.location.href;cur=h.startsWith("about:")?"":h.split("#")[0].split("?")[0].split("/").pop()}catch(e){}if(cur!==m.file){fLoad(f,m.file+"?v="+BWV+(sub?"#"+sub:""));f.dataset.src=m.file;f.title=m.name}else if(sub){fLoad(f,m.file+"#"+sub)}
   const fr=$("#frame");if(fr.hidden||fr.classList.contains("out")){fr.classList.remove("out");fr.hidden=false;fr.classList.remove("in");void fr.offsetWidth;fr.classList.add("in");$(".wrap").classList.add("behind")}
   document.title=m.name+" · BWIssen";
@@ -868,7 +871,7 @@ function streak(){
 }
 
 /* Fortschritt im Konto sichern (für angemeldete Nutzer mit Schreibrecht), sonst nur auf diesem Gerät */
-const LIVE_RX=/^(bf-|app-|vwl-|bp-|bk-)/,SYNC_RX=/^(bf-|app-|vwl-|bp-|bk-|prof-)/;
+const LIVE_RX=/^(bf-|app-|vwl-|bp-|bk-|tm-)/,SYNC_RX=/^(bf-|app-|vwl-|bp-|bk-|tm-|prof-)/;
 function snap(){const o={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(SYNC_RX.test(k))o[k]=localStorage.getItem(k)}}catch(e){}return o}
 let SDOC=null,lastJSON="",pushing=false;
 async function push(){if(!SDOC||pushing)return;const d=snap(),j=JSON.stringify(d);if(j===lastJSON)return;pushing=true;
