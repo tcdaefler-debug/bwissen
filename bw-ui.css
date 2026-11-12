@@ -275,3 +275,7 @@ section[data-view]:not([hidden]),#chapters article:not([hidden]),.lesson:not([hi
 .u-intro{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer;position:relative}
 .u-intro.u-open{display:block;-webkit-line-clamp:none}
 .u-more{display:inline-block;margin:-8px 2px 12px;border:0;background:none;padding:2px 0;font:inherit;font-size:.86rem;font-weight:700;color:color-mix(in srgb,var(--c) 80%,#111);cursor:pointer}
+
+/* Sicherheitsnetz: nie seitlich schieben; Messwerte in Experimenten dürfen umbrechen */
+html,body{overflow-x:clip}
+.ro>*{min-width:0}.ro b{white-space:normal;overflow-wrap:anywhere}
