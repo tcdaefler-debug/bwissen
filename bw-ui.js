@@ -64,7 +64,11 @@ window.BW_CONFETTI=confetti;
 function watchWin(){var m=$("main");if(!m)return;var seen=new WeakSet();
   new MutationObserver(function(){var r=m.querySelector(".exres.ok");if(r&&!seen.has(r)){seen.add(r);setTimeout(confetti,250)}}).observe(m,{childList:true,subtree:true})}
 
-function init(){if(!H.lang)H.lang="de";buildTab();headScroll();watchWin();
+/* Lange Einleitungen unter der Überschrift kürzen: zwei Zeilen, per Tipp ganz lesen */
+function intros(){D.querySelectorAll("section[data-view]>.vhero").forEach(function(v){var p=v.nextElementSibling;if(!p||p.tagName!=="P"||p.classList.contains("u-intro")||p.querySelector("a,button,input,select")||(p.textContent||"").length<110)return;
+  p.classList.add("u-intro");var b=el("button","u-more","Mehr lesen");b.type="button";p.parentNode.insertBefore(b,p.nextSibling);
+  function tg(){var o=p.classList.toggle("u-open");b.textContent=o?"Weniger":"Mehr lesen"}b.onclick=tg;p.onclick=tg})}
+function init(){if(!H.lang)H.lang="de";intros();buildTab();headScroll();watchWin();
   try{if(window.parent!==window)window.parent.postMessage({bwAsk:"insets"},"*")}catch(e){}}
 if(D.readyState==="loading")D.addEventListener("DOMContentLoaded",init);else init();
 })();

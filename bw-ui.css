@@ -270,3 +270,8 @@ section[data-view]:not([hidden]),#chapters article:not([hidden]),.lesson:not([hi
 .tile .meta,.tile b,.opt,.bucket,.kurz li,td,th{-webkit-hyphens:auto;hyphens:auto}
 .opt{min-width:0}
 .opts>*{min-width:0}
+
+/* ---------- Einleitungstexte: zwei Zeilen, Tipp klappt auf ---------- */
+.u-intro{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer;position:relative}
+.u-intro.u-open{display:block;-webkit-line-clamp:none}
+.u-more{display:inline-block;margin:-8px 2px 12px;border:0;background:none;padding:2px 0;font:inherit;font-size:.86rem;font-weight:700;color:color-mix(in srgb,var(--c) 80%,#111);cursor:pointer}
