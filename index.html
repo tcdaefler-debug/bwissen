@@ -14,7 +14,7 @@
 <title>BWIssen</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap">
 <script>(function(){var sy=0,sx=0;function sc(t){for(;t&&t!==document.body&&t!==document.documentElement;t=t.parentElement){if(t.nodeType!==1)continue;var o=getComputedStyle(t).overflowY;if((o==="auto"||o==="scroll")&&t.scrollHeight>t.clientHeight+1)return true}return false}document.addEventListener("touchstart",function(e){if(e.touches.length===1){sy=e.touches[0].clientY;sx=e.touches[0].clientX}},{passive:true});document.addEventListener("touchmove",function(e){if(e.touches.length!==1||sc(e.target))return;var dy=e.touches[0].clientY-sy,dx=e.touches[0].clientX-sx;if(Math.abs(dx)>Math.abs(dy))return;var se=document.scrollingElement||document.documentElement,y=se.scrollTop;if((y<=0&&dy>0)||(y+innerHeight>=se.scrollHeight-1&&dy<0))e.preventDefault()},{passive:false})})();</script><style>
 /* Layout: eine ruhige Startseite mit vier großen Modul-Kacheln (2×2). Ein Tipp öffnet das Modul bildschirmfüllend.
    Gleiches Design wie das Buchführungs-Modul: bewusst nur hell, weißer Grund, jede Kachel eine eigene Farbe. */
@@ -197,29 +197,24 @@ button.streak{border:0;font:inherit;cursor:pointer}.streak{display:flex;align-it
 .sme .av{width:34px;height:34px;font-size:1rem}
 .sme b{flex:1;min-width:0}
 /* Begrüßung wie beim Einrichten eines iPhones */
-#hello{position:fixed;inset:0;z-index:50;background:#fff;display:grid;place-items:center;text-align:center;padding:24px;cursor:pointer;overflow:hidden}
-#hello.go{animation:helloOut .55s cubic-bezier(.5,0,.8,.3) forwards}
-#hello.go .hl-w{animation:hlShrink .55s cubic-bezier(.5,0,.8,.3) forwards}
-.hl-w{font-family:var(--f-display);font-weight:700;line-height:1.05;letter-spacing:-.02em;display:flex;flex-direction:column;align-items:center}
-.hl-logo{width:clamp(110px,30vw,170px);height:auto;overflow:visible;animation:hlLogo .9s 1.55s cubic-bezier(.2,.8,.2,1) both}
-.hl-logo rect{transform-box:fill-box;transform-origin:center;animation:hlTile .5s cubic-bezier(.3,1.6,.5,1) both}
-.hl-logo rect:nth-of-type(2){animation-delay:.1s}.hl-logo rect:nth-of-type(3){animation-delay:.2s}.hl-logo rect:nth-of-type(4){animation:hlTile .5s .3s cubic-bezier(.3,1.6,.5,1) both,hlPop .45s 1.15s cubic-bezier(.3,1.8,.5,1)}
-.hl-logo path{stroke-dasharray:200;stroke-dashoffset:200;animation:hlCheck .45s .8s cubic-bezier(.6,0,.3,1) forwards}
-.hl-bw{display:block;margin-top:14px;font-size:clamp(1.4rem,6vw,2.2rem);color:var(--ink);animation:hlIn .6s .45s cubic-bezier(.2,.8,.2,1) both,hlAway .4s 1.5s ease forwards}
-.hl-t{display:flex;flex-direction:column;align-items:center;margin-top:0}
-.hl-a{display:block;font-size:clamp(2.4rem,12.5vw,7rem);background:linear-gradient(90deg,#3b5bdb,#7048e8,#e11d74,#ee7418,#139a58,#3b5bdb);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hlIn .8s 1.75s cubic-bezier(.2,.8,.2,1) both,hlFlow 4s linear infinite}
-.hl-n{display:block;font-size:clamp(2rem,9vw,4rem);color:var(--ink);margin-top:6px;animation:hlIn .8s 2s cubic-bezier(.2,.8,.2,1) both}
-.hl-s{display:block;margin-top:18px;color:var(--muted);font-family:var(--f-body);font-weight:700;font-size:1rem;letter-spacing:0;animation:hlIn .7s 2.3s ease both}
-@keyframes hlTile{from{transform:scale(0);opacity:0}to{transform:none;opacity:1}}
-@keyframes hlCheck{to{stroke-dashoffset:0}}
-@keyframes hlPop{50%{transform:scale(1.18)}}
-@keyframes hlLogo{to{transform:scale(.62) translateY(-8%)}}
-@keyframes hlAway{to{opacity:0;transform:translateY(-6px);height:0;margin:0}}
-@keyframes hlShrink{to{transform:scale(.35);opacity:0}}
-@keyframes hlIn{from{opacity:0;transform:translateY(18px) scale(.96);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
-@keyframes hlFlow{to{background-position:300% 0}}
-@keyframes helloOut{60%{opacity:1}to{opacity:0}}
-@media (prefers-reduced-motion:reduce){.hl-a,.hl-n,.hl-s,.hl-bw,.hl-logo,.hl-logo rect,.hl-logo path,#hello.go,#hello.go .hl-w{animation:none!important}.hl-logo path{stroke-dashoffset:0}.hl-bw{display:none}}
+#hello{position:fixed;inset:0;z-index:50;background:#fff;display:grid;place-items:center;text-align:center;padding:24px;cursor:pointer;overflow:hidden;touch-action:manipulation}
+#hello.go{animation:helloOut .6s cubic-bezier(.5,0,.8,.3) forwards}
+#hello.go .hl-w{animation:hlShrink .6s cubic-bezier(.5,0,.8,.3) forwards}
+.hl-glow{position:absolute;left:50%;top:42%;width:min(130vw,760px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;opacity:0;background:radial-gradient(closest-side,rgba(112,72,232,.26),rgba(238,116,24,.1) 55%,transparent);transition:opacity 1.2s}
+#hello.lit .hl-glow{opacity:1}
+.hl-w{position:relative;display:flex;flex-direction:column;align-items:center;width:100%}
+.hl-svg{width:min(74vw,330px);height:auto;overflow:visible;display:block;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+#hello.txt .hl-svg{transform:translateY(-4%) scale(.86)}
+.hl-svg *{transform-box:fill-box;transform-origin:center}
+.hl-txt{display:flex;flex-direction:column;align-items:center;margin-top:-14px;min-height:9.5rem;max-width:100%}
+.hl-a{display:inline-block;font-family:"Caveat","Bradley Hand","Segoe Print","Snell Roundhand",cursive;font-weight:700;font-size:clamp(3.2rem,17vw,5.6rem);line-height:1.02;padding:.08em .16em .14em;max-width:94vw;text-wrap:balance;overflow-wrap:anywhere;background:linear-gradient(100deg,#3b5bdb,#7048e8 30%,#e11d74 55%,#ee7418 78%,#139a58);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-clip-path:inset(-10% 100% -10% 0);clip-path:inset(-10% 100% -10% 0)}
+.hl-a.long{font-size:clamp(2.5rem,12.5vw,4.6rem)}
+#hello.txt .hl-a{-webkit-clip-path:inset(-10% -4% -10% 0);clip-path:inset(-10% -4% -10% 0);transition:clip-path 1.15s cubic-bezier(.45,.05,.3,1),-webkit-clip-path 1.15s cubic-bezier(.45,.05,.3,1)}
+.hl-s{display:block;margin-top:6px;color:var(--muted);font-family:var(--f-body);font-weight:650;font-size:1.06rem;letter-spacing:0;opacity:0;transform:translateY(10px)}
+#hello.sub .hl-s{opacity:1;transform:none;transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+@keyframes hlShrink{to{transform:scale(.3);opacity:0}}
+@keyframes helloOut{55%{opacity:1}to{opacity:0}}
+@media (prefers-reduced-motion:reduce){#hello.go,#hello.go .hl-w{animation:none!important}.hl-a,.hl-s,.hl-svg{transition:none!important}}
 /* Übergänge */
 @keyframes slideIn{from{transform:translateX(100%)}to{transform:none}}
 @keyframes slideOut{from{transform:none}to{transform:translateX(100%)}}
@@ -490,6 +485,8 @@ html[data-th="dark"] .bb-f{border-top-color:var(--line)}
 @media (min-width:700px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.duo{grid-template-columns:1fr 1fr}.hero{min-height:360px}}
 @media (min-width:700px){#today{grid-template-columns:1fr 1fr}#today>.hero{grid-row:span 3}#today>.sec,#today>.quick{grid-column:1/-1}.duo{align-self:start}}
 @media (max-width:360px){.tile{aspect-ratio:auto;min-height:150px}.view h1{font-size:1.9rem}.stat b{font-size:2rem}}
+.pp-next .t{flex:1;min-width:0}.pp-next .t b,.pp-r .t b{overflow-wrap:break-word;hyphens:auto}
+@media (max-width:340px){.pp-next{gap:10px;padding:12px}.pp-next .t b{font-size:1rem}}
 @media (prefers-reduced-motion:reduce){.view.vin,.td-card.in{animation:none}}
 
 /* Anleitung Home-Bildschirm: drei Schritte zum Wischen */
@@ -550,6 +547,29 @@ html[data-th="dark"] #upd .uh span,html[data-th="dark"] #upd .ux{color:rgba(235,
 @keyframes updIn{from{opacity:0;transform:translateY(-120%) scale(.96)}to{opacity:1;transform:none}}
 @keyframes updOut{to{opacity:0;transform:translateY(-130%)}}
 @media (prefers-reduced-motion:reduce){#upd,#upd.bye{animation:none}}
+
+/* Feinschliff kleine Geräte: nichts abschneiden */
+.tile small{white-space:normal!important;overflow:hidden;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto;display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.3}
+.tile .cd{flex:none;white-space:nowrap}.tile .cd small{display:inline!important;overflow:visible;-webkit-line-clamp:none}
+.tile .t-b b{overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto}
+.quick{gap:6px!important;margin:0 -16px;padding:4px 20px 8px!important;scroll-snap-type:x proximity;-webkit-mask-image:linear-gradient(90deg,transparent,#000 14px,#000 calc(100% - 22px),transparent);mask-image:linear-gradient(90deg,transparent,#000 14px,#000 calc(100% - 22px),transparent)}
+.quick::-webkit-scrollbar{display:none}
+.quick button{flex:none;width:84px;scroll-snap-align:start}
+.quick button>span:last-child{display:block;font-size:.78rem;line-height:1.2;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto;text-align:center}
+@media (min-width:430px){.quick{-webkit-mask-image:none;mask-image:none}}
+/* Logo oben: Kacheln springen herein, Bibo hüpft und zwinkert ab und zu */
+.top .logo{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.top .logo .mk{overflow:visible;width:34px;height:34px}
+.top .logo .mk rect{transform-box:fill-box;transform-origin:center;animation:mkIn .7s cubic-bezier(.3,1.5,.5,1) both}
+.top .logo .mk rect:nth-of-type(2){animation-delay:.08s}.top .logo .mk rect:nth-of-type(3){animation-delay:.16s}
+.top .logo .mk rect:nth-of-type(4){animation:mkIn .7s .24s cubic-bezier(.3,1.5,.5,1) both,mkHop 7s 2s ease-in-out infinite}
+.top .logo .mk path{animation:mkHop 7s 2s ease-in-out infinite}
+.top .logo .mk circle{transform-box:fill-box;transform-origin:center;animation:mkHopB 7s 2s ease-in-out infinite}
+.top .logo:active .mk{transform:scale(.9);transition:transform .15s}
+@keyframes mkIn{from{transform:scale(0) rotate(-30deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes mkHop{0%,84%,100%{transform:none}88%{transform:translateY(-70px)}92%{transform:translateY(0)}95%{transform:translateY(-22px)}98%{transform:none}}
+@keyframes mkHopB{0%,38%,42%,84%,100%{transform:none}40%{transform:scaleY(.1)}88%{transform:translateY(-70px)}92%{transform:translateY(0)}95%{transform:translateY(-22px)}98%{transform:none}}
+@media (prefers-reduced-motion:reduce){.top .logo .mk *{animation:none!important}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -562,10 +582,10 @@ html[data-th="dark"] #upd .uh span,html[data-th="dark"] #upd .ux{color:rgba(235,
   <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-5 1-8.5z"/></symbol>
 </svg>
 
-<div id="bgimg" aria-hidden="true"></div><div id="sbar" aria-hidden="true"></div><div id="upd" role="status" aria-live="polite" hidden><div class="ui" aria-hidden="true"><svg viewBox="76 76 360 360"><rect x="76" y="76" width="166" height="166" rx="40" fill="#3b5bdb"/><rect x="270" y="76" width="166" height="166" rx="40" fill="#ee7418"/><rect x="76" y="270" width="166" height="166" rx="40" fill="#139a58"/><rect x="270" y="270" width="166" height="166" rx="40" fill="#7048e8"/><path d="M310 356l38 36 62-74" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ut"><div class="uh"><b>BWIssen · Neuigkeiten</b><span>jetzt</span></div><p id="upd-t"><b style="display:inline;font-weight:600">Neues Modul bereit:</b> Technische Mechanik ist ab sofort in der App. Das Update ist früher da als angekündigt.</p><span class="ux">Tippen zum Öffnen, nach oben wischen zum Ausblenden</span></div></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" id="lg-defs"><defs><linearGradient id="lg-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6485ff"/><stop offset="1" stop-color="#3451d1"/></linearGradient><linearGradient id="lg-o" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffa54a"/><stop offset="1" stop-color="#ea6a0c"/></linearGradient><linearGradient id="lg-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34c780"/><stop offset="1" stop-color="#0f8f50"/></linearGradient><linearGradient id="lg-p" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9a78ff"/><stop offset="1" stop-color="#6538e0"/></linearGradient></defs></svg><div id="bgimg" aria-hidden="true"></div><div id="sbar" aria-hidden="true"></div><div id="upd" role="status" aria-live="polite" hidden><div class="ui" aria-hidden="true"><svg viewBox="76 76 360 360"><rect x="76" y="76" width="166" height="166" rx="48" fill="url(#lg-b)"/><rect x="270" y="76" width="166" height="166" rx="48" fill="url(#lg-o)"/><rect x="76" y="270" width="166" height="166" rx="48" fill="url(#lg-g)"/><rect x="270" y="270" width="166" height="166" rx="48" fill="url(#lg-p)"/><circle cx="323" cy="333" r="19" fill="#fff"/><circle cx="383" cy="333" r="19" fill="#fff"/><circle cx="327" cy="336" r="9.5" fill="#1b2333"/><circle cx="387" cy="336" r="9.5" fill="#1b2333"/><path d="M322 384l22 20 40-46" fill="none" stroke="#fff" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ut"><div class="uh"><b>BWIssen · Neuigkeiten</b><span>jetzt</span></div><p id="upd-t"><b style="display:inline;font-weight:600">Großes Update:</b> Bauphysik ist da, dazu ein frisches Design und in jedem Fach die neue Tafel mit Erklärungen zum Mitzeichnen.</p><span class="ux">Tippen zum Öffnen, nach oben wischen zum Ausblenden</span></div></div>
 <div class="wrap">
   <div class="top">
-    <div class="logo"><svg class="mk" viewBox="76 76 360 360" aria-hidden="true"><rect x="76" y="76" width="166" height="166" rx="40" fill="#3b5bdb"/><rect x="270" y="76" width="166" height="166" rx="40" fill="#ee7418"/><rect x="76" y="270" width="166" height="166" rx="40" fill="#139a58"/><rect x="270" y="270" width="166" height="166" rx="40" fill="#7048e8"/><path d="M310 356l38 36 62-74" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg>BWIssen</div>
+    <div class="logo"><svg class="mk" viewBox="76 76 360 360" aria-hidden="true"><rect x="76" y="76" width="166" height="166" rx="48" fill="url(#lg-b)"/><rect x="270" y="76" width="166" height="166" rx="48" fill="url(#lg-o)"/><rect x="76" y="270" width="166" height="166" rx="48" fill="url(#lg-g)"/><rect x="270" y="270" width="166" height="166" rx="48" fill="url(#lg-p)"/><circle cx="323" cy="333" r="19" fill="#fff"/><circle cx="383" cy="333" r="19" fill="#fff"/><circle cx="327" cy="336" r="9.5" fill="#1b2333"/><circle cx="387" cy="336" r="9.5" fill="#1b2333"/><path d="M322 384l22 20 40-46" fill="none" stroke="#fff" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/></svg>BWIssen</div>
     <div class="topr"><button type="button" class="me" id="me" hidden aria-label="Profil"><span class="av" id="me-av">?</span><span id="me-n"></span></button><button type="button" class="streak" id="streak" title="Lernkalender öffnen" aria-label="Lernserie, Kalender öffnen"><svg class="i"><use href="#i-flame"/></svg><span id="streak-n">1 Tag</span></button><button type="button" class="gear" id="set-open" aria-label="Einstellungen"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></div>
   </div>
   <section class="view" data-v="heute" aria-labelledby="h-heute">
@@ -659,7 +679,21 @@ html[data-th="dark"] #upd .uh span,html[data-th="dark"] #upd .ux{color:rgba(235,
     </div>
   </div>
 </div>
-<div id="hello" hidden aria-live="polite"><div class="hl-w"><svg class="hl-logo" viewBox="76 76 360 360" aria-hidden="true"><rect x="76" y="76" width="166" height="166" rx="40" fill="#3b5bdb"/><rect x="270" y="76" width="166" height="166" rx="40" fill="#ee7418"/><rect x="76" y="270" width="166" height="166" rx="40" fill="#139a58"/><rect x="270" y="270" width="166" height="166" rx="40" fill="#7048e8"/><path d="M310 356l38 36 62-74" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="hl-bw">BWIssen</span><span class="hl-t"><span class="hl-a" id="hl-a">Hallo</span><span class="hl-n" id="hl-n"></span><span class="hl-s" id="hl-s">Schön, dass du da bist.</span></span></div></div>
+<div id="hello" hidden aria-live="polite"><div class="hl-glow" aria-hidden="true"></div><div class="hl-w">
+<svg class="hl-svg" viewBox="0 0 300 300" aria-hidden="true">
+<circle class="hl-ring" cx="150" cy="150" r="40" fill="none" stroke="#7048e8" stroke-width="6" opacity="0"/>
+<g class="hl-parts"></g>
+<g class="hl-bibo" opacity="0">
+<ellipse class="hl-shadow" cx="150" cy="226" rx="46" ry="7" fill="#1b2333" opacity=".14"/>
+<g class="hl-body"><rect x="95" y="110" width="110" height="106" rx="37" fill="url(#lg-p)"/><path d="M112 128c10-9 26-12 42-12" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".28"/>
+<g class="hl-eyes"><circle cx="131" cy="154" r="12.5" fill="#fff"/><circle cx="169" cy="154" r="12.5" fill="#fff"/><circle cx="134" cy="156" r="6.2" fill="#1b2333"/><circle cx="172" cy="156" r="6.2" fill="#1b2333"/><circle cx="136" cy="153.500" r="2" fill="#fff"/><circle cx="174" cy="153.500" r="2" fill="#fff"/></g>
+<circle cx="113" cy="178" r="6.500" fill="#ff9ec7" opacity=".8"/><circle cx="187" cy="178" r="6.500" fill="#ff9ec7" opacity=".8"/>
+<path class="hl-smile" d="M133 184l12 11 23-22" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></g>
+</g>
+<g class="hl-logo"><rect class="hl-t hl-tb" x="83" y="83" width="62" height="62" rx="18" fill="url(#lg-b)"/><rect class="hl-t hl-to" x="155" y="83" width="62" height="62" rx="18" fill="url(#lg-o)"/><rect class="hl-t hl-tg" x="83" y="155" width="62" height="62" rx="18" fill="url(#lg-g)"/><g class="hl-t hl-tp"><rect x="155" y="155" width="62" height="62" rx="18" fill="url(#lg-p)"/><circle cx="174.800" cy="179" r="7.100" fill="#fff"/><circle cx="197.200" cy="179" r="7.100" fill="#fff"/><circle cx="176.300" cy="180.100" r="3.500" fill="#1b2333"/><circle cx="198.700" cy="180.100" r="3.500" fill="#1b2333"/><path d="M174.400 198l8.200 7.500 15-17.200" fill="none" stroke="#fff" stroke-width="6.300" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+</svg>
+<div class="hl-txt"><span class="hl-a" id="hl-a"><span id="hl-a1">Hallo</span> <span id="hl-n"></span></span><span class="hl-s" id="hl-s">Viel Spaß beim Lernen!</span></div>
+</div></div>
 <div id="gate" hidden role="dialog" aria-modal="true" aria-labelledby="gt-h">
   <div class="lg-card">
     <div class="lg-logo" id="gt-logo"></div>
@@ -675,7 +709,7 @@ html[data-th="dark"] #upd .uh span,html[data-th="dark"] #upd .ux{color:rgba(235,
 </div>
 <div id="login" role="dialog" aria-modal="true" aria-labelledby="lg-h">
   <div class="lg-card">
-    <div class="lg-logo"><svg class="mk" viewBox="76 76 360 360" aria-hidden="true"><rect x="76" y="76" width="166" height="166" rx="40" fill="#3b5bdb"/><rect x="270" y="76" width="166" height="166" rx="40" fill="#ee7418"/><rect x="76" y="270" width="166" height="166" rx="40" fill="#139a58"/><rect x="270" y="270" width="166" height="166" rx="40" fill="#7048e8"/><path d="M310 356l38 36 62-74" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="lg-logo"><svg class="mk" viewBox="76 76 360 360" aria-hidden="true"><rect x="76" y="76" width="166" height="166" rx="48" fill="url(#lg-b)"/><rect x="270" y="76" width="166" height="166" rx="48" fill="url(#lg-o)"/><rect x="76" y="270" width="166" height="166" rx="48" fill="url(#lg-g)"/><rect x="270" y="270" width="166" height="166" rx="48" fill="url(#lg-p)"/><circle cx="323" cy="333" r="19" fill="#fff"/><circle cx="383" cy="333" r="19" fill="#fff"/><circle cx="327" cy="336" r="9.5" fill="#1b2333"/><circle cx="387" cy="336" r="9.5" fill="#1b2333"/><path d="M322 384l22 20 40-46" fill="none" stroke="#fff" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <h1 id="lg-h">BWIssen</h1>
     <p class="sub" id="lg-sub">Melde dich mit deinem Profil an.</p>
     <div class="seg" role="group" aria-label="Anmelden oder neues Profil"><button type="button" id="lg-m-in" aria-pressed="true">Anmelden</button><button type="button" id="lg-m-new" aria-pressed="false">Neues Profil</button></div>
@@ -691,11 +725,11 @@ html[data-th="dark"] #upd .uh span,html[data-th="dark"] #upd .ux{color:rgba(235,
     <p class="lg-note">Profile und Fortschritt werden nur auf diesem Gerät gespeichert. Ein vergessenes Passwort lässt sich nicht wiederherstellen.</p>
   </div>
 </div>
-<button type="button" id="bibo-btn" aria-label="Bibo fragen"><svg class="bibo" viewBox="0 0 100 100" aria-hidden="true"><rect x="26" y="8" width="14" height="14" rx="4" fill="#3b5bdb"/><rect x="43" y="3" width="14" height="14" rx="4" fill="#ee7418"/><rect x="60" y="8" width="14" height="14" rx="4" fill="#139a58"/><rect x="13" y="20" width="74" height="72" rx="24" fill="#7048e8"/><g class="eyes"><circle cx="37" cy="50" r="8.5" fill="#fff"/><circle cx="63" cy="50" r="8.5" fill="#fff"/><circle cx="39" cy="51" r="4.2" fill="#1b2333"/><circle cx="65" cy="51" r="4.2" fill="#1b2333"/></g><circle cx="25" cy="66" r="4.5" fill="#ff9ec7" opacity=".75"/><circle cx="75" cy="66" r="4.5" fill="#ff9ec7" opacity=".75"/><path d="M39 70l8 7 15-14" stroke="#fff" stroke-width="5.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<button type="button" id="bibo-btn" aria-label="Bibo fragen"><svg class="bibo" viewBox="0 0 100 100" aria-hidden="true"><rect x="26" y="8" width="14" height="14" rx="4.5" fill="url(#lg-b)"/><rect x="43" y="3" width="14" height="14" rx="4.5" fill="url(#lg-o)"/><rect x="60" y="8" width="14" height="14" rx="4.5" fill="url(#lg-g)"/><rect x="13" y="20" width="74" height="72" rx="25" fill="url(#lg-p)"/><g class="eyes"><circle cx="37" cy="50" r="8.5" fill="#fff"/><circle cx="63" cy="50" r="8.5" fill="#fff"/><circle cx="39" cy="51" r="4.2" fill="#1b2333"/><circle cx="65" cy="51" r="4.2" fill="#1b2333"/></g><circle cx="25" cy="66" r="4.5" fill="#ff9ec7" opacity=".75"/><circle cx="75" cy="66" r="4.5" fill="#ff9ec7" opacity=".75"/><path d="M39 70l8 7 15-14" stroke="#fff" stroke-width="5.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
 <div id="bibo-tip" hidden role="button" tabindex="0">Wenn du Fragen hast, frag mich einfach. Ich bin für dich da!</div>
 <div id="bibo" hidden role="dialog" aria-modal="true" aria-labelledby="bb-h">
   <div class="sheet">
-    <div class="sheet-h bb-h"><svg class="bibo" viewBox="0 0 100 100" aria-hidden="true"><rect x="26" y="8" width="14" height="14" rx="4" fill="#3b5bdb"/><rect x="43" y="3" width="14" height="14" rx="4" fill="#ee7418"/><rect x="60" y="8" width="14" height="14" rx="4" fill="#139a58"/><rect x="13" y="20" width="74" height="72" rx="24" fill="#7048e8"/><g class="eyes"><circle cx="37" cy="50" r="8.5" fill="#fff"/><circle cx="63" cy="50" r="8.5" fill="#fff"/><circle cx="39" cy="51" r="4.2" fill="#1b2333"/><circle cx="65" cy="51" r="4.2" fill="#1b2333"/></g><circle cx="25" cy="66" r="4.5" fill="#ff9ec7" opacity=".75"/><circle cx="75" cy="66" r="4.5" fill="#ff9ec7" opacity=".75"/><path d="M39 70l8 7 15-14" stroke="#fff" stroke-width="5.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><h2 id="bb-h">Bibo<small>dein Lernbuddy · kennt die Begriffe aus BWIssen</small></h2><button type="button" class="gear" id="bibo-close" aria-label="Schließen"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="sheet-h bb-h"><svg class="bibo" viewBox="0 0 100 100" aria-hidden="true"><rect x="26" y="8" width="14" height="14" rx="4.5" fill="url(#lg-b)"/><rect x="43" y="3" width="14" height="14" rx="4.5" fill="url(#lg-o)"/><rect x="60" y="8" width="14" height="14" rx="4.5" fill="url(#lg-g)"/><rect x="13" y="20" width="74" height="72" rx="25" fill="url(#lg-p)"/><g class="eyes"><circle cx="37" cy="50" r="8.5" fill="#fff"/><circle cx="63" cy="50" r="8.5" fill="#fff"/><circle cx="39" cy="51" r="4.2" fill="#1b2333"/><circle cx="65" cy="51" r="4.2" fill="#1b2333"/></g><circle cx="25" cy="66" r="4.5" fill="#ff9ec7" opacity=".75"/><circle cx="75" cy="66" r="4.5" fill="#ff9ec7" opacity=".75"/><path d="M39 70l8 7 15-14" stroke="#fff" stroke-width="5.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><h2 id="bb-h">Bibo<small>dein Lernbuddy · kennt die Begriffe aus BWIssen</small></h2><button type="button" class="gear" id="bibo-close" aria-label="Schließen"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="bb-log" id="bb-log" aria-live="polite"></div>
     <form class="bb-f" id="bb-f" autocomplete="off"><input id="bb-in" type="text" placeholder="z. B. Was ist ein Buchungssatz?" maxlength="120"><button type="submit">Fragen</button></form>
   </div>
@@ -729,8 +763,8 @@ const MODULES=[
    progress(){return Math.min(1,(+store.get("bf-total",0)||0)/100)}},
   {id:"vwl",prefix:"vwl-",name:"VWL",sub:"Volkswirtschaftslehre",color:"#ee7418",icon:"i-markt",file:"modul-vwl.html",exam:"2027-01-20",time:"11:00",
    progress(){return Math.min(1,(+store.get("vwl-total",0)||0)/100)}},
-  {id:"bauphysik",prefix:"bp-",name:"Bauphysik",sub:"Wärme- und Feuchtelehre",color:"#139a58",icon:"i-thermo",file:null,exam:"2027-01-21",time:"08:00",
-   waitTitle:"In Arbeit",waitText:"Bauphysik wird gerade gebaut. Sobald es fertig ist, kannst du hier lernen."},
+  {id:"bauphysik",prefix:"bp-",name:"Bauphysik",sub:"Wärme- und Feuchtelehre",color:"#139a58",icon:"i-thermo",file:"modul-bauphysik.html",exam:"2027-01-21",time:"08:00",
+   progress(){return Math.min(1,(+store.get("bp-total",0)||0)/100)}},
   {id:"baustoffkunde",prefix:"bk-",name:"Baustoffkunde",sub:"Baustoffe und ihre Kenngrößen",color:"#b4442f",file:"modul-baustoffkunde.html",exam:"2027-01-21",time:"08:00",
    progress(){return Math.min(1,(+store.get("bk-total",0)||0)/100)}},
   {id:"mechanik",prefix:"tm-",name:"Technische Mechanik",sub:"Statik",color:"#7048e8",file:"modul-mechanik.html",exam:"2027-01-29",time:"08:00",
@@ -840,7 +874,7 @@ function tdClose(){$("#td").hidden=true}
 $("#td").addEventListener("click",e=>{if(e.target.id==="td")tdClose()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")tdClose()});
 
-const BWV="1794418227";function fLoad(f,u){try{f.contentWindow.location.replace(new URL(u,location.href).href)}catch(e){f.src=u}}
+const BWV="20261112a";function fLoad(f,u){try{f.contentWindow.location.replace(new URL(u,location.href).href)}catch(e){f.src=u}}
 function openModule(m,sub){
   if(!m.file){$("#wait-h").textContent=m.waitTitle||"Fast da";$("#wait-p").textContent=m.waitText||"Dieses Modul ist noch leer.";$("#wait").hidden=false;$("#wait-ok").focus();return}
   const f=$("#mod");let cur=f.dataset.src;try{const h=f.contentWindow.location.href;cur=h.startsWith("about:")?"":h.split("#")[0].split("?")[0].split("/").pop()}catch(e){}if(cur!==m.file){fLoad(f,m.file+"?v="+BWV+(sub?"#"+sub:""));f.dataset.src=m.file;f.title=m.name}else if(sub){fLoad(f,m.file+"#"+sub)}
@@ -858,6 +892,7 @@ function route(){
   const [id,sub]=location.hash.slice(1).split("/"),m=MODULES.find(x=>x.id===id&&!x.soon);
   if(m){if($("#frame").hidden&&m.file)NAV_IN=true;openModule(m,sub);if(m.file)store.set("app-last",m.id)}else{NAV_IN=false;closeModule();showTab(TABS.includes(id)?id:TAB)}$("#bibo-btn").hidden=!!m;if(m)$("#bibo-tip").hidden=true;
 }
+{const lg=document.querySelector(".top .logo");if(lg)lg.addEventListener("click",()=>{try{const p=ME&&profGet(ME);if(p&&$("#hello").hidden)hello(p.name,false)}catch(e){}})}
 $("#wait-ok").onclick=()=>{$("#wait").hidden=true;history.replaceState(null,"",location.pathname+location.search);route()};
 let NAV_IN=false;window.addEventListener("message",e=>{if(e.data&&e.data.lernapp==="home"){if(NAV_IN&&history.length>1){NAV_IN=false;history.back()}else location.hash="start"}});
 window.addEventListener("hashchange",()=>ready.then(()=>{if(ME)route()}));
@@ -1010,7 +1045,9 @@ $("#set-open").onclick=()=>{setRender();admRender();applyTheme();$("#set").hidde
 $("#me").onclick=()=>$("#set-open").click();
 document.querySelectorAll("[data-sem]").forEach(b=>b.onclick=()=>$("#sem-open").click());
 function satPx(){const d=document.createElement("div");d.style.cssText="position:fixed;top:0;left:0;width:1px;height:env(safe-area-inset-top,0px);visibility:hidden;pointer-events:none";document.body.appendChild(d);const h=d.offsetHeight;d.remove();return h}
-function satSend(){try{$("#mod").contentWindow.postMessage({bwSat:satPx()},"*")}catch(e){}}
+function sabPx(){const d=document.createElement("div");d.style.cssText="position:fixed;top:0;left:0;width:1px;height:env(safe-area-inset-bottom,0px);visibility:hidden;pointer-events:none";document.body.appendChild(d);const h=d.offsetHeight;d.remove();return h}
+function satSend(){try{$("#mod").contentWindow.postMessage({bwSat:satPx(),bwSab:sabPx()},"*")}catch(e){}}
+window.addEventListener("message",e=>{if(e.data&&e.data.bwAsk==="insets")satSend()});
 $("#mod").addEventListener("load",satSend);["gesturestart","gesturechange"].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));document.addEventListener("touchmove",e=>{if(e.touches&&e.touches.length>1)e.preventDefault()},{passive:false});addEventListener("resize",()=>setTimeout(satSend,200));
 showTab(TAB);
 try{if(!history.state||!history.state.bw){history.replaceState({bw:"base"},"");history.pushState({bw:"top"},"")}}catch(e){}
@@ -1046,10 +1083,45 @@ function profSave(){if(!ME)return;store.set("prof-data:"+ME,liveSnap());store.se
 async function pwHash(k,pw,salt){try{const enc=new TextEncoder(),key=await crypto.subtle.importKey("raw",enc.encode(pw),"PBKDF2",false,["deriveBits"]);
   const bits=await crypto.subtle.deriveBits({name:"PBKDF2",salt:enc.encode(salt+"|"+k),iterations:150000,hash:"SHA-256"},key,256);return "p2:"+[...new Uint8Array(bits)].map(b=>b.toString(16).padStart(2,"0")).join("")}
   catch(e){let h=5381;for(const c of salt+"|"+k+"|"+pw)h=((h*33)^c.charCodeAt(0))>>>0;return "s1:"+h.toString(16)}}
-function hello(name,first){const h=$("#hello");$("#hl-a").textContent=first?"Willkommen":"Hallo";$("#hl-n").textContent=name;
-  const sTxt=first?"Dein Profil ist angelegt. Los geht's!":["Schön, dass du da bist.","Bereit für die nächste Runde?","Weiter geht's mit dem Lernen."][Math.floor(Math.random()*3)];$("#hl-s").textContent=sTxt;
-  h.classList.remove("go");h.hidden=false;{const w=h.querySelector(".hl-w"),c=w.cloneNode(true);w.replaceWith(c);$("#hl-a").textContent=first?"Willkommen":"Hallo";$("#hl-n").textContent=name;$("#hl-s").textContent=sTxt}let done=false;const close=()=>{if(done)return;done=true;h.classList.add("go");setTimeout(()=>{h.hidden=true;h.classList.remove("go")},RM?0:600)};
-  h.onclick=close;setTimeout(close,RM?1400:3900)}
+function hello(name,first){const h=$("#hello"),A=(e,k,o)=>{try{return e.animate(k,Object.assign({fill:"both",easing:"cubic-bezier(.2,.8,.2,1)"},o))}catch(_){return null}};
+  $("#hl-a1").textContent=first?"Willkommen":"Hallo";$("#hl-n").textContent=name||"";$("#hl-a").classList.toggle("long",((first?10:5)+String(name||"").length)>11);
+  $("#hl-s").textContent=first?"Schön, dass du dabei bist. Viel Spaß beim Lernen!":["Viel Spaß beim Lernen!","Schön, dass du da bist.","Bereit für die nächste Runde?","Weiter geht's, du schaffst das."][Math.floor(Math.random()*4)];
+  h.classList.remove("go","txt","sub","lit");h.hidden=false;
+  const logo=h.querySelector(".hl-logo"),bibo=h.querySelector(".hl-bibo"),body=h.querySelector(".hl-body"),ring=h.querySelector(".hl-ring"),parts=h.querySelector(".hl-parts"),smile=h.querySelector(".hl-smile"),eyes=h.querySelector(".hl-eyes");
+  h.querySelectorAll(".hl-svg *").forEach(e=>{(e.getAnimations?e.getAnimations():[]).forEach(a=>a.cancel())});parts.innerHTML="";
+  const T=[];let done=false;const at=(ms,f)=>T.push(setTimeout(()=>{if(!done)f()},ms));
+  const close=()=>{if(done)return;done=true;T.forEach(clearTimeout);h.classList.add("go");setTimeout(()=>{h.hidden=true;h.classList.remove("go","txt","sub","lit")},RM?0:620)};
+  h.onclick=close;
+  const tb=h.querySelector(".hl-tb"),to=h.querySelector(".hl-to"),tg=h.querySelector(".hl-tg"),tp=h.querySelector(".hl-tp");
+  if(RM||!tb.animate){logo.style.opacity=0;bibo.setAttribute("opacity",1);[[tb,10.5,-11.5],[to,-36,-18.5],[tg,61.5,-83.5]].forEach(([e,x,y])=>{e.style.transform="translate("+x+"px,"+y+"px) scale(.34)"});bibo.parentNode.appendChild(logo);logo.style.opacity=1;tp.style.opacity=0;h.classList.add("txt","sub","lit");T.push(setTimeout(close,RM?1800:2600));return}
+  logo.style.opacity=1;tp.style.opacity=1;[tb,to,tg].forEach(e=>e.style.transform="");bibo.setAttribute("opacity",0);
+  /* 1 Logo setzt sich zusammen */
+  [tb,to,tg,tp].forEach((e,i)=>A(e,[{transform:"scale(0) rotate(-25deg)",opacity:0},{transform:"scale(1.12) rotate(4deg)",opacity:1,offset:.7},{transform:"none",opacity:1}],{duration:480,delay:i*85,easing:"cubic-bezier(.3,1.4,.5,1)"}));
+  at(250,()=>h.classList.add("lit"));
+  /* 2 es rumort */
+  at(880,()=>A(logo,[{transform:"none"},{transform:"translate(-2px,1px) rotate(-2deg) scale(1.02)"},{transform:"translate(3px,-1px) rotate(2.500deg) scale(1.05)"},{transform:"translate(-4px,2px) rotate(-3.500deg) scale(1.03)"},{transform:"translate(4px,-2px) rotate(4deg) scale(1.1)"},{transform:"translate(-5px,1px) rotate(-5deg) scale(1.06)"},{transform:"translate(5px,-1px) rotate(5deg) scale(1.16)"},{transform:"scale(.9)"}],{duration:760,easing:"ease-in"}));
+  /* 3 es platzt, Bibo springt heraus */
+  at(1640,()=>{
+    A(logo,[{transform:"scale(.9)"},{transform:"none"}],{duration:10});
+    A(ring,[{opacity:.9,transform:"scale(.4)",strokeWidth:"10px"},{opacity:0,transform:"scale(4.2)",strokeWidth:"1px"}],{duration:700,easing:"cubic-bezier(.1,.7,.3,1)"});
+    const col=["#3b5bdb","#ee7418","#139a58","#7048e8","#f59e0b","#e11d74"];
+    for(let i=0;i<22;i++){const sq=i%3===0,e=document.createElementNS("http://www.w3.org/2000/svg",sq?"rect":"circle"),r=3+Math.random()*4.500;
+      if(sq){e.setAttribute("x",150-r);e.setAttribute("y",150-r);e.setAttribute("width",2*r);e.setAttribute("height",2*r);e.setAttribute("rx",r*.45)}else{e.setAttribute("cx",150);e.setAttribute("cy",150);e.setAttribute("r",r)}
+      e.setAttribute("fill",col[i%col.length]);parts.appendChild(e);const an=i/22*6.283+Math.random()*.4,d=95+Math.random()*95;
+      A(e,[{transform:"translate(0,0) scale(.4)",opacity:1},{transform:"translate("+Math.cos(an)*d*.82+"px,"+(Math.sin(an)*d*.82-18)+"px) scale(1.1) rotate(160deg)",opacity:1,offset:.55},{transform:"translate("+Math.cos(an)*d+"px,"+(Math.sin(an)*d+34)+"px) scale(.2) rotate(320deg)",opacity:0}],{duration:900+Math.random()*350,easing:"cubic-bezier(.1,.6,.3,1)"})}
+    /* drei Kacheln fliegen hoch und landen als Bausteine auf Bibos Kopf */
+    [[tb,-78,-96,10.5,-11.5,-200,0],[to,6,-128,-36,-18.5,160,70],[tg,92,-120,61.5,-83.5,240,140]].forEach(([e,x1,y1,x2,y2,rot,dl])=>{
+      A(e,[{transform:"none",easing:"cubic-bezier(.15,.7,.3,1)"},{transform:"translate("+x1+"px,"+y1+"px) rotate("+rot+"deg) scale(.8)",offset:.42,easing:"cubic-bezier(.6,0,.9,.6)"},{transform:"translate("+x2+"px,"+(y2+5)+"px) rotate("+(rot>0?360:-360)+"deg) scale(.34,.28)",offset:.84,easing:"ease-out"},{transform:"translate("+x2+"px,"+(y2-7)+"px) rotate("+(rot>0?360:-360)+"deg) scale(.34)",offset:.92},{transform:"translate("+x2+"px,"+y2+"px) rotate("+(rot>0?360:-360)+"deg) scale(.34)"}],{duration:1050,delay:dl,easing:"linear"})});
+    A(tp,[{opacity:1,transform:"none"},{opacity:0,transform:"translate(-36px,-23px) scale(1.5)"}],{duration:240,easing:"ease-out"});
+    bibo.setAttribute("opacity",1);
+    A(bibo,[{transform:"translate(36px,23px) scale(.5)",opacity:0},{transform:"translate(0,-34px) scale(1.08,.94)",opacity:1,offset:.42},{transform:"translate(0,6px) scale(1.1,.88)",offset:.68},{transform:"translate(0,-9px) scale(.97,1.04)",offset:.84},{transform:"none"}],{duration:900,easing:"cubic-bezier(.3,.9,.4,1)"});
+    A(smile,[{strokeDasharray:"60px",strokeDashoffset:"60px"},{strokeDasharray:"60px",strokeDashoffset:"0px"}],{duration:380,delay:620,easing:"ease-out"});
+    A(eyes,[{transform:"scale(1,.1)"},{transform:"none"}],{duration:200,delay:520})});
+  /* 4 Bibo wippt und zwinkert, dann schreibt er */
+  at(2700,()=>{A(body,[{transform:"none"},{transform:"rotate(-7deg) translateY(-6px)"},{transform:"rotate(6deg) translateY(-3px)"},{transform:"none"}],{duration:900,easing:"ease-in-out"});A(eyes,[{transform:"none"},{transform:"scale(1,.1)",offset:.5},{transform:"none"}],{duration:240,delay:520});h.classList.add("txt")});
+  at(3780,()=>h.classList.add("sub"));
+  at(4400,()=>A(eyes,[{transform:"none"},{transform:"scale(1,.1)",offset:.5},{transform:"none"}],{duration:220}));
+  T.push(setTimeout(close,6100))}
 function enter(k,keep,greet,first,inherit){const live=store.get("prof-live",null);
   if(live&&live!==k)store.set("prof-data:"+live,liveSnap());
   if(live!==k&&!inherit)liveLoad(store.get("prof-data:"+k,{}));
@@ -1211,7 +1283,7 @@ ready.then(async()=>{if(!await gateCheck())await gateShow();let k=null;try{k=ses
   if(dn&&(FRESH_NAME||!(k&&profGet(k))))autoEnter(dn);
   else if(k&&profGet(k))enter(k,(()=>{try{return localStorage.getItem("dev-remember")===k}catch(e){return false}})(),true,false);else loginShow()});
 </script>
-<script>(function(){var K="bw-news-mechanik-20261111",END=new Date(2026,10,19,0,0).getTime();function show(){var u=document.getElementById("upd");if(!u)return;var off=false;try{off=localStorage.getItem(K)==="1"}catch(e){}if(off||Date.now()>END)return;u.hidden=false;function bye(){if(u.classList.contains("bye"))return;u.classList.add("bye");try{localStorage.setItem(K,"1")}catch(e){}setTimeout(function(){u.hidden=true},320)}u.onclick=function(){bye();location.hash="mechanik"};setTimeout(function(){if(!u.hidden&&!u.classList.contains("bye")){u.classList.add("bye");setTimeout(function(){u.hidden=true;u.classList.remove("bye")},320)}},9000);var y0=null;u.addEventListener("touchstart",function(e){y0=e.touches[0].clientY},{passive:true});u.addEventListener("touchmove",function(e){if(y0===null)return;var dy=e.touches[0].clientY-y0;if(dy<0){e.preventDefault();u.style.transform="translateY("+dy+"px)"}},{passive:false});u.addEventListener("touchend",function(e){var t=u.style.transform;u.style.transform="";if(t&&parseFloat(t.slice(11))<-25)bye();y0=null})}function go(){var g=document.getElementById("gate"),l=document.getElementById("login");var wait=(g&&!g.hidden)||(l&&!l.hidden)||document.querySelector("#hs:not([hidden])");if(wait){setTimeout(go,1500);return}setTimeout(show,900)}if(document.readyState==="loading")addEventListener("DOMContentLoaded",function(){setTimeout(go,1500)});else setTimeout(go,1500)})();</script>
+<script>(function(){var K="bw-news-update-20261112",END=new Date(2026,10,26,0,0).getTime();function show(){var u=document.getElementById("upd");if(!u)return;var off=false;try{off=localStorage.getItem(K)==="1"}catch(e){}if(off||Date.now()>END)return;u.hidden=false;function bye(){if(u.classList.contains("bye"))return;u.classList.add("bye");try{localStorage.setItem(K,"1")}catch(e){}setTimeout(function(){u.hidden=true},320)}u.onclick=function(){bye();location.hash="bauphysik"};setTimeout(function(){if(!u.hidden&&!u.classList.contains("bye")){u.classList.add("bye");setTimeout(function(){u.hidden=true;u.classList.remove("bye")},320)}},9000);var y0=null;u.addEventListener("touchstart",function(e){y0=e.touches[0].clientY},{passive:true});u.addEventListener("touchmove",function(e){if(y0===null)return;var dy=e.touches[0].clientY-y0;if(dy<0){e.preventDefault();u.style.transform="translateY("+dy+"px)"}},{passive:false});u.addEventListener("touchend",function(e){var t=u.style.transform;u.style.transform="";if(t&&parseFloat(t.slice(11))<-25)bye();y0=null})}function go(){var g=document.getElementById("gate"),l=document.getElementById("login");var hl=document.getElementById("hello");var wait=(g&&!g.hidden)||(l&&!l.hidden)||(hl&&!hl.hidden)||document.querySelector("#hs:not([hidden])");if(wait){setTimeout(go,1500);return}setTimeout(show,900)}if(document.readyState==="loading")addEventListener("DOMContentLoaded",function(){setTimeout(go,1500)});else setTimeout(go,1500)})();</script>
 <script>(function(){var Z=null;document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest(".tile,.td-card,.ql a,.ql button,[data-open],.hero,.rec");if(!t)return;var r=t.getBoundingClientRect();if(r.width<20)return;var cs=getComputedStyle(t);Z={r:r,rad:parseFloat(cs.borderTopLeftRadius)||24,at:Date.now()}},true);
 function ins(r,rad){var W=innerWidth,H=innerHeight;return "inset("+Math.max(0,r.top)+"px "+Math.max(0,W-r.right)+"px "+Math.max(0,H-r.bottom)+"px "+Math.max(0,r.left)+"px round "+rad+"px)"}
 window.zIn=function(fr){if(RM||!Z||Date.now()-Z.at>1500||!fr.animate){Z=Z&&Date.now()-Z.at<=1500?Z:null;return}fr.style.animation="none";fr.classList.remove("in");var ifr=fr.querySelector("iframe");

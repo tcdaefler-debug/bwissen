@@ -721,6 +721,7 @@ ul.rs .st{color:#f59f00;font-size:1.05rem;letter-spacing:1px;white-space:nowrap}
 </svg>
 
 <div id="mbg" aria-hidden="true"></div><div id="mfade" aria-hidden="true"></div>
+<link rel="stylesheet" href="bw-ui.css?v=20261112a" data-bwui>
 <header class="appbar">
   <div class="wrap bar">
     <button type="button" class="appback" id="appback" hidden aria-label="Zurück zu allen Modulen" title="Alle Module"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -1121,7 +1122,7 @@ ul.rs .st{color:#f59f00;font-size:1.05rem;letter-spacing:1px;white-space:nowrap}
 <section id="v-formeln" data-view="formeln" hidden>
   <div class="vhero"><span class="ico"><svg><use href="#i-formeln"/></svg></span><div><div class="eyebrow">Zum Wiederholen</div><h2>Formeln auf einen Blick</h2></div></div>
   <div class="fgrid">
-    <div class="fcard" style="--c:var(--c-1)"><b>Gewichtskraft</b><span class="formula">G = m · g,&nbsp; G = γ · V</span><small>g ≈ 10 m/s², 100 kg ≈ 1 kN, Beton γ = 25 kN/m³</small></div>
+    <div class="fcard" style="--c:var(--c-1)"><b>Gewichtskraft</b><span class="formula">G = m · g,&nbsp; G = γ · V</span><small>g ≈ 10 m/s², 100 kg ≈ 1 kN, Stahlbeton γ = 25 kN/m³</small></div>
     <div class="fcard" style="--c:var(--c-1)"><b>Kraft zerlegen</b><span class="formula">F<sub>x</sub> = F · cos α,&nbsp; F<sub>y</sub> = F · sin α</span><small>α von der Waagerechten gemessen</small></div>
     <div class="fcard" style="--c:var(--c-1)"><b>Resultierende</b><span class="formula">R = √(R<sub>x</sub>² + R<sub>y</sub>²)</span><small>R<sub>x</sub> = ΣF<sub>x</sub>, R<sub>y</sub> = ΣF<sub>y</sub></small></div>
     <div class="fcard" style="--c:var(--c-2)"><b>Moment</b><span class="formula">M = F · a</span><small>a senkrecht zur Wirkungslinie, linksdrehend positiv</small></div>
@@ -1198,7 +1199,7 @@ const QD={"1":[
 ["Zwischenreaktionen","Wie viele Zwischenreaktionen hat ein Momentengelenk, an dem 2 Stäbe hängen?",["2","1","3","4"],"G<sub>h</sub> und G<sub>v</sub>."],
 ["Zwischenreaktionen","An einem Gelenk treffen 3 Stäbe zusammen. Wie viele Zwischenreaktionen zählt man?",["4","2","3","6"],"z = 2 · (s<sub>Gelenk</sub> − 1) = 2 · 2 = 4."],
 ["Ausnahme","Ein Träger liegt auf drei Loslagern, alle senkrecht. Das Abzählkriterium ergibt x = 0. Stimmt das?",["Nein, das System ist waagerecht verschieblich, weil alle Auflagerkräfte parallel sind","Ja, es ist statisch bestimmt","Nein, es ist statisch unbestimmt","Ja, aber nur ohne Last"],"Regel: Es dürfen nicht alle Auflagerkräfte parallel verlaufen."],
-["Ausnahme","Wann kann ein System trotz x = 0 nicht stimmen?",["Wenn sich alle Wirkungslinien der Auflagerkräfte in einem Punkt treffen","Wenn eine Streckenlast wirkt","Wenn der Träger lang ist","Wenn ein Festlager links ist"],"Dann kann sich das System um diesen Punkt verdrehen."],
+["Ausnahme","Wann ist ein System trotz x = 0 nicht statisch bestimmt?",["Wenn sich alle Wirkungslinien der Auflagerkräfte in einem Punkt treffen","Wenn eine Streckenlast wirkt","Wenn der Träger lang ist","Wenn ein Festlager links ist"],"Dann kann sich das System um diesen Punkt verdrehen."],
 ["Abzählkriterium","Einfeldträger mit Fest- und Loslager: x = ?",["0","1","−1","3"],"a = 3, z = 0, s = 1: x = 3 + 0 − 3 = 0."],
 ["Abzählkriterium","Ein Träger ist links und rechts eingespannt. x = ?",["3","0","6","−3"],"a = 6, z = 0, s = 1: x = 6 − 3 = 3. Dreifach statisch unbestimmt."],
 ["Polplan","Wofür braucht man zusätzlich den Polplan?",["Bei mehrteiligen Systemen, um zu prüfen, ob das System trotz x = 0 verschieblich ist","Für die Berechnung der Momente","Für die Lastannahmen","Für Fachwerke mit Zugstäben"],"Liegen die Pole zweier Teilsysteme und ihr Gelenk auf einer Geraden, ist das System verschieblich."],
@@ -1338,7 +1339,7 @@ const CH={"1":"Kräfte und Axiome","2":"Moment und Gleichgewicht","3":"Auflagerk
 const CHMETA={"1":"F = m · a, Gewicht, Axiome, Kräfte zerlegen","2":"M = F · a, drei Gleichgewichtsbedingungen","3":"Lager, Streckenlasten, Kontrolle, Gelenke","4":"Abzählkriterium x = a + z − 3s, Ausnahmen","5":"N, V, M, Regeln, Stich q · L² / 8","6":"Nullstäbe, Knotenverfahren, Ritterschnitt"};
 
 /* ---------- Zeichnungen (SVG-Bausteine) ---------- */
-const NF=(v,d=2)=>{const r=Math.round(v*Math.pow(10,d))/Math.pow(10,d);return (Object.is(r,-0)?0:r).toLocaleString("de-DE",{maximumFractionDigits:d})};
+const NF=(v,d=2)=>{const r=Math.round(v*Math.pow(10,d))/Math.pow(10,d);return (Object.is(r,-0)?0:r).toLocaleString("de-DE",{maximumFractionDigits:d,useGrouping:false}).replace("-","−")};
 const SG=(v,d=2)=>(v>0?"+":v<0?"−":"")+NF(Math.abs(v),d);
 const TC={ink:"#1b2333",F:"#e03131",x:"#1c7ed6",y:"#e8590c",q:"#7048e8",R:"#0ca678",mut:"#8a93a6",beam:"#dfe5ef",lev:"#0ca678"};
 const f1=v=>Math.round(v*10)/10;
@@ -1453,7 +1454,7 @@ const fillFigs=root=>{(root||document).querySelectorAll("[data-fig]").forEach(el
 /* ---------- Rechenfragen mit festen Zufallszahlen (gleich bei jedem Öffnen) ---------- */
 function rng(seed){let a=seed>>>0;return()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296}}
 const RI=(r,a,b)=>a+Math.floor(r()*(b-a+1)), PK=(r,arr)=>arr[Math.floor(r()*arr.length)];
-function opts(right,wrong,unit,d){d=d==null?2:d;const fm=v=>NF(v,d)+(unit?" "+unit:"");const out=[fm(right)],seen=new Set(out);
+function opts(right,wrong,unit,d){d=d==null?2:d;const fm=v=>NF(v,d)+(unit?(unit==="°"?"":" ")+unit:"");const out=[fm(right)],seen=new Set(out);
   const add=v=>{if(!isFinite(v))return;const s=fm(v);if(!seen.has(s)&&out.length<4){seen.add(s);out.push(s)}};
   wrong.forEach(add);[1.5,0.5,2,0.75,1.25].forEach(k=>add(right*k));add(right+1);add(right+2);return out}
 const GENS=[
@@ -1470,7 +1471,7 @@ const GENS=[
  ["1","Seil",r=>{const G=PK(r,[0.5,0.8,1,1.2,1.5,2]),a=PK(r,[15,20,25,30,40,45,60]);const S=G/(2*Math.sin(rad(a)));return{q:`Eine Lampe G = ${NF(G)} kN hängt mittig an zwei Seilen, beide ${a}° gegen die Waagerechte. Wie groß ist die Kraft in einem Seil?`,o:opts(S,[G/(2*Math.cos(rad(a))),G/2,G/Math.sin(rad(a))],"kN"),e:`ΣF<sub>y</sub> = 0: 2 · S · sin ${a}° = ${NF(G)} → S = ${NF(S)} kN.`,img:lampeFig(a,`G = ${NF(G)} kN`)}}],
  ["2","Freischneiden",r=>{const G=RI(r,2,6),P=PK(r,[0.5,0.8,1,1.2,1.5]),a=PK(r,[20,30,40,45]);const N=G-P*Math.sin(rad(a));return{q:`Eine Kiste G = ${G} kN steht auf dem Boden. Ein Seil zieht mit ${NF(P)} kN unter ${a}° nach rechts oben, die Kiste bleibt stehen. Wie groß ist die senkrechte Bodenkraft?`,o:opts(N,[G,G+P*Math.sin(rad(a)),G-P*Math.cos(rad(a))],"kN"),e:`ΣF<sub>y</sub> = 0: N + ${NF(P)} · sin ${a}° − ${G} = 0 → N = ${NF(N)} kN. Der Zug nach oben entlastet den Boden.`,img:kisteFig(`G = ${G} kN`,`${NF(P)} kN`,a)}}],
  ["2","Freischneiden",r=>{const G=RI(r,2,6),P=PK(r,[0.5,0.8,1,1.2,1.5]),a=PK(r,[20,30,40,45]);const H=P*Math.cos(rad(a));return{q:`Eine Kiste G = ${G} kN wird mit ${NF(P)} kN unter ${a}° nach rechts oben gezogen und bleibt stehen. Wie groß ist die waagerechte Haftkraft vom Boden?`,o:opts(H,[P*Math.sin(rad(a)),P,G*Math.cos(rad(a))],"kN"),e:`ΣF<sub>x</sub> = 0: H = ${NF(P)} · cos ${a}° = ${NF(H)} kN, nach links.`,img:kisteFig(`G = ${G} kN`,`${NF(P)} kN`,a)}}],
- ["1","Gleichgewicht",r=>{const a=RI(r,1,6),b=RI(r,-4,4),c=RI(r,-5,-1),d=RI(r,1,5);const v=-(a+c);return{q:`Ein Knoten ist im Gleichgewicht. Es greifen drei Kräfte an. F<sub>1</sub>: F<sub>1x</sub> = ${a} kN, F<sub>1y</sub> = ${b} kN. F<sub>2</sub>: F<sub>2x</sub> = ${c} kN, F<sub>2y</sub> = ${d} kN. Wie groß ist F<sub>3x</sub>?`,o:[v,-v,-(a-c),-(b+d),v+3,v-3].map(x=>SG(x,0)+" kN").filter((x,i,arr)=>arr.indexOf(x)===i).slice(0,4),e:`ΣF<sub>x</sub> = 0: ${a} + (${c}) + F<sub>3x</sub> = 0 → F<sub>3x</sub> = ${SG(v,0)} kN.`,img:""}}],
+ ["1","Gleichgewicht",r=>{const a=RI(r,1,6),b=RI(r,-4,4),c=RI(r,-5,-1),d=RI(r,1,5);const v=-(a+c);return{q:`Ein Knoten ist im Gleichgewicht. Es greifen drei Kräfte an. F<sub>1</sub>: F<sub>1x</sub> = ${a} kN, F<sub>1y</sub> = ${SG(b,0)} kN. F<sub>2</sub>: F<sub>2x</sub> = ${SG(c,0)} kN, F<sub>2y</sub> = ${d} kN. Wie groß ist F<sub>3x</sub>?`,o:[v,-v,-(a-c),-(b+d),v+3,v-3].map(x=>SG(x,0)+" kN").filter((x,i,arr)=>arr.indexOf(x)===i).slice(0,4),e:`ΣF<sub>x</sub> = 0: ${a} + (${SG(c,0)}) + F<sub>3x</sub> = 0 → F<sub>3x</sub> = ${SG(v,0)} kN.`,img:""}}],
  ["3","Einfeldträger",r=>{const l=PK(r,[4,5,6,8]),a=RI(r,1,l-1),F=RI(r,4,20);const B=F*a/l;return{q:`Einfeldträger mit l = ${l} m (links Festlager A, rechts Loslager B). F = ${F} kN wirkt ${a} m von A entfernt. Wie groß ist B?`,o:opts(B,[F*(l-a)/l,F/2,F*a],"kN"),e:`ΣM<sub>A</sub> = 0: B · ${l} − ${F} · ${a} = 0 → B = ${NF(B)} kN.`,img:beamFig({l,A:"fest",B:"los",F:[{x:a,lab:`F = ${F} kN`}],dims:[[0,a,a+" m"],[a,l,(l-a)+" m"]]})}}],
  ["3","Einfeldträger",r=>{const l=PK(r,[4,5,6,8]),a=RI(r,1,l-1),F=RI(r,4,20);const A=F*(l-a)/l;return{q:`Einfeldträger mit l = ${l} m. F = ${F} kN wirkt ${a} m vom Festlager A entfernt. Wie groß ist die senkrechte Auflagerkraft A<sub>v</sub>?`,o:opts(A,[F*a/l,F/2,F],"kN"),e:`Erst ΣM<sub>A</sub>: B = ${F} · ${a} / ${l} = ${NF(F*a/l)} kN. Dann ΣF<sub>y</sub>: A<sub>v</sub> = ${F} − ${NF(F*a/l)} = ${NF(A)} kN.`,img:beamFig({l,A:"fest",B:"los",F:[{x:a,lab:`F = ${F} kN`}],dims:[[0,a,a+" m"],[a,l,(l-a)+" m"]]})}}],
  ["3","Streckenlast",r=>{const l=PK(r,[4,5,6,8]),q=RI(r,1,5),a=RI(r,1,l-1),F=RI(r,4,12);const A=q*l/2+F*(l-a)/l;return{q:`Einfeldträger, l = ${l} m, Streckenlast q = ${q} kN/m über die ganze Länge und F = ${F} kN bei ${a} m vom Festlager A. Wie groß ist A<sub>v</sub>?`,o:opts(A,[q*l/2+F*a/l,q*l+F*(l-a)/l,q*l*l/8+F*(l-a)/l],"kN"),e:`R = ${q} · ${l} = ${q*l} kN in der Mitte trägt jedes Lager zur Hälfte (${NF(q*l/2)} kN). Die Einzellast gibt A noch ${F} · ${l-a} / ${l} = ${NF(F*(l-a)/l)} kN. Zusammen ${NF(A)} kN.`,img:beamFig({l,A:"fest",B:"los",q:[{x1:0,x2:l,lab:`q = ${q} kN/m`}],F:[{x:a,lab:`F = ${F} kN`}],dims:[[0,a,a+" m"],[a,l,(l-a)+" m"]]})}}],
@@ -1548,7 +1549,7 @@ const TRUSS=[
  {n:"Träger mit freier Ecke",nodes:{A:[0,0],C:[4,0],B:[8,0],D:[2,2],E:[6,2],G:[8,2]},bars:[["A","C"],["C","B"],["A","D"],["D","E"],["D","C"],["C","E"],["E","B"],["E","G"],["G","B"]],sup:[["A","fest"],["B","los"]],loads:[["D",-90,"F"]],zero:["E-G","G-B"],
   why:"Die Ecke oben rechts ist unbelastet und hat nur zwei Stäbe, die nicht auf einer Linie liegen: beide sind Nullstäbe."},
  {n:"Last in Stabrichtung",nodes:{A:[0,0],C:[4,0],B:[8,0],D:[2,2],E:[6,2],G:[8,2]},bars:[["A","C"],["C","B"],["A","D"],["D","E"],["D","C"],["C","E"],["E","B"],["E","G"],["G","B"]],sup:[["A","fest"],["B","los"]],loads:[["D",-90,"F"],["G",180,"H"]],zero:["G-B"],
-  why:"Oben rechts zieht H genau in Richtung des waagerechten Stabs. Der senkrechte Stab dort bekommt nichts ab: Nullstab. Der waagerechte trägt H."},
+  why:"Oben rechts wirkt H genau in Richtung des waagerechten Stabs. Der senkrechte Stab dort bekommt nichts ab: Nullstab. Der waagerechte trägt H."},
  {n:"Kragfachwerk an der Wand",nodes:{w1:[0,0],w2:[0,3],m1:[3,0],m2:[3,3],e:[6,0]},bars:[["w2","m2"],["w1","m1"],["m1","e"],["m2","e"],["w1","m2"],["m1","m2"]],sup:[["w1","fest"],["w2","fest"]],loads:[["e",-90,"F"]],zero:["m1-m2"],
   why:"Der untere mittlere Knoten ist unbelastet: links und rechts liegen die Untergurtstäbe auf einer Linie, also ist der senkrechte Stab ein Nullstab."}
 ];
@@ -1695,7 +1696,7 @@ function examShow(){const R=EX_RUN,q=R.qs[R.i],box=$("#ex-box"),last=R.i===R.qs.
   box.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{R.ans[R.i]=+b.dataset.i;exSave();box.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed",x===b));$("#ex-next").disabled=false;const d=box.querySelectorAll(".exdots i")[R.i];if(d)d.classList.add("d")});
   $("#ex-next").onclick=()=>{if(!last){R.i++;exSave();examShow()}else examEnd()};
   const p=$("#ex-prev");if(p)p.onclick=()=>{R.i--;exSave();examShow()};
-  const ea=$("#ex-early");if(ea)ea.onclick=()=>{const c=$("#ex-confirm");c.innerHTML=`<div class="fb no"><b>Wirklich abgeben?</b> ${open?`${open} Fragen sind noch offen und zählen als falsch.`:"Alle Fragen sind beantwortet."}<div class="row-btns"><button class="btn" type="button" id="ex-yes">Ja, abgeben</button><button class="btn ghost" type="button" id="ex-no">Weiter prüfen</button></div></div>`;$("#ex-yes").onclick=()=>examEnd();$("#ex-no").onclick=()=>{c.innerHTML=""}}}
+  const ea=$("#ex-early");if(ea)ea.onclick=()=>{const c=$("#ex-confirm");c.innerHTML=`<div class="fb no"><b>Wirklich abgeben?</b> ${open?`${open} ${open===1?'Frage ist':'Fragen sind'} noch offen und ${open===1?'zählt':'zählen'} als falsch.`:"Alle Fragen sind beantwortet."}<div class="row-btns"><button class="btn" type="button" id="ex-yes">Ja, abgeben</button><button class="btn ghost" type="button" id="ex-no">Weiter prüfen</button></div></div>`;$("#ex-yes").onclick=()=>examEnd();$("#ex-no").onclick=()=>{c.innerHTML=""}}}
 function examEnd(){const R=EX_RUN;if(!R)return;clearInterval(R.timer);EX_RUN=null;store.set(RUNKEY,null);exLock(false);
   R.qs.forEach((q,i)=>{if(R.ans[i]!==q.a)laterSet(q,true)});
   const n=R.qs.length,ok=R.qs.filter((q,i)=>R.ans[i]===q.a).length,passed=ok/n>=PASS,s=exStore(),old=s[R.e.id]||{};
@@ -2294,7 +2295,7 @@ const LC=[
  {k:"FF",o:{t:"eft",l:6,F:[{x:2,F:8},{x:4,F:8}]}},{k:"kF",o:{t:"krag",l:4,F:[{x:4,F:6}]}},{k:"kq",o:{t:"krag",l:4,q:[{x1:0,x2:4,q:2}]}},{k:"Mm",o:{t:"eft",l:6,M:[{x:3,M:9}]}}];
 let LZ=null;
 function lzRound(){const c=pk(LC),kind=Math.random()<0.65?"M":"V";let others=shuffle(LC.filter(x=>x.k!==c.k));
-  const sig=x=>{const S=solveBeam(x.o),f=kind==="V"?S.V:S.M;return[0.1,0.3,0.5,0.7,0.9].map(t=>Math.round(f(x.o.l*t)*10)/10).join()};const used=[sig(c)],cand=[c];
+  const sig=x=>{const S=solveBeam(x.o),f=kind==="V"?S.V:S.M,v=[0.1,0.3,0.5,0.7,0.9].map(t=>f(x.o.l*t)),m=Math.max(...v.map(Math.abs))||1;return v.map(y=>Math.round(y/m*20)/20).join()};const used=[sig(c)],cand=[c];
   for(const x of others){if(cand.length>=3)break;const s=sig(x);if(!used.includes(s)){used.push(s);cand.push(x)}}return{c,kind,cand:shuffle(cand),pick:null}}
 function lzNew(){LZ={n:8,i:0,ok:0,R:lzRound()};lzShow()}
 function lzShow(){const S=LZ,box=$("#sp-box");if(S.i>=S.n){const best=store.get("tm-games",{});best.lz=Math.max(best.lz||0,S.ok);store.set("tm-games",best);skillAdd("5",S.ok/S.n,"Linien zuordnen");
@@ -2412,11 +2413,11 @@ const HEFT=[
  HN("1.7","1","Kraft zerlegen und ausgleichen","F<sub>3</sub> = 10 kN zeigt nach links unten, 30° gegen die Senkrechte. a) zeichnen, b) rechnerisch zerlegen, c) welche Kräfte halten F<sub>3</sub> im Gleichgewicht?",
    ()=>vecFig([{x:-10*Math.sin(rad(30)),y:-10*Math.cos(rad(30)),lab:"F₃ = 10 kN"}],{grid:1,h:200}),
    ()=>[{draw:drawForceStep(10,240),l:"F<sub>3</sub> einzeichnen"},{l:"Senkrechter Anteil (Betrag)",v:10*Math.cos(rad(30)),u:"kN",hint:"Der Winkel liegt an der Senkrechten: Ankathete = 10 · cos 30°",how:"10 · cos 30°"},{l:"Waagerechter Anteil (Betrag)",v:5,u:"kN",hint:"Gegenkathete = 10 · sin 30°",how:"10 · sin 30°"},
-     {l:"Gegenkraft senkrecht nach oben",v:10*Math.cos(rad(30)),u:"kN",hint:"ΣF = 0: genauso groß wie der senkrechte Anteil, nur nach oben.",how:"F = 8,66"},{l:"Gegenkraft waagerecht nach rechts",v:5,u:"kN",hint:"ΣF = 0: genauso groß wie der waagerechte Anteil.",how:"F = 5,0"}]),
+     {l:"Gegenkraft senkrecht nach oben",v:10*Math.cos(rad(30)),u:"kN",hint:"ΣF = 0: genauso groß wie der senkrechte Anteil, nur nach oben.",how:"F = 10 · cos 30°"},{l:"Gegenkraft waagerecht nach rechts",v:5,u:"kN",hint:"ΣF = 0: genauso groß wie der waagerechte Anteil.",how:"F = 10 · sin 30°"}]),
  HN("1.8","1","Kräfte an einer Ecke","An einer Ecke greifen an: 50 kN unter 45° nach rechts oben, 50 kN waagerecht nach rechts, 6 kN nach links und 35,355 kN nach unten. Welche Kraft F nach links sorgt für Gleichgewicht?",
    ()=>vecFig([{x:50*Math.cos(rad(45)),y:50*Math.sin(rad(45)),lab:"50 kN"},{x:50,y:0,lab:"50 kN"},{x:-6,y:0,lab:"6 kN",from:[0,0]},{x:0,y:-35.355,lab:"35,355 kN"},{x:-40,y:0,lab:"F = ?",c:TC.x,dash:"6 4",from:[-6,0]}],{h:220}),
    ()=>[{l:"waagerechter Anteil der schrägen 50 kN",v:50*Math.cos(rad(45)),u:"kN",hint:"50 · cos 45°",how:"50 · cos 45°"},{l:"senkrechter Anteil der schrägen 50 kN",v:50*Math.sin(rad(45)),u:"kN",hint:"50 · sin 45°",how:"50 · sin 45°"},
-     {l:"a) ΣF<sub>y</sub>",v:0,u:"kN",tol:0.02,hint:"35,36 nach oben, 35,355 nach unten",how:"35,36 − 35,355 ≈ 0"},{l:"b) F aus ΣF<sub>x</sub> = 0",v:50+50*Math.cos(rad(45))-6,u:"kN",tol:0.05,hint:"50 + 35,36 − 6 − F = 0",how:"F = 50 + 35,36 − 6"}]),
+     {l:"a) ΣF<sub>y</sub>",v:0,u:"kN",tol:0.02,hint:"35,36 nach oben, 35,355 nach unten",how:"35,355 − 35,355"},{l:"b) F aus ΣF<sub>x</sub> = 0",v:50+50*Math.cos(rad(45))-6,u:"kN",tol:0.05,hint:"50 + 35,36 − 6 − F = 0",how:"F = 50 + 35,36 − 6"}]),
  HN("1.9","1","Lampe an zwei Seilen","Eine Lampe mit 100 kg hängt an zwei Seilen. Seil 1 geht 4 m nach links und 3 m nach oben, Seil 2 geht 6 m nach rechts und 3 m nach oben. Rechne mit g = 10 m/s².",
    ()=>hfLampe(),
    ()=>{const a1=deg(Math.atan(3/4)),a2=deg(Math.atan(3/6)),c1=Math.cos(rad(a1)),s1=Math.sin(rad(a1)),c2=Math.cos(rad(a2)),s2=Math.sin(rad(a2)),S2=1/(s2+s1*c2/c1),S1=S2*c2/c1;
@@ -2432,12 +2433,12 @@ const HEFT=[
  HN("1.12","2","Vier Kräfte im Gleichgewicht","F<sub>1</sub> = 5 kN nach oben geht durch x. F<sub>2</sub> = 5 kN nach unten liegt 2 m links davon. F<sub>3</sub> nach rechts geht durch x, F<sub>4</sub> nach links liegt 2 m tiefer. Wie groß müssen F<sub>3</sub> und F<sub>4</sub> sein?",
    ()=>hfMom12(),
    ()=>[{l:"F<sub>4</sub> aus ΣM<sub>x</sub> = 0",v:5,u:"kN",hint:"F<sub>1</sub> und F<sub>3</sub> gehen durch x. Bleibt: 5 · 2 − F<sub>4</sub> · 2 = 0",how:"F<sub>4</sub> = 5 · 2 / 2"},{l:"Kontrolle ΣF<sub>y</sub>",v:0,u:"kN",tol:0.01,hint:"F<sub>1</sub> − F<sub>2</sub>",how:"5 − 5"},{l:"F<sub>3</sub> aus ΣF<sub>x</sub> = 0",v:5,u:"kN",hint:"−F<sub>4</sub> + F<sub>3</sub> = 0",how:"F<sub>3</sub> = F<sub>4</sub>"}]),
- HN("1.13","2","Wippe mit zwei Kindern","Auf einer Wippe sitzt Kind 1 (25 kg) 10 m links vom Drehpunkt und Kind 2 (27 kg) 7 m links davon. Welche Kraft braucht es 3 m rechts vom Drehpunkt (g = 10 m/s²)?",
+ HN("1.13","2","Wippe mit zwei Kindern","Auf einer Wippe sitzt Kind 1 (25 kg) 10 m links vom Drehpunkt und Kind 2 (27 kg) 7 m links vom Drehpunkt. Welche Kraft braucht es 3 m rechts vom Drehpunkt (g = 10 m/s²)?",
    ()=>hfWippe(),
-   ()=>[{l:"F<sub>1</sub> von Kind 1",v:250,u:"N",hint:"25 · 10",how:"F<sub>1</sub> = 25 · 10"},{l:"F<sub>2</sub> von Kind 2",v:270,u:"N",hint:"27 · 10",how:"F<sub>2</sub> = 27 · 10"},{l:"F rechts aus ΣM = 0",v:(2500+1890)/3,u:"N",tol:0.5,hint:"250 · 10 + 270 · 7 − F · 3 = 0",how:"F = (2500 + 1890) / 3"},{l:"Das entspricht einer Masse von",v:(2500+1890)/30,u:"kg",tol:0.1,hint:"F / g",how:"m = 1463 / 10"}]),
+   ()=>[{l:"F<sub>1</sub> von Kind 1",v:250,u:"N",hint:"25 · 10",how:"F<sub>1</sub> = 25 · 10"},{l:"F<sub>2</sub> von Kind 2",v:270,u:"N",hint:"27 · 10",how:"F<sub>2</sub> = 27 · 10"},{l:"F rechts aus ΣM = 0",v:(2500+1890)/3,u:"N",tol:0.5,hint:"250 · 10 + 270 · 7 − F · 3 = 0",how:"F = (2500 + 1890) / 3"},{l:"Das entspricht einer Masse von",v:(2500+1890)/30,u:"kg",tol:0.1,hint:"F / g",how:"m = 1463,33 / 10"}]),
  HN("1.14","2","Wandhalter","Ein Wandhalter ist oben und unten an der Wand befestigt (10 cm Abstand). Am Arm hängt 20 cm von der Wand eine Last von 5 kg (g = 10 m/s²).",
    ()=>hfHalter(),
-   ()=>[{l:"Gewichtskraft",v:50,u:"N",hint:"5 kg · 10 m/s²",how:"5 · 10"},{l:"a) senkrechte Schubkraft an der Wand",v:50,u:"N",hint:"ΣF<sub>y</sub> = 0",how:"F<sub>Schub</sub> = 50"},{l:"b) Zugkraft oben aus ΣM um den unteren Punkt",v:100,u:"N",hint:"F<sub>Zug</sub> · 10 − 50 · 20 = 0",how:"F<sub>Zug</sub> = 50 · 20 / 10"},{l:"Druckkraft unten",v:100,u:"N",hint:"ΣF<sub>x</sub> = 0: gleich groß wie die Zugkraft",how:"F<sub>Druck</sub> = F<sub>Zug</sub>"}])
+   ()=>[{l:"Gewichtskraft",v:50,u:"N",hint:"5 kg · 10 m/s²",how:"5 · 10"},{l:"a) senkrechte Schubkraft an der Wand",v:50,u:"N",hint:"ΣF<sub>y</sub> = 0",how:"F<sub>Schub</sub> = G"},{l:"b) Zugkraft oben aus ΣM um den unteren Punkt",v:100,u:"N",hint:"F<sub>Zug</sub> · 10 − 50 · 20 = 0",how:"F<sub>Zug</sub> = 50 · 20 / 10"},{l:"Druckkraft unten",v:100,u:"N",hint:"ΣF<sub>x</sub> = 0: gleich groß wie die Zugkraft",how:"F<sub>Druck</sub> = F<sub>Zug</sub>"}])
 ];
 /* Rechentrainer und Übungsaufgaben nur noch aus dem Hefter */
 const TR_EXTRA=TR.splice(0,TR.length);
@@ -2467,3 +2468,4 @@ window.addEventListener("hashchange",function(){setTimeout(label,0)});setTimeout
 (function(){var b=document.getElementById("appback");if(!b)return;var framed=false;try{framed=window.parent!==window}catch(e){framed=true}
 if(framed){b.hidden=false;b.onclick=function(){window.parent.postMessage({lernapp:"home"},"*")}}})();
 </script>
+<script src="bw-tafel-data.js?v=20261112a" defer data-bwui></script><script src="bw-tafel.js?v=20261112a" defer data-bwui></script><script src="bw-ui.js?v=20261112a" defer data-bwui></script>
