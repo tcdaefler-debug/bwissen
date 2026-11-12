@@ -10,6 +10,9 @@ s=open(sys.argv[1],encoding="utf-8").read()
 a=s.index("<title>BWIssen</title>")
 body=s[a:]
 body=body.replace("</html>","").rstrip()+"\n"
+# Vorschau ohne Anmeldefenster: direkt als Gast hinein
+assert body.count("else loginShow()});")==1
+body=body.replace("else loginShow()});","else autoEnter(\"Gast\")});")
 open(sys.argv[2],"w",encoding="utf-8").write(body)
 PY
 cp "$V/index.html" "$P/index.html"
