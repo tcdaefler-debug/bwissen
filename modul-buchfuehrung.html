@@ -642,7 +642,7 @@ nav.tabs.open .tabs-h{display:flex;position:sticky;top:0;z-index:2;align-items:c
 
   <h2 class="grp-h">Üben und spielen <small>bis es sitzt</small></h2>
   <div class="tiles">
-    <a class="tile wide" href="#spiele" style="--tc:var(--c-spiele)"><span class="new">NEU</span><span class="ico"><svg><use href="#i-spiele"/></svg></span><span><small>4 Spiele</small><b>Konten sortieren, Geldflüsse legen, Bilanz-Waage</b></span><span class="meta" id="home-sp">Highscore: noch keiner</span></a>
+    <a class="tile wide" href="#spiele" style="--tc:var(--c-spiele)"><span class="new">NEU</span><span class="ico"><svg><use href="#i-spiele"/></svg></span><span><small>4 Spiele</small><b>Konten sortieren, Geldflüsse legen, Bilanz-Waage, Plus oder Minus</b></span><span class="meta" id="home-sp">Highscore: noch keiner</span></a>
     <a class="tile" href="#karten" style="--tc:var(--c-karten)"><span class="ico"><svg><use href="#i-karten"/></svg></span><span><small>Begriffe</small><b>Karteikarten</b></span><span class="meta" id="home-fc">Begriffe abfragen</span><span class="bar"><i id="hb-fc"></i></span></a>
     <a class="tile" href="#fragen" style="--tc:var(--c-quiz)"><span class="ico"><svg><use href="#i-quiz"/></svg></span><span><small>Frei üben</small><b>Alle Fragen</b></span><span class="meta" id="home-quiz">mit Bildern, ohne Druck</span></a>
     <a class="tile" href="#schwach" style="--tc:#c2255c"><span class="ico"><svg><use href="#i-later"/></svg></span><span><small>Deine Baustellen</small><b>Kann ich noch nicht</b></span><span class="meta" id="home-later">Fragen, die du dir merkst</span></a>
@@ -1320,7 +1320,7 @@ nav.tabs.open .tabs-h{display:flex;position:sticky;top:0;z-index:2;align-items:c
     <li><span>SB mit der Inventur abstimmen und in die Schlussbilanz übernehmen.</span></li>
   </ol>
   <div class="tgrid" id="januar-konten"></div>
-  <p>Schlussbilanz nach den vier Fällen: Bilanzsumme 18.930.000 €, also dieselbe Summe wie nach Fall 4. TA und Maschinen 2.480.000, Bank 1.527.000, Darlehen 4.530.000, Verb. aLuL 2.800.000, EK unverändert 8.050.000.</p>
+  <p>Schlussbilanz nach den vier Fällen: Bilanzsumme 18.930.000 € (18.650.000 + 480.000 − 200.000). TA und Maschinen 2.480.000, Bank 1.527.000, Darlehen 4.530.000, Verb. aLuL 2.800.000, EK unverändert 8.050.000.</p>
   <div class="merke"><b>Doppelte Buchführung</b>Jeder Fall wird zweimal gebucht, einmal im Soll und einmal im Haben, jeweils mit Gegenkonto. Stimmt ein Kontobestand nicht mit der Inventur überein (z. B. Betonstahl), gilt die Inventur; die Differenz (Schwund, Fehlbuchung) muss aufgeklärt und das Konto angepasst werden.</div>
 </article>
   </div>
@@ -1683,7 +1683,7 @@ FC.push(
 ["01","Controlling","Steuerungsfunktion, die alle Bereiche des Rechnungswesens nutzt, um die Unternehmensführung bei Planung, Steuerung und Kontrolle zu unterstützen."],
 ["01","Soll-Ist-Vergleich","Vergleich der geplanten Werte (Soll, hier im Sinne von Plan!) mit den tatsächlichen (Ist). Beispiel: Liegt die Kita-Baustelle im Budget? Gehört zur Kontrolle."],
 ["02","Radierverbot","§ 239 Abs. 3 HGB, § 146 Abs. 4 AO: Der ursprüngliche Inhalt einer Eintragung muss feststellbar bleiben. Fehler werden per Stornobuchung korrigiert, nicht überschrieben."],
-["02","Beginn der Aufbewahrungsfrist","Mit dem Schluss des Kalenderjahres, in dem die Unterlage entstanden ist (bzw. der Jahresabschluss aufgestellt wurde). Unterlagen 2017 also ab 31.12.2017."],
+["02","Beginn der Aufbewahrungsfrist","Mit dem Schluss des Kalenderjahres, in dem die Unterlage entstanden ist (bzw. der Jahresabschluss aufgestellt wurde). Unterlagen 2017 also mit Ablauf des 31.12.2017."],
 ["02","Sachverständiger Dritter","Maßstab aus § 238 HGB: Eine fachkundige Person (z. B. Betriebsprüfer) muss sich in angemessener Zeit einen Überblick verschaffen können."],
 ["03","Saldenbestätigung","Der Kunde (oder Lieferant) bestätigt schriftlich den offenen Betrag zum Stichtag. Wichtigstes Mittel der buchmäßigen Inventur von Forderungen und Verbindlichkeiten."],
 ["03","Schwebendes Geschäft","Vertrag, den noch keine Seite erfüllt hat (bestellter Kran, Auftragsbestand). Wird nicht inventarisiert und nicht bilanziert."],
@@ -2969,7 +2969,7 @@ const POOL=(()=>{const P=[];
   const byCh={};FC.forEach(c=>{if(c[0]==="00"||FC_SKIP.test(strip(c[1])))return;(byCh[c[0]]=byCh[c[0]]||[]).push(c)});
   const allT=Object.values(byCh).flat().map(c=>strip(c[1]));
   Object.entries(byCh).forEach(([ch,cards])=>cards.forEach(c=>{const term=strip(c[1]);
-    let d=strip(c[2]);const words=term.replace(/\(.*?\)/g,"").split(/[\s,.\/-]+/).filter(w=>w.length>4&&!/^(und|oder)$/i.test(w));
+    let d=strip(c[2]);const words=term.replace(/\(.*?\)/g,"").split(/[\s,.\/-]+/).filter(w=>w.length>3&&!/^(und|oder)$/i.test(w));
     words.forEach(w=>{d=d.replace(new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"gi"),"…")});
     if(d.length>260)d=d.slice(0,d.lastIndexOf(" ",250))+" …";
     let pool=shuffle(cards.map(x=>strip(x[1])).filter(t=>t!==term));if(pool.length<3)pool=pool.concat(shuffle(allT.filter(t=>t!==term&&!pool.includes(t))));
@@ -3025,7 +3025,7 @@ function examShow(){const R=EX_RUN,q=R.qs[R.i],box=$("#ex-box"),last=R.i===R.qs.
   box.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{R.ans[R.i]=+b.dataset.i;exSave();box.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed",x===b));$("#ex-next").disabled=false;const d=box.querySelectorAll(".exdots i")[R.i];if(d)d.classList.add("d")});
   $("#ex-next").onclick=()=>{if(!last){R.i++;exSave();examShow()}else examEnd()};
   const p=$("#ex-prev");if(p)p.onclick=()=>{R.i--;exSave();examShow()};
-  const ea=$("#ex-early");if(ea)ea.onclick=()=>{const c=$("#ex-confirm");c.innerHTML=`<div class="fb no"><b>Wirklich abgeben?</b> ${open?`${open} Fragen sind noch offen und zählen als falsch.`:"Alle Fragen sind beantwortet."}<div class="row-btns"><button class="btn" type="button" id="ex-yes">Ja, abgeben</button><button class="btn ghost" type="button" id="ex-no">Weiter prüfen</button></div></div>`;$("#ex-yes").onclick=()=>examEnd();$("#ex-no").onclick=()=>{c.innerHTML=""}}}
+  const ea=$("#ex-early");if(ea)ea.onclick=()=>{const c=$("#ex-confirm");c.innerHTML=`<div class="fb no"><b>Wirklich abgeben?</b> ${open?`${open} ${open===1?'Frage ist':'Fragen sind'} noch offen und ${open===1?'zählt':'zählen'} als falsch.`:"Alle Fragen sind beantwortet."}<div class="row-btns"><button class="btn" type="button" id="ex-yes">Ja, abgeben</button><button class="btn ghost" type="button" id="ex-no">Weiter prüfen</button></div></div>`;$("#ex-yes").onclick=()=>examEnd();$("#ex-no").onclick=()=>{c.innerHTML=""}}}
 function examEnd(){const R=EX_RUN;if(!R)return;clearInterval(R.timer);EX_RUN=null;store.set(RUNKEY,null);exLock(false);
   R.qs.forEach((q,i)=>{if(R.ans[i]!==q.a)laterSet(q,true)});
   const n=R.qs.length,ok=R.qs.filter((q,i)=>R.ans[i]===q.a).length,passed=ok/n>=PASS,s=exStore(),old=s[R.e.id]||{};
