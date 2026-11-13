@@ -571,6 +571,7 @@ html[data-th="dark"] #upd .uh span,html[data-th="dark"] #upd .ux{color:rgba(235,
 @keyframes mkHopB{0%,38%,42%,84%,100%{transform:none}40%{transform:scaleY(.1)}88%{transform:translateY(-70px)}92%{transform:translateY(0)}95%{transform:translateY(-22px)}98%{transform:none}}
 @media (prefers-reduced-motion:reduce){.top .logo .mk *{animation:none!important}}
 </style>
+<link rel="stylesheet" href="bw-home.css?v=20261114a">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-cap" viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></symbol>
@@ -799,6 +800,14 @@ const PP=[
   {d:"2027-01-22",t:"08:00",n:"Buchführung und Jahresabschluss",f:"Klausur (K2)",id:"buchfuehrung",c:"#3b5bdb"},
   {d:"2027-01-29",t:"08:00",n:"Technische Mechanik",f:"Klausur (K2)",id:"mechanik",c:"#7048e8"}];
 let ppAll=false;
+/* Nova: gezeichnete Prüfungsphase als Messleiste (eigene Grafik) */
+const NV_SHORT={vwl:"VWL",bauphysik:"BK · BP",buchfuehrung:"BuF",mechanik:"TM"};
+function nvChart(nx){if(!PP.length)return "";const ds=PP.map(e=>new Date(e.d+"T12:00:00"));const a=new Date(Math.min(...ds)),b=new Date(Math.max(...ds));a.setDate(a.getDate()-1);b.setDate(b.getDate()+1);
+  const cols=[];for(const d=new Date(a);d<=b;d.setDate(d.getDate()+1))cols.push(new Date(d));
+  const H=[.72,.38,.58,.46,.66,.3];let k=0;
+  return `<div class="nv-ch" aria-hidden="true"><div class="nv-cg" style="--n:${cols.length}">${cols.map(d=>{const iso=d.toISOString().slice(0,10),e=PP.find(x=>x.d===iso),wd=d.getDay();
+    return `<span class="nv-cc${e&&e===nx?" nx":""}${wd===0||wd===6?" we":""}">${e?`<em style="--c:${e.c};bottom:${(H[k++%H.length]*100).toFixed(0)}%"><i></i>${NV_SHORT[e.id]||e.n.slice(0,3)}</em>`:""}<small>${d.getDate()}</small></span>`}).join("")}</div>
+    <div class="nv-cl"><span>${cols[0].toLocaleDateString("de-DE",{month:"long"})}</span><span>Prüfungsphase</span></div></div>`}
 function ppRender(){const el=$("#pp");if(!el)return;const t0=new Date();t0.setHours(0,0,0,0);
   const dd=e=>Math.round((new Date(e.d+"T00:00:00")-t0)/864e5);
   const up=PP.filter(e=>dd(e)>=0),nx=up[0];
@@ -815,6 +824,7 @@ function ppRender(){const el=$("#pp");if(!el)return;const t0=new Date();t0.setHo
   ${nx?`<button type="button" class="pp-next" style="--c:${nx.c}" ${can(nx)?`data-go="${nx.id}"`:""}>
     <span class="pp-cd"><span><b data-cdd="${nx.d}T${nx.t}">${n===0?"!":n}</b><small>${n===0?"heute":n===1?"Tag":"Tage"}</small></span></span>
     <span class="t"><small>Nächste Prüfung</small><b>${nx.n}</b><span>${lng(nx.d)}, ${nx.t} Uhr · ${nx.f}</span></span></button>`:""}
+  ${nvChart(nx)}
   <ul class="pp-l">${show.map(e=>{const k=dd(e);return `<li><button type="button" class="pp-r${k<0?" past":""}" style="--c:${e.c}" ${can(e)?`data-go="${e.id}"`:"disabled"}>
     <span class="pp-d"><small>${wd(e.d)}</small><b>${dn(e.d)}</b></span><span class="t"><b>${e.n}</b><span>${mo(e.d)} · ${e.t} Uhr · ${e.f}</span></span>
     <span class="pp-in">${inTxt(k)}</span></button></li>`}).join("")}</ul>
@@ -834,6 +844,16 @@ const mProg=m=>{try{return m.progress?m.progress():0}catch(e){return 0}};
 const mLater=m=>{const v=store.get(m.prefix+"later",[]);return Array.isArray(v)?v.length:0};
 function todayPick(){const act=MODULES.filter(m=>m.file&&!m.soon);if(!act.length)return null;
   return act.map(m=>({m,s:(1.1-mProg(m))/Math.sqrt(Math.max(1,calDays(m.exam+"T08:00")))})).sort((a,b)=>b.s-a.s)[0].m}
+/* Nova: gezeichneter Messring für die Lernwoche (eigene Grafik) */
+function nvDial(st,wk){const C=150,P=(r,a)=>[C+r*Math.sin(a*Math.PI/180),C-r*Math.cos(a*Math.PI/180)].map(v=>v.toFixed(1));
+  let t="";for(let i=0;i<90;i++){const a=i*4,l=i%5===0?9:4,[x1,y1]=P(132,a),[x2,y2]=P(132-l,a);t+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"${i%5===0?' class="lg"':""}/>`}
+  let n="";wk.forEach((d,i)=>{const a=-120+i*40,[x,y]=P(104,a),[lx,ly]=P(80,a);
+    n+=`<g class="dd${d.on?" on":""}${d.t?" td":""}${d.f?" fu":""}">${d.t?`<circle cx="${x}" cy="${y}" r="11" class="hl"/>`:""}<circle cx="${x}" cy="${y}" r="${d.on?6:4.5}"/><text x="${lx}" y="${(+ly+4).toFixed(1)}">${d.l}</text></g>`});
+  return `<svg class="nv-dsvg" viewBox="0 0 300 300" aria-hidden="true"><defs><linearGradient id="nvIri" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c5cff"/><stop offset=".35" stop-color="#ff5fa2"/><stop offset=".6" stop-color="#ffb35c"/><stop offset=".8" stop-color="#5ce1ff"/><stop offset="1" stop-color="#7c5cff"/></linearGradient><radialGradient id="nvCore"><stop offset="0" stop-color="#8b5cff" stop-opacity=".55"/><stop offset=".6" stop-color="#d6368a" stop-opacity=".18"/><stop offset="1" stop-color="#d6368a" stop-opacity="0"/></radialGradient><pattern id="nvMesh" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M12 0H0V12" fill="none" stroke="currentColor" stroke-width=".4" opacity=".25"/></pattern></defs>
+   <circle cx="150" cy="150" r="96" fill="url(#nvCore)"/><circle cx="150" cy="150" r="70" fill="url(#nvMesh)" class="mesh"/>
+   <g class="tk">${t}</g><circle cx="150" cy="150" r="104" fill="none" stroke="url(#nvIri)" stroke-width="2.4" class="iri"/><circle cx="150" cy="150" r="104" fill="none" stroke="url(#nvIri)" stroke-width="9" opacity=".25" class="iri glow"/>
+   <path d="M150 18v-10" class="pt"/><path d="M144 6h12l-6 9z" class="ptr"/>
+   ${n}<text x="150" y="160" class="big">${st}</text><text x="150" y="188" class="cap">${st===1?"Tag Lernserie":"Tage Lernserie"}</text></svg>`}
 function renderToday(){const el=$("#today");if(!el)return;
   $("#today-d").textContent=new Date().toLocaleDateString("de-DE",{weekday:"long",day:"numeric",month:"long"});
   const act=MODULES.filter(m=>m.file&&!m.soon),rec=todayPick();
@@ -843,20 +863,29 @@ function renderToday(){const el=$("#today");if(!el)return;
   const last=MODULES.find(m=>m.id===store.get("app-last",null)&&m.file);
   const D=m=>calDays(m.exam+"T08:00");
   let h="";
-  if(rec)h+=`<button type="button" class="hero" id="t-rec" style="--c:${rec.color}"><span class="hero-art" aria-hidden="true"><span class="orb"></span>${LOGOS[rec.id]||""}</span>
-    <span class="hero-t"><small>Empfehlung für heute</small><b>${rec.name}</b><span>${D(rec)===0?"Heute ist Klausur":"Klausur in "+D(rec)+(D(rec)===1?" Tag":" Tagen")}</span></span></button>`;
-  h+=`<div class="duo"><button type="button" class="stat" id="t-streak" style="--c:#f76707"><small>Lernserie</small><b>${st}</b><span>${st===1?"Tag":"Tage"} am Stück</span><svg class="i st-ic"><use href="#i-flame"/></svg></button>`;
-  h+=nx?`<button type="button" class="stat" id="t-exam" style="--c:${nx.c}"><small>Nächste Prüfung</small><b data-cdd="${nx.d}T${nx.t}">${D({exam:nx.d})}</b><span>Tage · ${(nxM?nxM.name:nx.n).replace(/[<>&]/g,"")}</span></button>`:`<div class="stat"><small>Prüfungen</small><b>–</b><span>Keine Termine</span></div>`;
+  const fd=(d,o)=>new Date(d).toLocaleDateString("de-DE",o);
+  if(rec){const dr=D(rec),ex=rec.exam+"T00:00:00",pp=Math.max(.08,Math.min(.92,1-dr/110));
+    h+=`<button type="button" class="hero nv" id="t-rec" style="--c:${rec.color}" aria-label="Empfehlung für heute: ${rec.name}, ${dr===0?"heute ist Klausur":"Klausur in "+dr+(dr===1?" Tag":" Tagen")}">
+    <span class="nv-h" aria-hidden="true"><span class="nv-ic">${LOGOS[rec.id]||""}</span><span class="nv-ht"><small>Empfehlung für heute</small><span>${rec.sub||""}</span></span><svg class="nv-arr" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+    <span class="nv-name" aria-hidden="true">${rec.name}</span>
+    <span class="nv-sc" aria-hidden="true"><span class="nv-v"><b>${fd(Date.now(),{day:"numeric",month:"short"}).replace(".","")}</b><small>Heute</small></span><span class="nv-ru" style="--p:${pp}"><em>${dr===0?"heute":dr===1?"1 Tag":dr+" Tage"}</em></span><span class="nv-v r"><b>${fd(ex,{day:"numeric",month:"short"}).replace(".","")}</b><small>Klausur</small></span></span>
+    <span class="nv-bar" aria-hidden="true"><span class="nv-go"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span>Jetzt lernen</span><span class="nv-more">•••</span></span></button>`}
+  {const now=new Date(),wd=(now.getDay()+6)%7,wk=[];for(let i=0;i<7;i++){const x=new Date(now.getFullYear(),now.getMonth(),now.getDate()-wd+i,12);wk.push({k:x.toISOString().slice(0,10),t:i===wd,f:i>wd,l:"MDMDFSS"[i]})}
+    const lw=wk.filter(x=>days.has(x.k)).length;
+    h+=`<button type="button" class="nv-dial" id="t-streak" aria-label="Lernserie ${st} ${st===1?"Tag":"Tage"}, diese Woche an ${lw} von 7 Tagen gelernt. Kalender öffnen">${nvDial(st,wk.map(x=>({...x,on:days.has(x.k)})))}
+    <span class="nv-an a1" aria-hidden="true"><i></i><small>Diese Woche</small><b>${lw} von 7 Tagen</b></span>
+    <span class="nv-an a2" aria-hidden="true"><i></i><small>${nx?"Nächste Klausur":"Klausuren"}</small><b>${nx?fd(nx.d+"T00:00:00",{day:"numeric",month:"short"}).replace(".",""):"keine"}</b></span>
+    <span class="nv-pill" aria-hidden="true"><span>Lernkalender</span><svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></span></button>`}
+  h+=`<div class="duo"><button type="button" class="stat nv-p" id="t-weak" style="--c:#6d3cff" aria-label="Deine Schwächen: ${wSum} Fragen zum Wiederholen"><b>${wSum}<small>${wSum===1?"Frage":"Fragen"}</small></b><span>${wSum?"zum Wiederholen":"Schwere Fragen markieren"}</span><i class="nv-dt" aria-hidden="true"></i></button>`;
+  h+=nx?`<button type="button" class="stat nv-p" id="t-exam" style="--c:${nx.c}"><b><span data-cdd="${nx.d}T${nx.t}">${D({exam:nx.d})}</span><small>Tage</small></b><span>bis zur Klausur ${(nxM?nxM.name:nx.n).replace(/[<>&]/g,"")}</span><i class="nv-dt" aria-hidden="true"></i></button>`:`<div class="stat nv-p" style="--c:#6d3cff"><b>–</b><span>Keine Termine</span></div>`;
   h+=`</div>`;
-  const wTop=weak[0];
-  h+=`<button type="button" class="rowc" id="t-weak" style="--c:#e8590c"><span class="rc-ic"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9z"/></svg></span><span class="rc-t"><b>Deine Schwächen</b><small>${wSum?wSum+(wSum===1?" Frage":" Fragen")+" zum Wiederholen":"Markiere schwere Fragen mit „Kann ich noch nicht“"}</small></span><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>`;
   if(last&&last!==rec)h+=`<button type="button" class="rowc" id="t-last" style="--c:${last.color}"><span class="rc-ic logo">${LOGOS[last.id]||""}</span><span class="rc-t"><b>Weiterlernen</b><small>${last.name} · da, wo du aufgehört hast</small></span><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>`;
-  h+=`<h2 class="sec">Schnell rein</h2><div class="quick">${act.map(m=>`<button type="button" data-q="${m.id}" style="--c:${m.color}"><span class="q-ic">${LOGOS[m.id]||""}</span><span>${m.name}</span></button>`).join("")}</div>`;
+  h+=`<h2 class="sec">Schnell rein</h2><div class="quick">${act.map(m=>`<button type="button" data-q="${m.id}" style="--c:${m.color}"${rec&&m.id===rec.id?' class="on"':""}><span class="q-ic">${LOGOS[m.id]||""}</span><span>${m.name}</span></button>`).join("")}</div>`;
   el.innerHTML=h;
   if(rec)$("#t-rec").onclick=()=>tdOpen(rec,$("#t-rec"));
   $("#t-streak").onclick=()=>$("#streak").click();
   const te=$("#t-exam");if(te)te.onclick=()=>{location.hash="termine"};
-  $("#t-weak").onclick=()=>{if(wSum&&wTop)location.hash=wTop.m.id+"/schwach";else if(rec)location.hash=rec.id+"/fragen"};
+  const wTop=weak[0];$("#t-weak").onclick=()=>{if(wSum&&wTop)location.hash=wTop.m.id+"/schwach";else if(rec)location.hash=rec.id+"/fragen"};
   const tl=$("#t-last");if(tl)tl.onclick=()=>{location.hash=last.id};
   el.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>{location.hash=b.dataset.q})}
 function tdOpen(m,from){const c=$("#td-card"),d=calDays(m.exam+"T08:00"),n=mLater(m);
@@ -874,7 +903,7 @@ function tdClose(){$("#td").hidden=true}
 $("#td").addEventListener("click",e=>{if(e.target.id==="td")tdClose()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")tdClose()});
 
-const BWV="20261112a";function fLoad(f,u){try{f.contentWindow.location.replace(new URL(u,location.href).href)}catch(e){f.src=u}}
+const BWV="20261114a";function fLoad(f,u){try{f.contentWindow.location.replace(new URL(u,location.href).href)}catch(e){f.src=u}}
 function openModule(m,sub){
   if(!m.file){$("#wait-h").textContent=m.waitTitle||"Fast da";$("#wait-p").textContent=m.waitText||"Dieses Modul ist noch leer.";$("#wait").hidden=false;$("#wait-ok").focus();return}
   const f=$("#mod");let cur=f.dataset.src;try{const h=f.contentWindow.location.href;cur=h.startsWith("about:")?"":h.split("#")[0].split("?")[0].split("/").pop()}catch(e){}if(cur!==m.file){fLoad(f,m.file+"?v="+BWV+(sub?"#"+sub:""));f.dataset.src=m.file;f.title=m.name}else if(sub){fLoad(f,m.file+"#"+sub)}
@@ -926,7 +955,7 @@ window.addEventListener("message",e=>{if(e.data&&e.data.lernapp==="home")push()}
 /* Einstellungen: Darstellung und Zurücksetzen (immer mit Nachfrage, alles komplett mit doppelter Nachfrage) */
 const MQ_DARK=matchMedia("(prefers-color-scheme: dark)");
 function applyTheme(){const t=store.get("app-theme","auto"),d=t==="dark"||(t==="auto"&&MQ_DARK.matches);document.documentElement.classList.toggle("dark",d);document.documentElement.dataset.th=d?"dark":"light";
-  const mc=document.querySelector('meta[name="theme-color"]');if(mc)mc.content=d?"#1a1b20":"#f6f8fc";try{$("#mod").contentWindow.postMessage({bwTheme:1},"*")}catch(e){}
+  const mc=document.querySelector('meta[name="theme-color"]');if(mc)mc.content=d?"#09080f":"#f2f0f8";try{$("#mod").contentWindow.postMessage({bwTheme:1},"*")}catch(e){}
   document.querySelectorAll("[data-theme-set]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.themeSet===t))}
 document.querySelectorAll("[data-theme-set]").forEach(b=>b.onclick=()=>{store.set("app-theme",b.dataset.themeSet);applyTheme();profSave();push()});
 try{MQ_DARK.addEventListener("change",applyTheme)}catch(e){}
