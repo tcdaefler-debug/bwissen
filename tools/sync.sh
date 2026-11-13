@@ -16,6 +16,7 @@ body=body.replace("else loginShow()});","else autoEnter(\"Gast\")});")
 open(sys.argv[2],"w",encoding="utf-8").write(body)
 PY
 cp "$V/index.html" "$P/index.html"
-for f in modul-*.html bw-ui.css bw-ui.js bw-tafel.js bw-tafel-data.js bg-day.jpg bg-dusk.jpg bg-dusk-inv.jpg; do cp "$R/$f" "$V/$f"; cp "$R/$f" "$P/$f"; done
+mkdir -p "$V/fonts" "$P/fonts"; for f in fonts/*.woff2; do cp "$R/$f" "$V/$f"; cp "$R/$f" "$P/$f"; done
+for f in modul-*.html bw-ui.css bw-ui.js bw-nova.css bw-home.css bw-mesh.svg bw-tafel.js bw-tafel-data.js bg-day.jpg bg-dusk.jpg bg-dusk-inv.jpg; do cp "$R/$f" "$V/$f"; cp "$R/$f" "$P/$f"; done
 cp "$R/tools/ui_mod.py" "$P/glas/ui_mod.py"
 echo fertig

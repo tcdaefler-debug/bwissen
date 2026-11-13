@@ -1,0 +1,181 @@
+/* BWIssen · Nova-Design für alle Fächer (bw-nova.css)
+   Lädt nach bw-ui.css. Gestaltung wie die Startseite: weicher Farbschein, satte Verlaufskarten,
+   Pillenformen, dünne große Schrift, weiße bzw. dunkle Kreis-Knöpfe.
+   Dunkel: Rahmen (Kopfleiste, Menü, Leiste unten, Startkarte, Wege) sind echt dunkel gestaltet.
+   Die Lerninhalte darunter werden weiter einzeln umgekehrt, damit Zeichnungen und Tabellen lesbar bleiben. */
+@font-face{font-family:"Outfit";font-style:normal;font-weight:200 700;font-display:swap;src:url(fonts/outfit-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Outfit";font-style:normal;font-weight:200 700;font-display:swap;src:url(fonts/outfit-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+20A0-20AB,U+20AD-20C4,U+2C60-2C7F,U+A720-A7FF}
+
+:root{
+  --f-display:"Outfit",-apple-system,BlinkMacSystemFont,"SF Pro Display",system-ui,sans-serif;
+  --f-body:"Outfit",-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;
+  --bg:#f2f0f8;--ink:#16121f;--muted:#6c6680;
+  --u-ink:#16121f;--u-muted:#6c6680;--u-hair:rgba(22,18,31,.07);--u-hair2:rgba(22,18,31,.11);
+  --u-card:rgba(255,255,255,.86);--u-soft:rgba(22,18,31,.045);--u-r:26px;
+  --u-sh:0 1px 2px rgba(40,20,90,.04),0 16px 34px -24px rgba(48,24,110,.4);
+  --u-sh2:0 2px 4px rgba(40,20,90,.05),0 26px 50px -28px rgba(48,24,110,.5);
+  --n-a1:rgba(140,96,255,.26);--n-a2:rgba(255,110,170,.18);--n-a3:rgba(80,130,255,.18);
+  --n-btn:#16121f;--n-btnink:#fff}
+body{font-family:var(--f-body);letter-spacing:0}
+h1,h2,h3{font-family:var(--f-display)}
+h1{font-weight:300;letter-spacing:-.035em}
+h2{font-weight:400;letter-spacing:-.02em}
+h3{font-weight:500;letter-spacing:-.01em}
+b,strong{font-weight:600}
+.eyebrow{font-weight:500;letter-spacing:.14em}
+
+/* ---------- Hintergrund ---------- */
+#mbg{inset:-10%!important;filter:none!important;
+  background:radial-gradient(40% 28% at 12% 8%,var(--n-a1),transparent 70%),radial-gradient(38% 26% at 95% 32%,var(--n-a2),transparent 70%),radial-gradient(50% 30% at 40% 98%,var(--n-a3),transparent 70%),linear-gradient(color-mix(in srgb,var(--bg) 62%,transparent),color-mix(in srgb,var(--bg) 62%,transparent)),url(bw-mesh.svg) center bottom/cover no-repeat,var(--bg)!important;
+  animation:nDrift 30s ease-in-out infinite alternate}
+@keyframes nDrift{from{transform:translate3d(-2%,-1%,0)}to{transform:translate3d(2%,2%,0) scale(1.05)}}
+body::before{background:var(--bg)}
+
+/* ---------- Kopfleiste ---------- */
+header.appbar{background:color-mix(in srgb,var(--bg) 72%,transparent)!important}
+header.appbar.u-scrolled{background:color-mix(in srgb,var(--bg) 86%,transparent)!important}
+.brand .logo{border-radius:50%;box-shadow:0 0 0 4px rgba(255,255,255,.6),0 8px 16px -8px var(--brand)}
+.brand b{font-weight:500;font-size:1.06rem}
+.brand small{font-weight:400!important}
+.appback,.menubtn{width:40px;height:40px;border-radius:50%!important;background:rgba(255,255,255,.75)!important;box-shadow:inset 0 0 0 1px var(--u-hair),0 6px 14px -10px rgba(48,24,110,.5)!important}
+
+/* ---------- Kopf eines Bereichs ---------- */
+.vhero .ico{border-radius:50%;width:50px;height:50px}
+.vhero h2{font-weight:300!important;font-size:clamp(1.7rem,7.4vw,2.2rem)!important;letter-spacing:-.03em}
+.vhero .eyebrow{font-weight:500}
+.grp-h{font-weight:400!important;font-size:1.3rem!important;letter-spacing:-.015em}
+.grp-h small{font-weight:400!important}
+
+/* ---------- Startkarte des Fachs: satter Verlauf wie eine Messkarte ---------- */
+.hero{color:#fff;border:0!important;border-radius:38px!important;padding:22px 20px 18px!important;
+  background:radial-gradient(90% 70% at 6% 0%,color-mix(in srgb,var(--brand) 82%,#fff 18%) 0%,transparent 62%),radial-gradient(80% 60% at 100% 100%,rgba(109,60,255,.5),transparent 70%),linear-gradient(165deg,var(--brand) 0%,color-mix(in srgb,var(--brand) 48%,#2a1460) 55%,#130b26 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.36),inset 0 -40px 60px -40px rgba(0,0,0,.55),0 30px 60px -34px color-mix(in srgb,var(--brand) 80%,#000)!important}
+.hero::before{background:linear-gradient(115deg,rgba(255,255,255,.16),transparent 34%)!important;inset:0!important;width:auto!important;border-radius:inherit!important;aspect-ratio:auto!important}
+.hero .eyebrow{color:rgba(255,255,255,.72)!important}
+.hero h1{color:#fff;font-weight:300;font-size:clamp(2rem,8.6vw,2.6rem);line-height:1.04}
+.hero p{color:rgba(255,255,255,.74)!important}
+.hero .u-more{color:#fff}
+.continue{background:rgba(10,6,22,.34)!important;border:0!important;border-radius:999px!important;padding:6px 8px 6px 6px!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)!important}
+.continue .ico{border-radius:50%!important;background:#fff!important;color:#0b0a12!important;box-shadow:0 6px 16px -6px rgba(0,0,0,.5)!important}
+.continue b{color:#fff;font-weight:500}
+.continue small{color:rgba(255,255,255,.66)!important}
+.continue .go{background:rgba(255,255,255,.16)!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)!important;font-weight:500!important}
+.ring small{color:rgba(255,255,255,.7)!important;font-weight:400!important}
+.ring svg circle:first-child{stroke:rgba(255,255,255,.16)}
+.ring svg circle[id]{stroke:#fff}
+.ring svg text{fill:#fff;font-family:"Outfit",system-ui,sans-serif;font-weight:300}
+
+/* ---------- Zwei Wege ---------- */
+.way{border-radius:999px!important;padding:10px 10px 10px 12px!important;background:var(--u-card)!important}
+.way .ico{border-radius:50%!important}
+.way .wt b{font-weight:500!important}
+.way .go{width:42px!important;height:42px!important;background:var(--n-btn)!important;box-shadow:0 6px 16px -8px rgba(0,0,0,.5)}
+.way .go::before{content:""!important;width:18px!important;height:18px!important;margin:0!important;border:0!important;transform:none!important;background:var(--n-btnink)!important;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/contain no-repeat}
+.way.ex{background:radial-gradient(90% 90% at 0% 0%,color-mix(in srgb,#d6368a 85%,#fff 15%),transparent 70%),linear-gradient(150deg,#d6368a,color-mix(in srgb,#d6368a 32%,#1b1033) 75%)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.32),inset 0 -24px 40px -26px rgba(0,0,0,.5),0 20px 40px -26px #9c1f5c!important}
+.way.ex .wt b,.way.ex .wt small{color:#fff!important}.way.ex .wt small{opacity:.75}
+.way.ex .ico{background:rgba(255,255,255,.18)!important;color:#fff!important}
+.way.ex .ico svg{stroke:#fff}
+.way.ex .go{background:#fff!important}.way.ex .go::before{background:#0b0a12!important}
+
+/* ---------- Flächen und Karten ---------- */
+.tile,.lesson,.task,.gbox,.excard,.hist,details.sec,.exask,.lp-b{border-radius:var(--u-r)!important}
+.tile .ico,.gpick .ico,.exn,nav.tabs a .ti{border-radius:50%!important}
+.tile b,.excard b,.gpick b,.lp-b b{font-weight:500!important}
+.merke{border-radius:22px}
+
+/* Lernpfad: runde Schritte, Knöpfe als Pillen */
+.lp-a{border-radius:999px!important;font-weight:500!important}
+.lp-a.ex{color:#fff}
+
+/* Auswahl-Chips: aktiv = dunkle Kapsel */
+.chip{border-radius:999px!important;font-weight:500!important;background:rgba(255,255,255,.8)}
+.chip[aria-pressed="true"]{background:var(--n-btn)!important;color:var(--n-btnink)!important;box-shadow:0 8px 18px -10px rgba(0,0,0,.5)!important}
+
+/* Knöpfe: dunkle Pille mit hellem Text */
+.btn{border-radius:999px!important;font-weight:500!important;background:var(--n-btn);color:var(--n-btnink);box-shadow:0 10px 22px -12px rgba(22,18,31,.6)!important}
+.btn.ghost{background:rgba(255,255,255,.85)!important;color:var(--ink)!important;box-shadow:inset 0 0 0 1px var(--u-hair2)!important}
+
+/* Antwortkarten */
+.opt{border-radius:22px!important;font-weight:400!important}
+.opt::before{border-radius:50%!important;font-weight:500!important}
+.qcard .mq,.mc .mq{font-weight:500!important}
+.fb{border-radius:22px!important}
+
+/* ---------- Menü ---------- */
+nav.tabs a{font-weight:400!important}
+nav.tabs a .ti{border-radius:50%!important}
+nav.tabs .tgh{font-weight:500;letter-spacing:.14em}
+
+/* ---------- Leiste unten: wie auf der Startseite ---------- */
+#utab{background:rgba(255,255,255,.7)!important;border:1px solid rgba(255,255,255,.85)!important;padding:6px!important}
+#utab button{font-weight:500!important;color:var(--u-muted)!important}
+#utab button svg{stroke-width:1.6!important}
+#utab button[aria-current="true"]{color:var(--n-btnink)!important}
+#utab .ind{top:6px!important;bottom:6px!important;left:6px!important;background:var(--n-btn)!important;box-shadow:0 8px 20px -10px rgba(0,0,0,.6)!important}
+
+/* =================== Dunkel =================== */
+html.dark{filter:none!important;background:#09080f!important;
+  --n-a1:rgba(109,60,255,.38);--n-a2:rgba(214,54,138,.24);--n-a3:rgba(38,72,214,.28)}
+html.dark :is(header.appbar,#utab,.ways,.hero,.vhero){--n-btn:#fff;--n-btnink:#0b0a12}
+html.dark body{background:#09080f!important}
+html.dark body::before{background:#09080f}
+html.dark #mbg{background:radial-gradient(40% 28% at 12% 8%,var(--n-a1),transparent 70%),radial-gradient(38% 26% at 95% 32%,var(--n-a2),transparent 70%),radial-gradient(50% 30% at 40% 98%,var(--n-a3),transparent 70%),linear-gradient(rgba(9,8,15,.6),rgba(9,8,15,.6)),url(bw-mesh.svg) center bottom/cover no-repeat,#09080f!important}
+/* Inhalte einzeln umkehren (Rahmen bleibt echt dunkel) */
+html.dark main section[data-view]>:not(.hero):not(.ways):not(.vhero):not(.grp-h),
+html.dark main .wrap>:not(section),
+html.dark body>:not(header):not(main):not(#utab):not(#mbg):not(#mfade):not(script):not(style):not(link):not(#u-confetti):not(.u-ripple):not(#mov):not(#tafel){filter:invert(.92) hue-rotate(180deg)}
+html.dark #tafel{filter:none!important}
+/* Kopfleiste */
+html.dark header.appbar{background:rgba(9,8,15,.72)!important;box-shadow:none!important;color:#f4f1fb}
+html.dark header.appbar.u-scrolled{background:rgba(9,8,15,.86)!important;box-shadow:0 1px 0 rgba(255,255,255,.06)!important}
+html.dark .brand,html.dark .brand b{color:#f4f1fb!important}
+html.dark .brand small{color:rgba(232,226,255,.56)!important}
+html.dark .brand .logo{box-shadow:0 0 0 4px rgba(255,255,255,.08),0 8px 16px -8px var(--brand)}
+html.dark .appback,html.dark .menubtn{background:rgba(255,255,255,.08)!important;color:#f4f1fb!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)!important}
+/* Menü */
+html.dark nav.tabs.open,html.dark nav.tabs.open .tabs-h{background:rgba(20,17,31,.98)!important;color:#f4f1fb}
+html.dark nav.tabs a{color:#f4f1fb!important}
+html.dark nav.tabs a:active{background:rgba(255,255,255,.08)!important}
+html.dark nav.tabs a[aria-current="page"]{background:rgba(255,255,255,.08)!important}
+html.dark nav.tabs a::after{border-color:rgba(255,255,255,.3)!important}
+html.dark nav.tabs .tgh{color:rgba(232,226,255,.5)!important}
+html.dark nav.tabs .tabs-h,html.dark nav.tabs .tabs-h *{color:#f4f1fb;border-color:rgba(255,255,255,.08)}
+html.dark nav.tabs .tabs-h button{background:rgba(255,255,255,.1)!important;color:#f4f1fb!important}
+html.dark .tabs-h::before{background:rgba(255,255,255,.25)!important}
+html.dark #mov{background:rgba(0,0,0,.5)!important}
+/* Kopf eines Bereichs */
+html.dark .vhero h2{color:#f4f1fb!important}
+html.dark .vhero .eyebrow{color:rgba(232,226,255,.56)!important}
+html.dark .grp-h{color:#f4f1fb!important}
+html.dark .grp-h small{color:rgba(232,226,255,.5)!important}
+/* Wege */
+html.dark .way:not(.ex){background:rgba(255,255,255,.06)!important;border:1px solid rgba(255,255,255,.08)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important}
+html.dark .way .wt b{color:#f4f1fb!important}
+html.dark .way .wt small{color:rgba(232,226,255,.56)!important}
+html.dark .way.ex{border:0!important}
+html.dark .hero p,html.dark .hero .u-more{color:rgba(255,255,255,.74)!important}
+/* Leiste unten */
+html.dark #utab{background:rgba(22,19,34,.7)!important;border-color:rgba(255,255,255,.08)!important;box-shadow:0 18px 40px -18px rgba(0,0,0,.9)!important}
+html.dark #utab button{color:rgba(232,226,255,.56)!important}
+html.dark #utab button[aria-current="true"]{color:#0b0a12!important}
+html.dark #utab .ind{background:#fff!important}
+html.dark #mfade{display:none!important}
+
+@media (prefers-reduced-motion:reduce){#mbg{animation:none}}
+
+/* ---------- Gezeichnete Details: Teilstriche um Fortschrittsring und Bereichs-Symbole ---------- */
+.ring{position:relative}
+.ring::before{content:"";position:absolute;left:0;top:0;width:132px;aspect-ratio:1;scale:1.18;border-radius:50%;pointer-events:none;
+  background:repeating-conic-gradient(from 0deg,rgba(255,255,255,.55) 0 .8deg,transparent .8deg 6deg);
+  -webkit-mask:radial-gradient(closest-side,transparent 88%,#000 89% 97%,transparent 98%);mask:radial-gradient(closest-side,transparent 88%,#000 89% 97%,transparent 98%);animation:nSpin 80s linear infinite}
+@media (max-width:560px){.ring::before{width:64px;scale:1.3}}
+.vhero .ico{position:relative;overflow:visible}
+.vhero .ico::after{content:"";position:absolute;inset:-9px;border-radius:50%;pointer-events:none;
+  background:repeating-conic-gradient(currentColor 0 1deg,transparent 1deg 10deg);color:color-mix(in srgb,var(--c) 70%,transparent);
+  -webkit-mask:radial-gradient(closest-side,transparent 84%,#000 85%);mask:radial-gradient(closest-side,transparent 84%,#000 85%);animation:nSpin 60s linear infinite}
+@keyframes nSpin{to{transform:rotate(360deg)}}
+.hero .ring::after{content:"";position:absolute;left:calc(50% + 50px);top:6px;width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.18)}
+@media (max-width:560px){.hero .ring::after{display:none}}
+@media (prefers-reduced-motion:reduce){.ring::before,.vhero .ico::after{animation:none}}
+header.appbar:has(nav.tabs.open){background:color-mix(in srgb,var(--bg) 96%,transparent)!important}
+html.dark header.appbar:has(nav.tabs.open){background:rgba(9,8,15,.96)!important}
