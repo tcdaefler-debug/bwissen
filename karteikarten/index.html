@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BK Karteikarten</title>
+<meta name="description" content="Karteikarten fürs Baustoffkunde-Testat mit Wiederholung nach Lernstand">
+<meta name="theme-color" content="#f6f4f2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16181c" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="BK Karten">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-180.png">
+<link rel="manifest" href="manifest.json">
+<style>
+:root{
+  --bg:#f6f4f2; --card:#ffffff; --ink:#1c2128; --muted:#69707a; --line:#e4dfda;
+  --acc:#b4442f; --acc-soft:#f6e6e2; --ok:#1f8a5b; --ok-soft:#e1f3ea; --mid:#b7791f; --mid-soft:#f8eed9;
+  --bad:#c0392b; --bad-soft:#f9e3e0; --shadow:0 10px 30px rgba(60,40,30,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#16181c; --card:#22262c; --ink:#eceef1; --muted:#a3a9b2; --line:#33383f;
+    --acc:#e0775f; --acc-soft:#3a2723; --ok:#4cc28d; --ok-soft:#1d3329; --mid:#e0a94a; --mid-soft:#382e1c;
+    --bad:#ef7a6c; --bad-soft:#3b2421; --shadow:0 10px 30px rgba(0,0,0,.35); }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+body{min-height:100vh;min-height:100dvh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.wrap{max-width:640px;margin:0 auto;padding:18px 16px 28px}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+.view{display:none;animation:fade .35s ease}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* Start */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 0 14px}
+.kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);font-weight:700}
+h1{font-size:30px;line-height:1.1;margin:4px 0 0;letter-spacing:-.01em}
+.count{font-size:13px;color:var(--muted);text-align:right;line-height:1.3}
+.count b{display:block;font-size:22px;color:var(--ink)}
+.hero{background:var(--card);border-radius:22px;padding:18px;box-shadow:var(--shadow);margin-bottom:16px}
+.stats{display:flex;gap:8px;margin:2px 0 14px}
+.stat{flex:1;border-radius:14px;padding:10px 8px;text-align:center;background:var(--bg)}
+.stat b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+.stat.due b{color:var(--acc)} .stat.new b{color:var(--mid)} .stat.done b{color:var(--ok)}
+.bar{height:8px;border-radius:8px;background:var(--line);overflow:hidden;margin-bottom:14px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--mid));width:0;transition:width .6s ease}
+.big{width:100%;padding:15px;border-radius:16px;background:var(--acc);color:#fff;font-weight:700;font-size:17px;transition:transform .15s}
+.big:active{transform:scale(.98)}
+.big[disabled]{opacity:.45}
+.sub{width:100%;padding:12px;border-radius:14px;margin-top:8px;background:var(--acc-soft);color:var(--acc);font-weight:600}
+.hint{font-size:13px;color:var(--muted);margin:10px 2px 0}
+h2{font-size:15px;margin:22px 2px 10px;color:var(--muted);font-weight:600}
+.topics{display:grid;gap:8px}
+.topic{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:16px;padding:12px 14px;text-align:left;border:2px solid transparent;transition:border-color .2s,transform .15s}
+.topic:active{transform:scale(.99)}
+.topic.sel{border-color:var(--acc)}
+.chk{width:24px;height:24px;border-radius:8px;border:2px solid var(--line);flex:none;display:grid;place-items:center;transition:.2s}
+.topic.sel .chk{background:var(--acc);border-color:var(--acc)}
+.topic.sel .chk:after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.tn{flex:1;font-weight:600}
+.tm{font-size:12px;color:var(--muted);font-weight:500;display:block}
+.mini{width:54px;height:6px;border-radius:6px;background:var(--line);overflow:hidden;flex:none}
+.mini i{display:block;height:100%;background:var(--ok)}
+.links{display:flex;justify-content:space-between;gap:10px;margin-top:22px;font-size:13px}
+.links button{color:var(--muted);text-decoration:underline;padding:6px 2px}
+
+/* Lernen */
+.lhead{display:flex;align-items:center;gap:10px;margin:4px 0 12px}
+.back{width:40px;height:40px;border-radius:12px;background:var(--card);display:grid;place-items:center;box-shadow:var(--shadow);flex:none}
+.back svg{width:20px;height:20px}
+.prog{flex:1}
+.prog .bar{margin:0}
+.ptext{font-size:12px;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between}
+.stage{perspective:1400px;margin-top:6px}
+.fc{position:relative;width:100%;min-height:min(62vh,520px);transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.8,.2,1);cursor:pointer}
+.fc.flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--card);border-radius:24px;box-shadow:var(--shadow);padding:22px 20px;display:flex;flex-direction:column;overflow:auto}
+.face.back2{transform:rotateY(180deg)}
+.tag{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--acc);display:flex;justify-content:space-between;gap:8px}
+.tag em{font-style:normal;color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0}
+.q{font-size:22px;font-weight:700;line-height:1.3;margin:auto 0;padding:18px 0}
+.tap{font-size:13px;color:var(--muted);text-align:center}
+.qs{font-size:15px;font-weight:600;color:var(--muted);margin:10px 0 12px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.a{margin:0;padding-left:1.1em;font-size:17px}
+.a li{margin:7px 0}
+.a b{color:var(--acc)}
+.rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;opacity:0;transform:translateY(10px);pointer-events:none;transition:.3s}
+.rate.on{opacity:1;transform:none;pointer-events:auto}
+.rate button{padding:13px 6px;border-radius:15px;font-weight:700;font-size:15px;line-height:1.15;transition:transform .12s}
+.rate button:active{transform:scale(.96)}
+.rate small{display:block;font-weight:500;font-size:11px;opacity:.8;margin-top:2px}
+.r0{background:var(--bad-soft);color:var(--bad)} .r1{background:var(--mid-soft);color:var(--mid)} .r2{background:var(--ok-soft);color:var(--ok)}
+.showbtn{margin-top:14px}
+.fin{text-align:center;padding:40px 10px}
+.fin .em{font-size:56px;line-height:1}
+.fin h3{font-size:24px;margin:14px 0 6px}
+.fin p{color:var(--muted);margin:0 0 20px}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+@media (min-width:700px){ .q{font-size:26px} .a{font-size:18px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<section id="home" class="view on">
+  <div class="top">
+    <div><div class="kicker">Baustoffkunde · Testat</div><h1>Karteikarten</h1></div>
+    <div class="count"><b id="days">–</b>bis 02.12.</div>
+  </div>
+  <div class="hero">
+    <div class="stats">
+      <div class="stat due"><b id="sDue">0</b><span>fällig</span></div>
+      <div class="stat new"><b id="sNew">0</b><span>neu</span></div>
+      <div class="stat done"><b id="sKnown">0</b><span>sitzt</span></div>
+    </div>
+    <div class="bar"><i id="bAll"></i></div>
+    <button class="big" id="go">Lernen starten</button>
+    <button class="sub" id="free">Alle Karten gemischt üben</button>
+    <p class="hint" id="hint"></p>
+  </div>
+  <h2>Themen (antippen zum An- und Abwählen)</h2>
+  <div class="topics" id="topics"></div>
+  <div class="links">
+    <button id="howto">Zum Home-Bildschirm hinzufügen</button>
+    <button id="reset">Lernstand zurücksetzen</button>
+  </div>
+</section>
+
+<section id="learn" class="view">
+  <div class="lhead">
+    <button class="back" id="home2" aria-label="Zurück"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <div class="prog"><div class="bar"><i id="bSess"></i></div><div class="ptext"><span id="pLeft"></span><span id="pMode"></span></div></div>
+  </div>
+  <div id="cardArea">
+    <div class="stage"><div class="fc" id="fc">
+      <div class="face front"><div class="tag"><span id="tTopic"></span><em id="tBox"></em></div><div class="q" id="tQ"></div><div class="tap">Antippen zum Umdrehen</div></div>
+      <div class="face back2"><div class="tag"><span id="tTopic2"></span></div><div class="qs" id="tQ2"></div><ul class="a" id="tA"></ul></div>
+    </div></div>
+    <button class="big showbtn" id="show">Antwort zeigen</button>
+    <div class="rate" id="rate">
+      <button class="r0" data-r="0">Nochmal<small>gleich wieder</small></button>
+      <button class="r1" data-r="1">Unsicher<small>morgen</small></button>
+      <button class="r2" data-r="2">Gewusst<small id="nextInt">später</small></button>
+    </div>
+  </div>
+  <div class="fin" id="doneBox" hidden>
+    <div class="em">🎉</div>
+    <h3>Für heute geschafft!</h3>
+    <p id="doneTxt"></p>
+    <button class="big" id="home3">Zur Übersicht</button>
+  </div>
+</section>
+
+<section id="help" class="view">
+  <div class="lhead"><button class="back" id="home4" aria-label="Zurück"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><b>Auf den Home-Bildschirm</b></div>
+  <div class="hero">
+    <p><b>iPhone / iPad (Safari):</b></p>
+    <ol><li>Unten auf das Teilen-Symbol tippen (Quadrat mit Pfeil nach oben).</li><li>„Zum Home-Bildschirm“ wählen.</li><li>„Hinzufügen“ tippen.</li></ol>
+    <p><b>Android (Chrome):</b> Menü ⋮ → „Zum Startbildschirm hinzufügen“.</p>
+    <p class="hint">Dein Lernstand wird nur auf diesem Gerät gespeichert. Öffne die Karten immer über dasselbe Symbol, dann bleibt alles erhalten. Einmal geladen, klappt es auch offline.</p>
+  </div>
+</section>
+
+</div>
+<script>
+const DECKS = [{"key": "01", "name": "Baustoffkenngrößen", "cards": [["Welche drei Dichten unterscheidet man bei Baustoffen?", ["**Reindichte**: Masse / Volumen **ohne** Poren (nur Feststoff)", "**Rohdichte**: Masse / Volumen **mit** Poren (ganzer Körper)", "**Schüttdichte**: Masse / Volumen einer **losen Schüttung** inkl. Zwischenräume", "Immer ρ = m / V, nur das Volumen ist jeweils anders definiert"]], ["Wie hängen Reindichte, Rohdichte und Porosität zusammen?", ["Je mehr Poren, desto weiter liegt die Rohdichte unter der Reindichte", "Ohne Poren: Rohdichte = Reindichte", "Porosität = 1 − Rohdichte / Reindichte"]], ["Was ist die hygroskopische Ausgleichsfeuchte?", ["Feuchtegehalt, den ein poröser Baustoff **aus der Luft** (Wasserdampf) aufnimmt", "Stellt sich im **Gleichgewicht** mit dem Umgebungsklima ein (rel. Luftfeuchte, Temperatur)", "Höhere Luftfeuchte → höhere Ausgleichsfeuchte", "Ohne Kontakt zu flüssigem Wasser (Sorption)"]], ["Porenanteil wird erhöht: Was wird besser bzw. größer?", ["Wärmedämmung ↑ (ruhende Luft in Poren)", "Leichtigkeit / Handhabung ↑ (geringere Rohdichte)", "Bearbeitbarkeit ↑ (sägen, bohren)", "Wasseraufnahme ↑ (bei offenen Poren)"]], ["Porenanteil wird erhöht: Was wird schlechter bzw. kleiner?", ["Rohdichte ↓", "Druckfestigkeit ↓", "Wärmeleitfähigkeit ↓ (das ist gut für die Dämmung!)", "Wärmespeicherfähigkeit ↓", "Schallschutz (Luftschall) ↓", "Frostwiderstand meist ↓"]], ["Steigende Rohdichte: Was passiert mit Wärmedämmung, Wärmeleitfähigkeit und Druckfestigkeit?", ["Wärmedämmung **nimmt ab**", "Wärmeleitfähigkeit **nimmt zu**", "Druckfestigkeit **nimmt zu** (bei sinkender Rohdichte nimmt sie ab)"]], ["Was ist der μ-Wert?", ["**Wasserdampf-Diffusionswiderstandszahl**", "Gibt an, wievielmal dichter ein Stoff gegen Wasserdampf ist als ruhende Luft", "Luft hat μ = 1; je größer μ, desto dampfdichter"]], ["Was ist der sd-Wert?", ["**Wasserdampfdiffusionsäquivalente Luftschichtdicke**: sd = μ · d", "So dick müsste eine ruhende Luftschicht sein, um gleich viel Dampf zu bremsen", "Großer sd-Wert = dampfdicht (Dampfbremse/-sperre)", "Kleiner sd-Wert = diffusionsoffen"]], ["Wie ermittelt man im Labor den sd-Wert eines Anstrichs samt Putz?", ["**Becherverfahren** (Dry-cup / Wet-cup)", "Probe dicht auf ein Prüfgefäß setzen (Ränder abdichten)", "Innen ein anderes Klima als außen (Trockenmittel bzw. Wasser/Salzlösung) → Dampfdruckgefälle", "Gefäß in festen Abständen **wiegen**", "Aus Massenänderung pro Zeit → Diffusionsstrom → μ und sd"]], ["Becherverfahren: Die Probe verliert bzw. gewinnt deutlich an Gewicht. Hoher oder niedriger sd-Wert?", ["Deutliche Gewichtsänderung = viel Dampf geht durch", "→ **niedriger sd-Wert** (diffusionsoffen)", "Kaum Änderung → hoher sd-Wert (dampfdicht)"]], ["Beschreibe die Darr-Wäge-Methode (z. B. feuchter Kalksandstein).", ["Probe entnehmen, luftdicht verpacken, **feucht wiegen**", "Im Trockenschrank bis zur **Massenkonstanz darren**, dann trocken wiegen", "**Feuchtegehalt** = Wasser / Trockenmasse", "Probe danach bis zur Sättigung wässern und wiegen → **Sättigungsfeuchte**", "**Durchfeuchtungsgrad** = Feuchtegehalt / Sättigungsfeuchte"]], ["Feuchtegehalt, Sättigungsfeuchte, Durchfeuchtungsgrad: Was ist was?", ["**Feuchtegehalt**: aktuell enthaltenes Wasser bezogen auf die Trockenmasse", "**Sättigungsfeuchte**: maximal aufnehmbares Wasser (alle zugänglichen Poren voll)", "**Durchfeuchtungsgrad**: wie viel Prozent der möglichen Wassermenge drin sind"]], ["Kapillare Wasseraufnahme vs. Gesamtwasseraufnahme: Unterschied?", ["**Kapillar**: Probe steht mit der Unterseite im Wasser und saugt es hoch, wird regelmäßig gewogen", "**Gesamt (Sättigung)**: Probe wird komplett durchfeuchtet, bis sie nichts mehr aufnimmt"]], ["Welche Einflüsse schädigen Natursteine?", ["**Frost-Tau-Wechsel**: Wasser gefriert in Poren, dehnt sich aus, sprengt", "**Salze**: Kristallisationsdruck in den Poren", "**Saurer Regen / Luftschadstoffe** (z. B. Gipsbildung bei Kalkstein, Marmor)", "Feuchte, Temperaturwechsel", "Biologisch: Algen, Flechten, Wurzeln", "Erosion durch Wind, Wasser, Abrieb"]], ["Welchen Einfluss hat der Faserverlauf auf die Festigkeit?", ["Baustoff ist **anisotrop** (richtungsabhängig)", "**Parallel** zur Faser: hohe Festigkeit", "**Quer** zur Faser: deutlich geringere Festigkeit", "Beispiele: Holz, geschichtetes Gestein (Lagerhaftigkeit)", "→ So einbauen, dass die Hauptlast in Faserrichtung wirkt"]], ["Isotrop vs. anisotrop?", ["**Isotrop**: Eigenschaften in alle Richtungen gleich (z. B. Stahl, Glas)", "**Anisotrop**: richtungsabhängig (z. B. Holz, Schiefer)"]], ["Nenne lastabhängige Verformungen.", ["**Elastisch**: geht nach Entlastung vollständig zurück", "**Plastisch**: bleibt nach Entlastung bestehen", "**Kriechen**: Verformung wächst unter Dauerlast mit der Zeit weiter (z. B. Beton, Holz)", "**Relaxation**: Spannung baut sich bei gleicher Verformung ab"]], ["Nenne lastunabhängige Verformungen.", ["**Schwinden / Quellen**: durch Feuchteabgabe / -aufnahme", "**Temperaturdehnung**: Ausdehnen bei Wärme, Verkürzen bei Kälte", "Chemisch bedingt (z. B. Carbonatisierungsschwinden)"]]]}, {"key": "02", "name": "Ziegel und Keramik", "cards": [["Was sind keramische Baustoffe und wie entstehen sie grundsätzlich?", ["Aus **Ton / Lehm** geformt, getrocknet und **gebrannt**", "Durch das Brennen formstabil und nicht mehr wasserlöslich"]], ["Was passiert beim Sintern?", ["Bei hoher Brenntemperatur schmelzen Teile des Scherbens an", "Die Schmelze **verschließt die Poren** → Scherben wird dicht und fest"]], ["Unter vs. über der Sintergrenze gebrannt: Druckfestigkeit und Wasseraufnahme?", ["Druckfestigkeit: unter = **niedriger** · über = **hoch**", "Wasseraufnahme: unter = **hoch** · über = **niedrig**"]], ["Unter vs. über der Sintergrenze gebrannt: Farbe, Scherbenrohdichte, Wärmeleitfähigkeit?", ["Farbe: unter = **heller** · über = **dunkler**", "Scherbenrohdichte: unter = **niedrig** · über = **hoch**", "Wärmeleitfähigkeit: unter = **niedrig** (dämmt besser) · über = **hoch**"]], ["Irdengut vs. Sinterzeug?", ["**Irdengut**: unter der Sintergrenze gebrannt, porös, saugend (z. B. Mauerziegel, Terrakotta, Steingut)", "**Sinterzeug**: über der Sintergrenze gebrannt, dicht, kaum Wasseraufnahme (z. B. Klinker, Steinzeug, Porzellan)"]], ["Feinkeramik vs. Grobkeramik?", ["**Feinkeramik**: sehr feines, gleichmäßiges Gefüge, Körner mit bloßem Auge nicht erkennbar (Fliesen, Sanitär, Porzellan)", "**Grobkeramik**: gröberes Gefüge, Körner sichtbar (Mauerziegel, Klinker, Dachziegel)"]], ["Wie wird ein Klinker hergestellt?", ["Rohstoffe: **Ton/Lehm** + **Sand** (Magerung) + Wasser, ggf. Zusätze", "Aufbereiten: zerkleinern, mischen, feucht lagern", "Formen: meist **Strangpresse**, Strang abschneiden", "**Trocknen**", "**Brennen über der Sintergrenze** → dichter, harter Scherben", "Langsam abkühlen"]], ["Historischer Mauerziegel vs. wärmedämmender Ziegel: Unterschied und Entwicklungen?", ["Historisch: **Vollziegel**, dicht, schwer, dämmt schlecht", "Heute: leicht, porös, dämmt gut. Entwicklungen:", "**Porosierung**: Ausbrennstoffe (z. B. Sägemehl, Papierfasern) → Poren im Scherben", "**Lochung**: Hochloch-/Gitterlochziegel mit vielen kleinen Luftkammern", "**Dämmstofffüllung** der Kammern (z. B. Perlit, Mineralwolle)", "**Plan geschliffen** → dünne Fugen, weniger Wärmebrücken"]], ["Wie lassen sich die Farben keramischer Produkte beeinflussen?", ["**Rohstoff**: Eisenoxid → rot, Kalk → gelb/hell", "**Brenntemperatur**: höher → dunkler", "**Brennatmosphäre**: oxidierend → rot; reduzierend → bunt, bräunlich bis bläulich-dunkel", "Zusatz von **Metalloxiden** (z. B. Mangan → braun/schwarz)", "**Engoben** (Tonschlämme) und **Glasuren**, Besanden"]], ["Warum können Hochlochziegel heute mit Dünnbettmörtel vermauert werden?", ["Sie werden nach dem Brennen **plan geschliffen** (Planziegel)", "→ sehr maßgenau, ebene Lagerflächen", "Die Fuge muss keine Maßtoleranzen mehr ausgleichen → wenige mm Kleber reichen", "Vorteil: weniger Wärmebrücken, weniger Baufeuchte, schneller"]], ["Wie testest du spontan, ob ein Fassadenstein saugend ist?", ["**Wassertropfen** auf den Stein geben", "Zieht schnell ein (dunkler Fleck) → **saugend**", "Perlt ab / bleibt stehen → **nicht saugend**"]], ["Welche Kenngröße steht für Rutschsicherheit von Fliesen? Erkläre.", ["**Bewertungsgruppe R** (Haftreibewert, R 9 bis R 13)", "Ermittelt auf einer **schiefen Ebene**: bis zu welchem Neigungswinkel man nicht rutscht", "Höhere Gruppe = rutschhemmender", "Barfußbereiche (Dusche, Schwimmbad): zusätzlich **A / B / C**", "Im durchgefliesten Duschbereich höhere Gruppe als im trockenen Raum"]], ["Welche Kenngröße beschreibt, wie dauerhaft eine Fliesenoberfläche bei mechanischer Beanspruchung ist?", ["**Abriebklasse** (Abriebgruppe, v. a. bei glasierten Fliesen)", "Hängt von Glasurhärte und Beanspruchung ab", "Niedrige Klasse: wenig begangene Räume · hohe Klasse: Flure, öffentliche Bereiche"]], ["Dünnbett- vs. Dickbettverfahren beim Fliesen?", ["**Dünnbett**: ebener Untergrund, Kleber vollflächig dünn aufgekämmt", "**Dickbett**: unebener Untergrund, jede Fliese mit Mörtelbatzen angesetzt → gleicht Unebenheiten aus"]]]}, {"key": "03", "name": "Porenbeton", "cards": [["Aus welchen Rohstoffen besteht Porenbeton?", ["**Quarzsand** (fein gemahlen)", "**Kalk** und/oder **Zement** (Bindemittel), ggf. Gips/Anhydrit", "**Wasser**", "**Aluminiumpulver / -paste** als Treibmittel"]], ["Beschreibe die Herstellung von Porenbetonsteinen.", ["Rohstoffe zu einer Suspension **mischen** und in Formen gießen", "Aluminium reagiert → **Wasserstoff** → Gasblasen, Masse **treibt auf** (Poren)", "Masse **steift an** → Rohblock", "Mit **Drähten schneiden** → sehr exakte Maße", "Im **Autoklaven** unter Dampfdruck und Hitze härten", "Fertige Steine trocknen und verpacken"]], ["Warum dämmt Porenbeton so gut?", ["Sehr viele kleine, gleichmäßig verteilte **Luftporen**", "Ruhende Luft leitet Wärme schlecht → geringe Rohdichte, geringe Wärmeleitfähigkeit"]], ["Erkläre: Porenbeton-Planstein DIN 4165 – PP2 – 0,35 – 449 x 300 x 249", ["**PP** = Porenbeton-**Planstein**", "**2** = Druckfestigkeitsklasse", "**0,35** = Rohdichteklasse (kg/dm³)", "**449 x 300 x 249** = Länge x Breite x Höhe in mm", "DIN 4165 = zugehörige Norm"]], ["Warum können Porenbeton-Plansteine mit Dünnbettmörtel (ca. 2 mm) geklebt werden statt mit dicker Mörtelfuge?", ["Durch das **Drahtschneiden** sind sie sehr **maßgenau** (Planstein)", "Ebene Lagerflächen, keine Toleranzen auszugleichen", "Vorteil: weniger Wärmebrücken, weniger Feuchte, schneller, homogenes Mauerwerk", "Stoßfugen oft knirsch mit Nut und Feder, ohne Mörtel"]], ["Vorteile von Porenbeton gegenüber Kalksandstein?", ["Viel **bessere Wärmedämmung** → monolithische Außenwand ohne Zusatzdämmung möglich", "**Leichter** → größere Formate, einfache Handhabung", "**Leicht bearbeitbar** (sägen, fräsen, bohren mit Handwerkzeug)", "Diffusionsoffen, nicht brennbar, großes Systemangebot"]], ["Nachteile von Porenbeton gegenüber Kalksandstein?", ["Geringere **Druckfestigkeit**", "Schlechterer **Schallschutz** (wenig Masse)", "Geringere **Wärmespeicherung**", "Empfindlicher gegen Stoß / Kantenabbruch, Dübel halten schlechter"]], ["Mineralisches WDVS (Porenbeton/Mineralschaum) dämmt schlechter und ist teurer als EPS. Warum trotzdem?", ["**Nicht brennbar** → besserer Brandschutz", "**Diffusionsoffen, kapillaraktiv** → feuchteregulierend", "Ökologisch, **rückbaubar, recycelbar**, kein problematischer Abfall", "Mineralisch/alkalisch → weniger Algenbewuchs", "Formstabil, robust, langlebig; passt zum mineralischen Untergrund"]], ["Was ist ein System-Baustoff?", ["Ganzes Gebäude aus **einem aufeinander abgestimmten Produktsystem**", "Wandsteine, Stürze, U-Schalen, Decken- und Dachelemente, Ergänzungssteine, passender Mörtel und Putz", "Vorteile: einheitlicher Untergrund, weniger Wärmebrücken, einfache Planung, schneller Bau"]], ["Welche Produkte gibt es aus Porenbeton?", ["Plansteine, Planblöcke, Planbauplatten, Wandelemente", "Ausgleichs-/Kimmsteine, Stürze, U-Schalen (verlorene Schalung)", "Decken-, Dach- und Treppenelemente", "WDVS-Platten und Innendämmplatten"]]]}, {"key": "04", "name": "Stahl und NE-Metalle", "cards": [["Was ist eine Legierung?", ["Metall, dem durch **Zusammenschmelzen** weitere Elemente zugesetzt werden (Metalle oder Nichtmetalle)", "Ziel: Eigenschaften gezielt ändern (Festigkeit, Korrosion, Verarbeitbarkeit)", "Beispiele: Stahl = Eisen + Kohlenstoff · Messing = Kupfer + Zink · Bronze = Kupfer + Zinn"]], ["Was unterscheidet Stahl und Gusseisen?", ["Unterschied: **Kohlenstoffgehalt**", "**Stahl**: wenig C (unter ca. 2 %) → zäh, schmied-/walzbar, gut schweißbar", "**Gusseisen**: viel C (über ca. 2 %) → spröde, nur gießbar, hohe Druck-, geringe Zugfestigkeit"]], ["Was ist Korrosion?", ["**Elektrochemische Reaktion** des Metalls mit der Umgebung (Wasser + Sauerstoff)", "Bei Stahl: Rost, poröse Schicht, Volumenzunahme, Querschnittsverlust"]], ["Nenne Maßnahmen zum aktiven Korrosionsschutz.", ["Eingriff in den Korrosionsvorgang selbst:", "**Werkstoffwahl / Legierung** (nichtrostender Stahl)", "**Kathodischer Schutz**: Opferanode oder Fremdstrom", "**Konstruktiv**: Wasser ablaufen lassen, keine Spalten/Wassersäcke, Belüftung", "Kontakt unterschiedlich edler Metalle vermeiden"]], ["Nenne Maßnahmen zum passiven Korrosionsschutz.", ["Stahl vom angreifenden Medium **trennen**:", "**Beschichtungen / Anstriche**", "**Verzinken** (Feuerverzinken; Zink wirkt zusätzlich als Opfer)", "Kunststoffummantelung, Pulverbeschichtung", "**Betondeckung** (alkalisches Milieu schützt Bewehrung)"]], ["Warum rostet Bewehrungsstahl im Beton zunächst nicht, später aber doch?", ["Beton ist **alkalisch** → Passivschicht auf dem Stahl", "**Carbonatisierung** (CO₂ senkt Alkalität) oder **Chloride** (Tausalz, Meer) zerstören den Schutz"]], ["Was ist Kontaktkorrosion?", ["Zwei **unterschiedlich edle Metalle** berühren sich + Feuchtigkeit (Elektrolyt)", "Das **unedlere** Metall löst sich auf (z. B. Zink neben Kupfer)"]], ["Welche Legierungselemente erhöhen die Korrosionsbeständigkeit von Stahl?", ["**Chrom** (wichtigstes, bildet dichte Passivschicht)", "**Nickel**", "**Molybdän**", "**Kupfer** (wetterfester Stahl)"]], ["Nenne Verfahren zur Erhöhung der Feuerwiderstandsklasse von Stahlbauteilen.", ["**Verkleidung** mit Brandschutzplatten (z. B. Gipskarton)", "**Dämmschichtbildende Anstriche** (schäumen bei Hitze auf)", "**Brandschutzputze / Spritzputze**", "**Betonummantelung**, Kammerbeton, Verbundbau", "Wassergefüllte Hohlprofile (Kühlung), Überdimensionierung"]], ["Warum braucht Stahl Brandschutz, obwohl er nicht brennt?", ["Stahl verliert bei hohen Temperaturen **stark an Festigkeit**", "Hohe Wärmeleitfähigkeit → wird schnell durchgehend heiß → Versagen"]], ["Nenne Stahlerzeugnisse im Bauwesen.", ["**Profile**: I-, H-, U-, L-Träger", "**Hohlprofile / Rohre**", "**Betonstahl** (Stäbe, Matten) und **Spannstahl**", "**Bleche**, Trapezbleche", "**Drähte, Seile**, Schrauben, Anker, Verbindungsmittel", "Spundwände, Gerüstrohre"]], ["Vorteile von Stahl?", ["**Hohe Festigkeit** bei geringem Eigengewicht → schlanke Bauteile, große Spannweiten", "Zäh / duktil (kündigt Versagen an)", "Vorfertigung, **schnelle Montage**, demontierbar", "Gleichmäßige Qualität, schweißbar", "**Recycelbar**"]], ["Nachteile von Stahl?", ["**Korrosion** → Schutz nötig", "**Brandverhalten**: Festigkeit sinkt bei Hitze stark", "Hohe **Wärmeleitfähigkeit** → Wärmebrücken", "Energieintensive Herstellung, Preis", "Schlanke Bauteile: Knick- und Beulgefahr"]], ["Was sind NE-Metalle? Beispiele.", ["**Nichteisenmetalle**: alle Metalle außer Eisen und Legierungen mit Eisen als Hauptbestandteil", "Im Bau: Aluminium, Kupfer, Zink (Titanzink), Blei, Messing, Bronze"]], ["Nenne Metalle, die durch Verwitterung eine Schutzschicht bilden.", ["**Kupfer**: grüne **Patina** (basische Kupfersalze), sehr dauerhaft", "**Zink / Titanzink**: graue Zinkcarbonat-Schicht", "**Aluminium**: dünne, dichte **Oxidschicht** (sofort an Luft)", "**Blei**: Bleicarbonat-Schicht", "**Wetterfester Stahl** (Cortenstahl): dichte, festhaftende Rostschicht"]]]}, {"key": "05", "name": "Holz und Holzwerkstoffe", "cards": [["Warum quillt und schwindet Holz?", ["Holz ist **hygroskopisch**: nimmt Feuchte aus der Luft auf und gibt sie ab", "Es stellt sich eine **Ausgleichsfeuchte** passend zum Raumklima ein", "Feuchteänderung in den Zellwänden → Maßänderung"]], ["Was ist der Fasersättigungsbereich?", ["Zustand, in dem die **Zellwände voll mit Wasser** gesättigt sind, die Zellhohlräume aber leer", "**Darunter**: Holz quillt und schwindet", "**Darüber** (freies Wasser in den Zellhohlräumen): keine Maßänderung mehr"]], ["Dielen mit 16 M.-% Holzfeuchte kommen in einen geheizten Wohnraum. Quellen oder Schwinden?", ["**Schwinden**", "Im geheizten Raum ist die Ausgleichsfeuchte deutlich niedriger → das Holz trocknet weiter"]], ["Als Bauleitung: Wie gehst du mit den zu feuchten Dielen (16 M.-%) um? Welche Ausgleichsfeuchte erwartest du?", ["**Nicht sofort verlegen**: Dielen im Raum unter Nutzungsbedingungen (geheizt) lagern und **akklimatisieren** lassen", "Holzfeuchte nachmessen, erst bei Erreichen der Zielfeuchte verlegen; sonst reklamieren", "Erwartete Ausgleichsfeuchte geheizt: **etwa 9 M.-%**", "Grund: sonst schwinden die Dielen nach dem Verlegen → **Fugen, Schüsselung, Risse**"]], ["Faustregel: Wie hängt die Ausgleichsfeuchte von Holz mit dem Einbauort zusammen?", ["Je geschützter und wärmer, desto **trockener**:", "geschlossen + geheizt → am niedrigsten", "geschlossen + ungeheizt → etwas höher", "offen, aber überdacht → höher", "voll bewittert → am höchsten"]], ["Wie unterschiedlich schwindet Holz in den drei Richtungen?", ["**axial : radial : tangential ≈ 1 : 10 : 20**", "Längs zur Faser fast gar nicht", "Radial (zum Kern hin) deutlich", "Tangential (entlang der Jahrringe) am stärksten, etwa doppelt so viel wie radial"]], ["Wie verformen sich Bretter beim Schwinden (nur Kontur)?", ["**Seitenbrett**: schüsselt; die **kernabgewandte** (linke) Seite wird **hohl**", "Merksatz: Jahrringe wollen sich „gerade strecken“", "**Kern-/Mittelbrett**: bleibt eben, wird zu den Rändern hin **dünner**", "**Kantholz mit schrägen Jahrringen**: wird zur **Raute**", "Rundholz/Kantholz mit Kern: **Schwindrisse** zum Kern hin"]], ["Was unterscheidet Kern- und Splintholz?", ["**Splintholz**: außen, jung, leitet Wasser und Nährstoffe, meist heller, feuchter, **wenig dauerhaft** (immer schlechteste Klasse)", "**Kernholz**: innen, abgestorbene Zellen mit **eingelagerten Inhaltsstoffen** (Gerbstoffe, Harze), oft dunkler, härter, **dauerhafter**", "Beispiele Kernholzbäume: Eiche, Lärche, Kiefer, Robinie"]], ["Nenne Holzwerkstoffe (Platten, Matten, Verbund) und ihre Einsatzgebiete.", ["**Hartfaserplatte**: Schrankrückwand", "**Spanplatte**: Möbel, Verlegeplatten, Trockenbau", "**OSB-Platte**: aussteifende Beplankung im Holzrahmenbau, Unterböden", "**Sperrholz / Multiplex**: Möbel, Schalung", "**MDF**: Möbel, Türen, Innenausbau", "**Brettschichtholz (BSH)**: Träger mit großen Spannweiten", "**Brettsperrholz**: Wand- und Deckenscheiben", "**Holzfaserdämmplatte / Holzwolle-Leichtbauplatte**: Dämmung, Putzträger, Akustik"]], ["Nach welchen Kriterien wird Bauschnittholz visuell sortiert?", ["**Äste** (Größe, Anzahl)", "**Faserneigung**", "**Risse** (Schwindrisse, Blitz-/Frostrisse, Ringschäle)", "**Baumkante** (Waldkante)", "**Krümmung / Verdrehung**", "**Jahrringbreite**", "Verfärbung, Pilz- und Insektenbefall, Druckholz, Mistelbefall", "Ergebnis: Sortierklasse (gering / üblich / überdurchschnittlich tragfähig)"]], ["Wie schützt man unbehandeltes Holz außen vor Fäulnis?", ["**Konstruktiver Holzschutz**:", "Abstand zum **Erdboden** und Schutz vor **Spritzwasser**", "Großer **Dachüberstand**, Abdeckungen mit **Gefälle**", "**Hirnholz** schützen/abdecken, Wasser schnell ableiten (Tropfkanten)", "Gute **Belüftung**, damit es abtrocknen kann", "Trockenes Holz einbauen, **dauerhafte Holzart / Kernholz** wählen"]], ["Wie sieht ein guter Anschluss einer Holzstütze im Außenbereich aus?", ["Stütze **nicht direkt** auf Boden/Fundament", "Auf einem **Stahlfuß / Stützenschuh** aufgeständert, **Abstand** zum Boden (Spritzwasser)", "**Luftspalt** unter dem Hirnholz, kein stehendes Wasser", "Oberes Hirnholz abdecken bzw. abschrägen"]], ["Was sind Dauerhaftigkeitsklassen?", ["Einteilung von Holz nach Widerstand gegen **holzzerstörende Pilze**", "Von **1 = sehr dauerhaft** (z. B. Robinie) bis **5 = nicht dauerhaft** (z. B. Buche)", "Gilt für **Kernholz**; Splintholz ist immer Klasse 5"]], ["Welches Holz empfiehlst du für einen Terrassenbelag? Begründung.", ["Holz einer **hohen Dauerhaftigkeitsklasse** (Kernholz), z. B. **Robinie** oder **Eiche**", "Alternativ: thermisch/chemisch modifiziertes Holz", "Grund: Belag ist dauerhaft **bewittert**, oft feucht, bodennah → hohe Pilzgefahr", "Dauerhaftes Holz hält ohne chemischen Holzschutz lange", "Heimisch statt Tropenholz → ökologischer (sonst FSC-zertifiziert)"]], ["Eichenparkett in A-Sortierung: einige sehr helle und dunklere Lamellen. Bedeutung und Reaktion?", ["Helle Lamellen deuten auf **Splintholz** hin", "Splint ist weicher, weniger dauerhaft und farblich abweichend; in hoher Sortierung nicht zulässig", "→ **Mangel**: Lieferung **reklamieren / zurückweisen** bzw. aussortieren, **nicht verlegen**", "Begründung: mit dem Einbau gilt die Ware als angenommen; Sortierung entspricht nicht der Ausschreibung"]], ["Was ist Thermoholz? Vor- und Nachteil.", ["Holz durch **Hitze** (ohne Sauerstoff) behandelt", "+ nimmt weniger Wasser auf → **dauerhafter**, maßstabiler", "− **spröder**, verliert Festigkeit → **kein Konstruktionsholz**"]], ["Konstruktiver vs. chemischer Holzschutz?", ["**Konstruktiv**: Planung/Ausführung hält Holz trocken (Vorrang!)", "**Chemisch**: Holzschutzmittel gegen Pilze und Insekten, nur wenn nötig"]]]}, {"key": "06", "name": "Dämmstoffe", "cards": [["Gegen was dämmen wir?", ["**Wärme**: Wärmeverlust im Winter, Überhitzung im Sommer", "**Schall**: Luft- und Trittschall", "**Brand** (Brandschutz)", "Abgrenzung: gegen Feuchte wird **abgedichtet**, nicht gedämmt"]], ["Warum dämmen Dämmstoffe?", ["Sie schließen viel **ruhende Luft** (oder Gas) in Poren/Fasern ein", "Ruhende Luft leitet Wärme sehr schlecht"]], ["Was bedeutet λ bzw. die Wärmeleitgruppe (WLG)?", ["**λ (Wärmeleitfähigkeit)**: wie gut ein Stoff Wärme leitet, in W/(mK)", "**Kleineres λ = bessere Dämmung**", "WLG 030 bedeutet λ = 0,030 W/(mK)"]], ["Dämmstoff mit λ = 0,040 oder WLG 030? Wahl und Begründung.", ["**WLG 030**, denn λ = 0,030 ist kleiner als 0,040", "→ leitet weniger Wärme", "Bei gleicher Dicke besserer U-Wert, bei gleichem U-Wert dünnere Dämmung"]], ["70er-Jahre-Haus mit 5 cm Hohlschicht: Lohnt sich eine Hohlraumdämmung?", ["**Ja, meist**: die ungedämmte Luftschicht dämmt kaum", "Schon wenige Zentimeter Dämmstoff verbessern den U-Wert **stark** (größter Effekt bei den ersten cm)", "Günstig: **Einblasen** durch Bohrlöcher, Fassade bleibt, kein Gerüst", "Aber: 5 cm ist der **Grenzbereich** → nur nach Voruntersuchung"]], ["Klinkerfassade: Welche Voruntersuchungen vor einer Hohlraumdämmung (außer Endoskopie)?", ["**Fugen** intakt? **Risse**?", "**Wasseraufnahme** der Vorsatzschale (Schlagregenschutz)", "Vorhandene **Feuchteschäden / Schimmel**", "Ausreichende **Luftschichtdicke**, Zustand der **Maueranker**", "Wärmebrücken rechnerisch prüfen"]], ["Putzfassade: Welche Voruntersuchungen vor einer Hohlraumdämmung?", ["**sd-Wert** des Putzes (Bohrkern) → darf nicht zu dampfdicht sein", "**Risse**, Feuchteschäden / Schimmel", "Luftschichtdicke, Schichtenaufbau, Wärmebrücken"]], ["Was prüft man bei der Endoskopie der Hohlschicht?", ["Ist die Luftschicht **durchgängig**?", "**Mörtelreste**, durchbindende Steine (Wärmebrücken)?", "Anzahl und Zustand der **Maueranker**, Feuchtesperren"]], ["Vor- und Nachteile der Kerndämmung (zweischaliges Mauerwerk)?", ["+ bauphysikalisch optimal (Dämmung zwischen tragender Wand und Vorsatzschale)", "− bei Durchfeuchtung Gefahr der **Umkehrdiffusion**", "− teurer als eine monolithische, wärmedämmende Wand (Porenbeton, porosierter Ziegel)"]], ["Nenne Kriterien für die Auswahl eines Dämmstoffs.", ["**Wärmeleitfähigkeit λ**", "**Brandverhalten** (Baustoffklasse)", "**Rohdichte** / Wärmespeicherfähigkeit", "**Druckfestigkeit** / Belastbarkeit", "**Diffusionswiderstand μ**, Feuchteverhalten", "Schallschutz, Ökobilanz/Entsorgung, Preis, Gesundheit"]], ["Verbauter Dämmstoff ist nass geworden. Was tust du und warum?", ["**Ursache finden und beseitigen**", "Dämmstoff **ausbauen und ersetzen** (oder nachweislich trocknen)", "Grund: **Wasser leitet Wärme viel besser als Luft** → Dämmwirkung bricht ein", "Außerdem: **Schimmel**, Fäulnis, Zusammensacken, Folgeschäden an der Konstruktion"]], ["Warum wählt man manchmal bewusst einen Dämmstoff mit größerem λ und höherer Dichte?", ["**Sommerlicher Wärmeschutz**: speichert Wärme, Hitze kommt verzögert an (z. B. Holzfaser im Dach)", "**Schallschutz** durch mehr Masse", "**Druckbelastbarkeit** (unter Estrich, Perimeter)", "Brandschutz, Feuchteregulierung"]], ["Vorteile von Dämmstoffen aus nachwachsenden Rohstoffen?", ["**Ökologisch**, speichern CO₂, wenig Herstellungsenergie", "Gute **Wärmespeicherung** → sommerlicher Wärmeschutz", "**Feuchteregulierend**, diffusionsoffen", "Angenehm zu verarbeiten, gut zu entsorgen"]], ["Nachteile von Dämmstoffen aus nachwachsenden Rohstoffen?", ["Meist etwas **schlechteres λ** → dickere Schichten", "**Brennbar** → Brandschutzzusätze nötig", "**Feuchteempfindlich** (Schimmel, Fäulnis), Schädlinge", "Oft **teurer**, teils Zusätze (Borsalz, Kunststoff-Stützfasern)"]], ["Teile Dämmstoffe nach Rohstoff ein (mit Beispielen).", ["**Mineralisch**: Mineralwolle (Glas-/Steinwolle), Schaumglas, Perlit, Mineralschaum", "**Synthetisch**: EPS, XPS, PUR/PIR", "**Nachwachsend**: Holzfaser, Zellulose, Hanf, Flachs, Kork, Schafwolle, Stroh", "**Hochleistung**: Vakuumdämmung, Aerogel"]]]}, {"key": "07", "name": "Mörtel, Putz, Estrich", "cards": [["Nenne mineralische Bindemittel für Mörtel.", ["**Zement**", "**Baukalk** (Luftkalk, hydraulischer Kalk)", "**Gips / Anhydrit** (Calciumsulfat)", "**Magnesiabinder**", "(Lehm)"]], ["Luftbindemittel vs. hydraulisches Bindemittel?", ["**Luftbindemittel** (Luftkalk, Gips): erhärten nur an der Luft, nicht wasserbeständig", "**Hydraulisch** (Zement, hydraulischer Kalk): erhärten auch unter Wasser und bleiben wasserbeständig"]], ["Unterscheide Mörtel nach dem Ort der Einbringung.", ["**Mauermörtel**", "**Putzmörtel**", "**Estrichmörtel**", "**Fugenmörtel**", "(dazu Kleber-/Ansetzmörtel, Vergussmörtel)"]], ["Welche Mauermörtelarten gibt es?", ["**Normalmauermörtel**", "**Leichtmauermörtel**: dämmt besser, für wärmedämmendes Mauerwerk", "**Dünnbettmörtel**: für maßgenaue Plansteine"]], ["Baustellenmörtel vs. Werkmörtel?", ["**Baustellenmörtel**: auf der Baustelle gemischt", "**Werkmörtel**: im Werk hergestellt (Trocken- oder Frischmörtel) → gleichmäßige Qualität"]], ["Welche Aufgaben übernimmt der Fugenmörtel in einer Fassade?", ["Schutz vor **Schlagregen**, Wasser ableiten", "**Kraftübertragung** zwischen den Steinen", "Ausgleich von **Maßtoleranzen**", "Aufnahme von **Bewegungen/Spannungen**", "**Optik** / Gestaltung, Schutz des Mauermörtels"]], ["Welche Aufgaben hat Putz?", ["**Witterungsschutz** (Schlagregen)", "Untergrund **ebnen**, Gestaltung", "Innen: **Feuchteregulierung**", "Ggf. Brand-, Schall- oder Wärmeschutz (Dämmputz)"]], ["Wie lautet die Putzregel?", ["**„Weich auf hart“**: Putzlagen werden vom Untergrund nach außen **weniger fest** (höchstens gleich fest)", "Oberputz weniger fest als Unterputz", "Grund: Spannungen (Schwinden, Temperatur) werden nach außen abgebaut; harter Oberputz auf weichem Unterputz reißt und platzt ab"]], ["Was tun bei schwierigem Putzgrund (Mischmauerwerk, wechselnde Putzdicke)?", ["**Putzbewehrung**: Gewebe im oberen Drittel einbetten, muss **alkalibeständig** sein", "Oder **Putzträger** (eigenständiges Bauteil, das den Putz trägt)"]], ["Vorteile eines Sanierputzes?", ["Für **feuchtes, salzbelastetes** Mauerwerk", "Sehr porös, **wasserabweisend**, aber **diffusionsoffen**", "Verdunstungszone liegt **im Putz** → Salze kristallisieren in den Poren", "Oberfläche bleibt **trocken**, keine Ausblühungen und Abplatzungen"]], ["Nachteile eines Sanierputzes?", ["Salzspeicher ist **irgendwann voll** → Putz muss erneuert werden", "Behebt die **Feuchteursache nicht** (Abdichtung zusätzlich nötig)", "Teuer, nur als abgestimmtes **System**, keine dichten Anstriche darauf"]], ["Sanierputz vs. Feuchteregulierungsputz?", ["**Sanierputz**: lagert Salze im Putz **ein**", "**Feuchteregulierungsputz**: lässt Salze an die Oberfläche wandern, dort abbürsten/abwaschen"]], ["Was ist ein Estrich und welche Aufgaben hat er?", ["Dünne Fußbodenschicht auf einem **tragenden Untergrund**", "Ebene Fläche für den Belag oder direkt nutzbar", "**Lastverteilung**, Höhenausgleich, Leitungen, Fußbodenheizung, Trittschallschutz"]], ["Welche Estrichaufbauten unterscheidet man?", ["**Verbundestrich**: fest mit dem Untergrund verbunden", "**Estrich auf Trennschicht**: durch Folie vom Untergrund getrennt", "**Schwimmender Estrich**: auf Dämmschicht, ohne Verbindung zu Untergrund und Wänden", "**Heizestrich**: mit Fußbodenheizung (meist schwimmend)"]], ["Üblicher Estrichaufbau im Mehrfamilienhaus? (Skizze von unten nach oben)", ["**Schwimmender Estrich**:", "Rohdecke", "(Ausgleich für Leitungen) + **Trittschalldämmung** (ggf. Wärmedämmung)", "**Trennlage** (Folie)", "**Estrich**", "Belag", "Seitlich: **Randdämmstreifen** an allen Wänden"]], ["Wozu dient der Randdämmstreifen?", ["Trennt den Estrich von den **Wänden**", "Verhindert **Schallbrücken** (Trittschall in die Wände)", "Ermöglicht **Bewegungen** des Estrichs (Schwinden, Wärme)"]], ["Warum darf Estrich nicht fugenlos von einem Raum in den nächsten übergehen?", ["Estrich **schwindet** und bewegt sich bei Temperaturwechsel (v. a. Heizestrich)", "Im schmalen **Türdurchgang** konzentrieren sich die Spannungen → **wilde Risse**", "Deshalb dort **Bewegungs- oder Scheinfuge** (auch getrennte Heizkreise)", "Zusätzlich: verhindert **Schallübertragung** zwischen Räumen/Wohnungen"]], ["Estricharten nach Bindemittel?", ["**Zementestrich (CT)**: robust, feuchtebeständig, lange Trocknung, schwindet", "**Calciumsulfat-/Anhydritestrich (CA)**: wenig Schwinden, große fugenlose Flächen, gut fließfähig, aber **nicht feuchtebeständig**", "**Magnesiaestrich (MA)**: Industrie, fußwarm", "**Gussasphaltestrich (AS)**: heiß eingebaut, sofort belastbar, wasserdicht, keine Trocknungszeit"]]]}];
+const EXAM = new Date(2026, 11, 2);
+const KEY = "bkkarten-v1";
+const INTERVALS = [0, 1, 2, 4, 7, 14]; // Tage je Stufe
+const CARDS = [];
+DECKS.forEach((d, ti) => d.cards.forEach((c, i) => CARDS.push({ id: d.key + "-" + (i + 1), t: ti, q: c[0], a: c[1] })));
+
+const $ = s => document.querySelector(s);
+const today = () => { const n = new Date(); return Math.floor((Date.UTC(n.getFullYear(), n.getMonth(), n.getDate())) / 864e5); };
+let S = load();
+function load() {
+  let s = null;
+  try { s = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
+  if (!s || typeof s !== "object") s = {};
+  s.c = s.c || {}; s.sel = Array.isArray(s.sel) ? s.sel : DECKS.map((_, i) => i);
+  return s;
+}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+const st = id => S.c[id];
+const isNew = c => !st(c.id);
+const isDue = c => st(c.id) && st(c.id).due <= today();
+const isKnown = c => st(c.id) && st(c.id).box >= 3;
+const md = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+
+function show(v) { document.querySelectorAll(".view").forEach(x => x.classList.toggle("on", x.id === v)); window.scrollTo(0, 0); }
+
+function renderHome() {
+  const sel = CARDS.filter(c => S.sel.includes(c.t));
+  $("#sDue").textContent = sel.filter(isDue).length;
+  $("#sNew").textContent = sel.filter(isNew).length;
+  $("#sKnown").textContent = sel.filter(isKnown).length;
+  const seen = CARDS.filter(c => !isNew(c)).length;
+  $("#bAll").style.width = (100 * CARDS.filter(isKnown).length / CARDS.length) + "%";
+  const d = Math.round((Date.UTC(EXAM.getFullYear(), EXAM.getMonth(), EXAM.getDate()) / 864e5) - today());
+  $("#days").textContent = d > 1 ? d + " Tage" : d === 1 ? "morgen" : d === 0 ? "heute!" : "vorbei";
+  const q = buildQueue(false);
+  $("#go").disabled = !q.length || !S.sel.length;
+  $("#go").textContent = q.length ? `Lernen starten (${q.length})` : "Heute nichts mehr fällig";
+  const nNew = sel.filter(isNew).length;
+  $("#hint").textContent = !S.sel.length ? "Wähle unten mindestens ein Thema aus."
+    : q.length ? `Es kommen alle fälligen Karten und bis zu ${newPerDay()} neue pro Tag dran, damit du bis zum Testat alles schaffst.`
+    : nNew ? "Gut gemacht! Morgen kommen die nächsten neuen Karten." : "Alles wiederholt. Zum Üben kannst du trotzdem alle Karten gemischt durchgehen.";
+  const box = $("#topics"); box.innerHTML = "";
+  DECKS.forEach((d, i) => {
+    const cs = CARDS.filter(c => c.t === i), k = cs.filter(isKnown).length;
+    const b = document.createElement("button");
+    b.className = "topic" + (S.sel.includes(i) ? " sel" : "");
+    b.innerHTML = `<span class="chk"></span><span class="tn">${d.name}<span class="tm">${cs.length} Karten · ${k} sitzen</span></span><span class="mini"><i style="width:${100 * k / cs.length}%"></i></span>`;
+    b.onclick = () => { S.sel = S.sel.includes(i) ? S.sel.filter(x => x !== i) : [...S.sel, i].sort(); save(); renderHome(); };
+    box.appendChild(b);
+  });
+}
+function newPerDay() {
+  const d = Math.max(1, Math.round((Date.UTC(EXAM.getFullYear(), EXAM.getMonth(), EXAM.getDate()) / 864e5) - today()) - 1);
+  const left = CARDS.filter(isNew).length;
+  return Math.max(20, Math.ceil(left / d));
+}
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function buildQueue(all) {
+  const sel = CARDS.filter(c => S.sel.includes(c.t));
+  if (all) return shuffle(sel.slice());
+  const due = shuffle(sel.filter(isDue));
+  const introduced = S.newDay === today() ? (S.newCount || 0) : 0;
+  const nw = sel.filter(isNew).slice(0, Math.max(0, newPerDay() - introduced));
+  return due.concat(nw);
+}
+
+let Q = [], total = 0, free = false, cur = null, flipped = false;
+function start(all) {
+  free = all; Q = buildQueue(all); total = Q.length;
+  if (!total) return;
+  $("#pMode").textContent = all ? "Freies Üben" : "Lernen";
+  $("#doneBox").hidden = true; $("#cardArea").hidden = false;
+  show("learn"); next();
+}
+function next() {
+  if (!Q.length) return finish();
+  cur = Q.shift(); flipped = false;
+  const fc = $("#fc"); fc.style.transition = "none"; fc.classList.remove("flip"); void fc.offsetWidth; fc.style.transition = "";
+  const d = DECKS[cur.t];
+  $("#tTopic").textContent = $("#tTopic2").textContent = d.name;
+  const s = st(cur.id);
+  $("#tBox").textContent = !s ? "neu" : s.box >= 3 ? "sitzt" : "Wiederholung";
+  $("#tQ").textContent = cur.q; $("#tQ2").textContent = cur.q;
+  $("#tA").innerHTML = cur.a.map(x => "<li>" + md(x) + "</li>").join("");
+  $("#rate").classList.remove("on"); $("#show").hidden = false;
+  const box = s ? s.box : 0;
+  const ni = INTERVALS[Math.min(box + 1, 5)];
+  $("#nextInt").textContent = free ? "weiter" : ni === 1 ? "morgen" : "in " + ni + " Tagen";
+  const done = total - Q.length - 1;
+  $("#bSess").style.width = (100 * done / total) + "%";
+  $("#pLeft").textContent = `${Q.length + 1} übrig`;
+}
+function flip() {
+  if (!cur) return;
+  flipped = !flipped; $("#fc").classList.toggle("flip", flipped);
+  if (flipped) { $("#rate").classList.add("on"); $("#show").hidden = true; }
+}
+function rate(r) {
+  if (!cur) return;
+  const t = today();
+  let s = st(cur.id);
+  if (!s) { s = { box: 0, due: t }; if (!free) { if (S.newDay !== t) { S.newDay = t; S.newCount = 0; } S.newCount++; } }
+  if (r === 0) { s.box = 0; s.due = t; Q.splice(Math.min(3, Q.length), 0, cur); }
+  else if (r === 1) { s.box = Math.max(1, Math.min(s.box, 2)); s.due = t + 1; }
+  else { s.box = Math.min(s.box + 1, 5); s.due = t + INTERVALS[s.box]; }
+  S.c[cur.id] = s; save();
+  next();
+}
+function finish() {
+  cur = null;
+  $("#bSess").style.width = "100%"; $("#pLeft").textContent = "fertig";
+  $("#cardArea").hidden = true; $("#doneBox").hidden = false;
+  const k = CARDS.filter(isKnown).length;
+  $("#doneTxt").textContent = free ? "Alle ausgewählten Karten einmal durch." : `${k} von ${CARDS.length} Karten sitzen schon. Morgen geht es weiter.`;
+}
+$("#fc").onclick = flip; $("#show").onclick = flip;
+document.querySelectorAll("#rate button").forEach(b => b.onclick = e => { e.stopPropagation(); rate(+b.dataset.r); });
+$("#go").onclick = () => start(false);
+$("#free").onclick = () => start(true);
+["#home2", "#home3", "#home4"].forEach(s => $(s).onclick = () => { renderHome(); show("home"); });
+$("#howto").onclick = () => show("help");
+$("#reset").onclick = () => { if (confirm("Wirklich den ganzen Lernstand löschen?")) { S = { c: {}, sel: S.sel }; save(); renderHome(); } };
+document.addEventListener("keydown", e => {
+  if (!$("#learn").classList.contains("on") || !cur) return;
+  if (e.key === " " || e.key === "Enter") { e.preventDefault(); flip(); }
+  else if (flipped && ["1", "2", "3"].includes(e.key)) rate(+e.key - 1);
+});
+document.addEventListener("visibilitychange", () => { if (!document.hidden && $("#home").classList.contains("on")) renderHome(); });
+renderHome();
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+</script>
+</body>
+</html>
