@@ -726,6 +726,7 @@ ul.rs .st{color:#f59f00;font-size:1.05rem;letter-spacing:1px;white-space:nowrap}
 
 <div id="mbg" aria-hidden="true"></div><div id="mfade" aria-hidden="true"></div>
 <link rel="stylesheet" href="bw-ui.css?v=20261112a" data-bwui>
+<link rel="stylesheet" href="bw-anki.css?v=20261128a" data-bwanki>
 <header class="appbar">
   <div class="wrap bar">
     <button type="button" class="appback" id="appback" hidden aria-label="Zurück zu allen Modulen" title="Alle Module"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -1844,6 +1845,7 @@ function homeStats(){
   renderPath();laterBadge();bpHome()}
 
 /* ---------- Karteikarten ---------- */
+window.BWA={FC:FC,CH:(typeof CHS!=="undefined"?CHS:(typeof CHF!=="undefined"?CHF:CH)),pfx:"bp-"};/*bwanki*/
 let fcState=store.get("bp-fc",{known:[]});
 let fcFilter="all",fcDeck=[],fcIdx=0;
 function fcBuild(sh){fcDeck=FC.map((c,i)=>i).filter(i=>(fcFilter==="all"||FC[i][0]===fcFilter)&&!fcState.known.includes(i));if(sh)fcDeck=shuffle(fcDeck);fcIdx=0;fcShow()}
@@ -2312,3 +2314,4 @@ window.addEventListener("hashchange",function(){setTimeout(label,0)});setTimeout
 if(framed){b.hidden=false;b.onclick=function(){window.parent.postMessage({lernapp:"home"},"*")}}})();
 </script>
 <script src="bw-tafel-data.js?v=20261112a" defer data-bwui></script><script src="bw-tafel.js?v=20261112a" defer data-bwui></script><script src="bw-ui.js?v=20261112a" defer data-bwui></script>
+<script src="bw-anki.js?v=20261128a" defer data-bwanki></script>

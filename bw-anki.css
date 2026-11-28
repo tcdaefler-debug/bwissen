@@ -1,0 +1,45 @@
+/* BWIssen: Karteikarten im Anki-Stil (alle Fächer). Dunkelmodus läuft über die Umkehr-Schicht der Fächer. */
+#bwa{--bwa-n:#1e6fd9;--bwa-l:#c3332a;--bwa-d:#228b22;--bwa-line:#dcdcdc;--bwa-btn:#f2f2f2;--bwa-btnl:#cfcfcf;--bwa-ink:#1f1f1f;--bwa-mut:#7a7a7a;
+  color:var(--bwa-ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;max-width:720px;margin:8px auto 0;padding-bottom:24px}
+#bwa [hidden]{display:none!important}
+#bwa .bwa-n{color:var(--bwa-n)} #bwa .bwa-l{color:var(--bwa-l)} #bwa .bwa-d{color:var(--bwa-d)}
+#bwa .z{color:var(--bwa-mut);opacity:.5}
+#bwa .bwa-head,#bwa .bwa-row{display:grid;grid-template-columns:1fr 52px 52px 58px;align-items:center}
+#bwa .bwa-head{padding:6px 14px;font-size:12px;color:var(--bwa-mut);text-transform:uppercase;letter-spacing:.02em}
+#bwa .bwa-head span,#bwa .bwa-row>span:not(.bwa-dn){text-align:right;font-variant-numeric:tabular-nums}
+#bwa .bwa-list{background:#fff;border:1px solid var(--bwa-line);border-radius:12px;overflow:hidden}
+#bwa .bwa-row{width:100%;padding:13px 14px;border:0;border-bottom:1px solid var(--bwa-line);background:#fff;text-align:left;font:inherit;font-size:16px;color:inherit;cursor:pointer}
+#bwa .bwa-row:last-child{border-bottom:0}
+#bwa .bwa-row:active{background:#eef4ff}
+#bwa .bwa-row.top{font-weight:600}
+#bwa .bwa-row:not(.top) .bwa-dn{padding-left:16px}
+#bwa .bwa-dn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+#bwa .bwa-note{color:var(--bwa-mut);font-size:14px;margin:12px 4px}
+#bwa .bwa-back{border:0;background:none;color:var(--bwa-n);font:inherit;font-size:16px;padding:6px 2px;cursor:pointer}
+#bwa [data-v="over"]{text-align:center;padding-bottom:10px}
+#bwa [data-v="over"] .bwa-back{display:block;text-align:left}
+#bwa .bwa-ovt{font-size:22px;font-weight:600;margin:14px 0 18px}
+#bwa .bwa-ovn{display:inline-grid;grid-template-columns:auto auto;gap:6px 22px;text-align:left;font-size:17px;margin-bottom:22px}
+#bwa .bwa-ovn b{text-align:right;font-variant-numeric:tabular-nums}
+#bwa .bwa-btn{display:block;width:100%;max-width:360px;margin:0 auto 10px;padding:12px 18px;border-radius:8px;background:var(--bwa-btn);border:1px solid var(--bwa-btnl);font:inherit;font-size:17px;color:inherit;cursor:pointer}
+#bwa .bwa-btn:disabled{opacity:.45}
+#bwa .bwa-btn:active,#bwa .bwa-ease button:active{filter:brightness(.93)}
+#bwa .bwa-rtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+#bwa .bwa-cnt{font-size:15px;font-variant-numeric:tabular-nums}
+#bwa .bwa-cnt .cur{text-decoration:underline;font-weight:700}
+#bwa .bwa-card{background:#fff;border:1px solid var(--bwa-line);border-radius:12px;padding:26px 18px;min-height:220px;text-align:center;font-size:20px;line-height:1.5;cursor:pointer;outline:none}
+#bwa .bwa-tp{font-size:12px;color:var(--bwa-mut);margin-bottom:16px}
+#bwa .bwa-q{font-size:22px;font-weight:600}
+#bwa .bwa-card hr{border:0;border-top:1px solid var(--bwa-line);margin:20px 0}
+#bwa .bwa-a{font-size:18px;text-align:left}
+#bwa .bwa-a p{margin:0}
+#bwa .bwa-bar{margin-top:12px}
+#bwa .bwa-bar .bwa-btn{max-width:none}
+#bwa .bwa-ease{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+#bwa .bwa-ease[hidden]{display:none}
+#bwa .bwa-ease button{padding:7px 2px 10px;border-radius:8px;background:var(--bwa-btn);border:1px solid var(--bwa-btnl);font:inherit;font-size:15px;line-height:1.25;cursor:pointer}
+#bwa .bwa-ease small{display:block;font-size:12px;color:var(--bwa-mut);margin-bottom:2px}
+#bwa .e0{color:var(--bwa-l)} #bwa .e1{color:var(--bwa-ink)} #bwa .e2{color:var(--bwa-d)} #bwa .e3{color:var(--bwa-n)}
+#bwa .bwa-fin{text-align:center;padding:40px 10px}
+#bwa .bwa-fin h3{font-size:22px;margin:0 0 8px}
+#bwa .bwa-fin p{color:var(--bwa-mut);margin:0 0 20px}
