@@ -126,7 +126,7 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 <body>
 
 <section id="decks" class="view on">
-  <div class="nav"><span class="nb"></span><h1>Stapel</h1><button class="nb r" id="toHelp">Hilfe</button></div>
+  <div class="nav"><button class="nb" id="appback" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>BWIssen</button><span class="nb" id="appsp"></span><h1>Stapel</h1><button class="nb r" id="toHelp">Hilfe</button></div>
   <div class="main">
     <button class="ttb" id="toTT"><span class="ic">🎯</span><span><b>Testat-Trainer</b><small>Erklärkarten, Fragen üben, Probetest 10 Min</small></span></button>
     <div class="dl-head"><div>Stapel</div><span class="c-new">Neu</span><span class="c-learn">Lern.</span><span class="c-due">Fällig</span></div>
@@ -451,6 +451,7 @@ function mcFinish() {
   show("res");
 }
 
+if (window.parent !== window) { $("#appback").hidden = false; $("#appsp").hidden = true; $("#appback").onclick = () => parent.postMessage({ lernapp: "home" }, "*"); }
 renderDecks();
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 </script>
